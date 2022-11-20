@@ -488,7 +488,7 @@ class MainController extends Controller
 
 
        $users = User::all();
-       $dropofflist = DropOff::all();
+       $dropofflist = DropOff::orderBy('created_at', 'desc')->get();
 
 
        return view('dropofflist',compact('dropofflist','pending_drop_off','total_unpaid','money_out','total_weight'));
