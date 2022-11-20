@@ -776,7 +776,7 @@ class MainController extends Controller
        $pending_request = AgentRequest::where('status', '0')->count();
        $approved_agent = AgentRequest::where('status', 1)->count();
 
-       $agent_list = AgentRequest::all();
+       $agent_list = AgentRequest::orderBy('created_at', 'desc')->get();
 
        $user = User::all();
 
