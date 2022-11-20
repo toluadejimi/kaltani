@@ -238,10 +238,15 @@
                                                         <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Rubik',sans-serif;"
                                                             align="left">
 
+                                                            <h6
+                                                                style="margin: 0px; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: arial,helvetica,sans-serif; font-size: 21px;">
+                                                               OrderID -  {{ $data1['order_id'] }} </h6><br><br>
+
+
                                                             <div
                                                                 style="line-height: 140%; text-align: center; word-wrap: break-word;">
                                                                 <p style="font-size: 14px; line-height: 140%;">Your
-                                                                    order with {{ $data1['order_id'] }} for plastic
+                                                                    order with for plastic
                                                                     waste has been successfully placed<br>Head to the
                                                                     selected collection center to make your drop off
                                                                 </p>
