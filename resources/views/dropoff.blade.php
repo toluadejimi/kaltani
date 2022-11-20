@@ -224,7 +224,7 @@
 
                                                             <h1
                                                                 style="margin: 0px; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: arial,helvetica,sans-serif; font-size: 21px;">
-                                                                Drop Off Created </h1>
+                                                                OrderID  -  {{ $data1['order_id'] }} </h1>
 
                                                         </td>
                                                     </tr>
@@ -238,7 +238,6 @@
                                                         <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Rubik',sans-serif;"
                                                             align="left">
 
-                                                            <h6> OrderID  -  {{ $data1['order_id'] }} </h6><br><br>
 
 
                                                             <div
