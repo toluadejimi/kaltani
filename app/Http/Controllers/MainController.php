@@ -47,6 +47,9 @@ use App\Models\Rate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Termwind\Components\Raw;
+use Yajra\DataTables\DataTables;
+
+
 
 class MainController extends Controller
 {
@@ -194,7 +197,9 @@ class MainController extends Controller
         // $totals = Total::all();
 
         $items = Item::all()->count();
-        $collections = Collection::orderBy('created_at', 'desc')->get();
+        $collections = Collection::orderBy('created_at', 'DESC')
+        ->paginate(10);
+
         $centers = Location::all()->count();
         $staffs = User::where('role_id',2)->count();
         $salesusd = Sales::all()->sum('amount_usd');
@@ -487,8 +492,14 @@ class MainController extends Controller
 
 
 
+
        $users = User::all();
-       $dropofflist = DropOff::orderBy('created_at', 'desc')->get();
+       $dropofflist = DropOff::orderBy('created_at', 'DESC')
+       ->paginate(15);
+
+       //$dropofflist = Datatables::of(DropOff::query())->make(true);
+
+
 
 
        return view('dropofflist',compact('dropofflist','pending_drop_off','total_unpaid','money_out','total_weight'));
@@ -776,7 +787,7 @@ class MainController extends Controller
        $pending_request = AgentRequest::where('status', '0')->count();
        $approved_agent = AgentRequest::where('status', 1)->count();
 
-       $agent_list = AgentRequest::orderBy('created_at', 'desc')->get();
+       $agent_list = AgentRequest::orderBy('created_at', 'DESC')->paginate(10);
 
        $user = User::all();
 

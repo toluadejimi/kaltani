@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CollectedDetails;
 use App\Models\Collection;
 use App\Models\DropOff;
+use App\Models\Greeting;
 use App\Models\Location;
 use App\Models\PlasticWaste;
 use App\Models\Rate;
@@ -177,6 +178,10 @@ class CollectionController extends Controller
         $customer_phone = User::where('id', Auth::id())
             ->first()->phone;
 
+
+        $customer_gender = User::where('id', Auth::id())
+            ->first()->gender;
+
         $location_name = $get_location->name;
         $location_address = $get_location->address;
         $agent_log = $get_location->longitude;
@@ -222,8 +227,10 @@ class CollectionController extends Controller
                 return $randomString;
             }
 
+            $order_id = generateRandomString();
+
             $drop = new DropOff();
-            $drop->order_id = generateRandomString();
+            $drop->order_id = $order_id;
             $drop->city = $city;
             $drop->lat = $lat;
             $drop->long = $long;
@@ -327,14 +334,28 @@ class CollectionController extends Controller
             $user_email = Auth()->user();
             $receiveremail = $user_email->email;
 
+            if($customer_gender = 'Male'){
+
+                $greeting = Greeting::where('gender', 'Male' )
+                ->first()->title;
+            }else{
+
+                $greeting = Greeting::where('gender', 'Female' )
+                ->first()->title;
+
+            }
+
             //send email to sender
             $data = array(
                 'fromsender' => 'notification@kaltanimis.com', 'KALTANI',
                 'subject' => "New Drop Off",
                 'toreceiver' => $receiveremail,
+                'greeting' => $greeting,
+                'order_id' => $order_id,
+
             );
 
-            Mail::send('dropoff', $data, function ($message) use ($data) {
+            Mail::send('dropoff', ["data1" => $data], function ($message) use ($data) {
                 $message->from($data['fromsender']);
                 $message->to($data['toreceiver']);
                 $message->subject($data['subject']);
@@ -350,9 +371,10 @@ class CollectionController extends Controller
                 'fromsender' => 'notification@kaltanimis.com', 'KALTANI',
                 'subject' => "New Drop Off",
                 'toreceiver' => $receiveremail,
+                'order' => $order_id,
             );
 
-            Mail::send('agentdropoff', $data, function ($message) use ($data) {
+            Mail::send('agentdropoff', ["data1" => $data], function ($message) use ($data) {
                 $message->from($data['fromsender']);
                 $message->to($data['toreceiver']);
                 $message->subject($data['subject']);

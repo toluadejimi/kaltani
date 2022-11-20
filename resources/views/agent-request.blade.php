@@ -62,8 +62,10 @@
 
                 </div>
                 <div class="card-body p-0">
+                    <input type="text" id="mytable" class="form-control col-4 mb-5" data-table="table" placeholder="Search" />
+
                   <div class="table-responsive">
-                    <table id="myTable" class="table table-striped mb-0">
+                    <table id="mytable" class="table table-striped mb-0">
                       <thead>
                         <tr>
                           <th>Customer Name</th>
@@ -80,7 +82,7 @@
                           <th>Action</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody id="geeks">
                         @forelse ($agent_list as $item)
                             <td>{{$item->customer_name}}</td>
                             <td>{{$item->org_name}}</td>
@@ -127,6 +129,7 @@
 
                     </tbody>
                     </table>
+                    {!! $agent_list->appends(Request::all())->links() !!}
                   </div>
                 </div>
               </div>

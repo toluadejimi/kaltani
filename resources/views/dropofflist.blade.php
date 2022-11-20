@@ -114,7 +114,8 @@
 
         <div class="row">
             <div class="col-md-12 shadow-sm">
-                <table id="myTable" class="table table-striped mb-0">
+                <table id="table" class="table table-striped mb-0">
+                    <input type="text" id="mytable" class="form-control col-4 mb-5" data-table="table" placeholder="Search" />
                     <thead>
                         <tr>
                             <th>Order ID</th>
@@ -128,7 +129,7 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="geeks">
                         @forelse ($dropofflist as $item)
                             <tr>
                                 <td><a href="/drop_off_details/{{ $item->id }}">{{ $item->order_id }}</a></td>
@@ -172,8 +173,16 @@
 
                     </tbody>
                 </table>
+                {!! $dropofflist->appends(Request::all())->links() !!}
+
             </div>
         </div>
     </div>
     </div>
+
+
+
+
+
+
 @endsection

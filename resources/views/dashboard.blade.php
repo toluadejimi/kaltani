@@ -99,18 +99,18 @@
               </div>
             </div>
           </div>
-          
-          
+
+
           <div class="row">
             <div class="col-lg-12 col-md-12 col-12 col-sm-12">
               <div class="card">
                 <div class="card-header">
                   <h4>Latest Collections</h4>
-                  
+
                 </div>
                 <div class="card-body p-0">
                   <div class="table-responsive">
-                    <table id="myTable" class="table table-striped mb-0">
+                    <table id="" class="table table-striped mb-0">
                       <thead>
                         <tr>
                           <th>Date</th>
@@ -130,8 +130,8 @@
                             <td>{{date('h:i:s A', strtotime($item->created_at))}}</td>
                         </tr>
                         @endforeach
-                        
-                        
+
+
                     </tbody>
                     </table>
                   </div>
@@ -142,8 +142,8 @@
         </section>
       </div>
 
-            
+
     <!-- Main Container end -->
 
-    
+
 @endsection

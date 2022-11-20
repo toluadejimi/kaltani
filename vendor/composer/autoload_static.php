@@ -34,6 +34,7 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
         '320163ac6b93aebe3dc25b60a0533d56' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/helpers.php',
+        '0b47d6d4a00ca9112ba3953b49e7c9a4' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/helper.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -44,6 +45,10 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
         'p' => 
         array (
             'phpseclib3\\' => 11,
+        ),
+        'Y' => 
+        array (
+            'Yajra\\DataTables\\' => 17,
         ),
         'W' => 
         array (
@@ -201,6 +206,10 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
         'phpseclib3\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+        ),
+        'Yajra\\DataTables\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src',
         ),
         'Whoops\\' => 
         array (
@@ -614,8 +623,10 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
         'App\\Http\\Controllers\\ManageController' => __DIR__ . '/../..' . '/app/Http/Controllers/ManageController.php',
         'App\\Http\\Controllers\\RecycleController' => __DIR__ . '/../..' . '/app/Http/Controllers/RecycleController.php',
         'App\\Http\\Controllers\\SalesController' => __DIR__ . '/../..' . '/app/Http/Controllers/SalesController.php',
+        'App\\Http\\Controllers\\SettingController' => __DIR__ . '/../..' . '/app/Http/Controllers/SettingController.php',
         'App\\Http\\Controllers\\SortedTransferController' => __DIR__ . '/../..' . '/app/Http/Controllers/SortedTransferController.php',
         'App\\Http\\Controllers\\SortingController' => __DIR__ . '/../..' . '/app/Http/Controllers/SortingController.php',
+        'App\\Http\\Controllers\\TransactionController' => __DIR__ . '/../..' . '/app/Http/Controllers/TransactionController.php',
         'App\\Http\\Controllers\\TransferController' => __DIR__ . '/../..' . '/app/Http/Controllers/TransferController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Acess' => __DIR__ . '/../..' . '/app/Http/Middleware/Acess.php',
@@ -629,6 +640,9 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Traits\\HistoryTrait' => __DIR__ . '/../..' . '/app/Http/Traits/HistoryTrait.php',
+        'App\\Models\\AccessToken' => __DIR__ . '/../..' . '/app/Models/AccessToken.php',
+        'App\\Models\\AccountRequest' => __DIR__ . '/../..' . '/app/Models/AccountRequest.php',
+        'App\\Models\\AgentRequest' => __DIR__ . '/../..' . '/app/Models/AgentRequest.php',
         'App\\Models\\BailedDetails' => __DIR__ . '/../..' . '/app/Models/BailedDetails.php',
         'App\\Models\\BailedDetailsHistory' => __DIR__ . '/../..' . '/app/Models/BailedDetailsHistory.php',
         'App\\Models\\BailedTotal' => __DIR__ . '/../..' . '/app/Models/BailedTotal.php',
@@ -636,21 +650,31 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
         'App\\Models\\BailingItem' => __DIR__ . '/../..' . '/app/Models/BailingItem.php',
         'App\\Models\\CollectedDetails' => __DIR__ . '/../..' . '/app/Models/CollectedDetails.php',
         'App\\Models\\Collection' => __DIR__ . '/../..' . '/app/Models/Collection.php',
+        'App\\Models\\Customer' => __DIR__ . '/../..' . '/app/Models/Customer.php',
+        'App\\Models\\DropOff' => __DIR__ . '/../..' . '/app/Models/DropOff.php',
         'App\\Models\\Factory' => __DIR__ . '/../..' . '/app/Models/Factory.php',
         'App\\Models\\FactoryTotal' => __DIR__ . '/../..' . '/app/Models/FactoryTotal.php',
+        'App\\Models\\FundAgent' => __DIR__ . '/../..' . '/app/Models/FundAgent.php',
+        'App\\Models\\Greeting' => __DIR__ . '/../..' . '/app/Models/Greeting.php',
         'App\\Models\\History' => __DIR__ . '/../..' . '/app/Models/History.php',
         'App\\Models\\Item' => __DIR__ . '/../..' . '/app/Models/Item.php',
         'App\\Models\\Location' => __DIR__ . '/../..' . '/app/Models/Location.php',
+        'App\\Models\\PlasticWaste' => __DIR__ . '/../..' . '/app/Models/PlasticWaste.php',
+        'App\\Models\\Rate' => __DIR__ . '/../..' . '/app/Models/Rate.php',
         'App\\Models\\Recycle' => __DIR__ . '/../..' . '/app/Models/Recycle.php',
         'App\\Models\\RecyclesDetails' => __DIR__ . '/../..' . '/app/Models/RecyclesDetails.php',
         'App\\Models\\Sales' => __DIR__ . '/../..' . '/app/Models/Sales.php',
         'App\\Models\\SalesDetails' => __DIR__ . '/../..' . '/app/Models/SalesDetails.php',
+        'App\\Models\\Slider' => __DIR__ . '/../..' . '/app/Models/Slider.php',
         'App\\Models\\SortDetails' => __DIR__ . '/../..' . '/app/Models/SortDetails.php',
         'App\\Models\\SortDetailsHistory' => __DIR__ . '/../..' . '/app/Models/SortDetailsHistory.php',
         'App\\Models\\SortedTotal' => __DIR__ . '/../..' . '/app/Models/SortedTotal.php',
         'App\\Models\\SortedTransfer' => __DIR__ . '/../..' . '/app/Models/SortedTransfer.php',
         'App\\Models\\Sorting' => __DIR__ . '/../..' . '/app/Models/Sorting.php',
+        'App\\Models\\State' => __DIR__ . '/../..' . '/app/Models/State.php',
+        'App\\Models\\StateLga' => __DIR__ . '/../..' . '/app/Models/StateLga.php',
         'App\\Models\\Total' => __DIR__ . '/../..' . '/app/Models/Total.php',
+        'App\\Models\\Transaction' => __DIR__ . '/../..' . '/app/Models/Transaction.php',
         'App\\Models\\Transfer' => __DIR__ . '/../..' . '/app/Models/Transfer.php',
         'App\\Models\\TransferDetails' => __DIR__ . '/../..' . '/app/Models/TransferDetails.php',
         'App\\Models\\TransferDetailsHistory' => __DIR__ . '/../..' . '/app/Models/TransferDetailsHistory.php',
@@ -6128,6 +6152,22 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
         'Whoops\\Util\\Misc' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/Misc.php',
         'Whoops\\Util\\SystemFacade' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/SystemFacade.php',
         'Whoops\\Util\\TemplateHelper' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/TemplateHelper.php',
+        'Yajra\\DataTables\\ApiResourceDataTable' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/ApiResourceDataTable.php',
+        'Yajra\\DataTables\\CollectionDataTable' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/CollectionDataTable.php',
+        'Yajra\\DataTables\\Contracts\\DataTable' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/Contracts/DataTable.php',
+        'Yajra\\DataTables\\Contracts\\Formatter' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/Contracts/Formatter.php',
+        'Yajra\\DataTables\\DataTableAbstract' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/DataTableAbstract.php',
+        'Yajra\\DataTables\\DataTables' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/DataTables.php',
+        'Yajra\\DataTables\\DataTablesServiceProvider' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/DataTablesServiceProvider.php',
+        'Yajra\\DataTables\\EloquentDataTable' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/EloquentDataTable.php',
+        'Yajra\\DataTables\\Exceptions\\Exception' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/Exceptions/Exception.php',
+        'Yajra\\DataTables\\Facades\\DataTables' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/Facades/DataTables.php',
+        'Yajra\\DataTables\\Processors\\DataProcessor' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/Processors/DataProcessor.php',
+        'Yajra\\DataTables\\Processors\\RowProcessor' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/Processors/RowProcessor.php',
+        'Yajra\\DataTables\\QueryDataTable' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/QueryDataTable.php',
+        'Yajra\\DataTables\\Utilities\\Config' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/Utilities/Config.php',
+        'Yajra\\DataTables\\Utilities\\Helper' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/Utilities/Helper.php',
+        'Yajra\\DataTables\\Utilities\\Request' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/Utilities/Request.php',
         'phpseclib3\\Common\\Functions\\Strings' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Common/Functions/Strings.php',
         'phpseclib3\\Crypt\\AES' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/AES.php',
         'phpseclib3\\Crypt\\Blowfish' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/Blowfish.php',

@@ -5,6 +5,7 @@
  *
  */
 
+
 "use strict";
 $(document).ready(function() {
     $('#example').DataTable( {
@@ -23,8 +24,7 @@ $(document).ready(function() {
 
 $(document).ready( function () {
     $('#myTable').DataTable({
-        searching: true,
-        ordering : true,
+        searching: false,
     });
 } );
 
