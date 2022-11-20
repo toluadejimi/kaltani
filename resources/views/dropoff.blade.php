@@ -154,7 +154,7 @@
                                                                         align="center">
 
                                                                         <img align="center" border="0"
-                                                                            src="https://kaltanimis.com/public/upload/Logo-D-web-test-1.png"
+                                                                            src="https://kaltanimis.com/public/upload/3.png"
                                                                             alt="" title=""
                                                                             style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 39%;max-width: 250.16px;"
                                                                             width="250.16" />
@@ -238,15 +238,13 @@
                                                         <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Rubik',sans-serif;"
                                                             align="left">
 
-                                                            <h6
-                                                                style="margin: 0px; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: arial,helvetica,sans-serif; font-size: 21px;">
-                                                               OrderID -  {{ $data1['order_id'] }} </h6><br><br>
+                                                            <h6> OrderID  -  {{ $data1['order_id'] }} </h6><br><br>
 
 
                                                             <div
                                                                 style="line-height: 140%; text-align: center; word-wrap: break-word;">
                                                                 <p style="font-size: 14px; line-height: 140%;">Your
-                                                                    order with for plastic
+                                                                    order for plastic
                                                                     waste has been successfully placed<br>Head to the
                                                                     selected collection center to make your drop off
                                                                 </p>
