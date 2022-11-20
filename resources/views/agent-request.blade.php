@@ -48,18 +48,18 @@
                 </div>
               </div>
             </div>
-            
-            
-            
-            
-          
-          
+
+
+
+
+
+
           <div class="row">
             <div class="col-lg-12 col-md-12 col-12 col-sm-12">
               <div class="card">
                 <div class="card-header">
                   <h4>Latest Request</h4>
-                  
+
                 </div>
                 <div class="card-body p-0">
                   <div class="table-responsive">
@@ -67,12 +67,13 @@
                       <thead>
                         <tr>
                           <th>Customer Name</th>
-                          <th>Organization Name</th>
+                          <th>Agent</th>
                           <th>Address</th>
                           <th>State</th>
                           <th>Lga</th>
                           <th>City</th>
                            <th>Phone</th>
+                           <th>Image</th>
                           <th>Status</th>
                           <th>Date</th>
                           <th>Time</th>
@@ -88,21 +89,33 @@
                             <td>{{$item->lga }}</td>
                             <td>{{$item->city}}</td>
                             <td>{{$item->phone}}</td>
-                            @if($item->status =='0')         
-                             <td><span class="badge rounded-pill bg-warning text-dark">Pending</span></td>         
+                            <td>
+                            <img src="{{ url('public/upload/agent/'.$item->image)}}"  width="100px" height="100px"/>
+                            </td>
+                            @if($item->status =='0')
+                             <td><span class="badge rounded-pill bg-warning text-dark">Pending</span></td>
                              @else
-                             <td><span class="badge rounded-pill bg-success">Completed</span></td>        
+                             <td><span class="badge rounded-pill bg-success">Completed</span></td>
                              @endif
                             <td>{{date('F d, Y', strtotime($item->created_at))}}</td>
-                            <td>{{date('h:i:s A', strtotime($item->created_at))}}</td>  
+                            <td>{{date('h:i:s A', strtotime($item->created_at))}}</td>
                             <td>
-                                <form action="/userDelete/{{$item->id}}" method="post">
+                                <div class="row mr-6">
+                                <form class="mr-3" action="/agent-delete/{{$item->id}}" method="post>
                                     @csrf
                                     @method('DELETE')
-                                    <a href="/agent_request_update?id={{$item->id}}" class="btn btn-success"><i class="fa-light fa-thumbs-up"></i></a>
-                                    @csrf
-                                    <button type="submit" class="btn btn-danger"><i class="fa-light fa-trash-can"></i></button>
+                                    <button type="submit" class="btn btn-danger"><i
+                                            class="fa-light fa-trash-can"></i></button>
                                 </form>
+
+                                <form action="/agent_request_update?id={{$item->id}}" method="post">
+                                    @csrf
+                                    @method('POST')
+                                    <button type="submit" class="btn btn-success"><i
+                                            class="fa-light fa-check-circle"></i></button>
+                                </form>
+
+                                </div>
                             </td>
                         </tr>
                         @empty
@@ -110,8 +123,8 @@
                               <td colspan="20">No Record Found</td>
                             </tr>
                         @endforelse
-                        
-                        
+
+
                     </tbody>
                     </table>
                   </div>
@@ -122,8 +135,8 @@
         </section>
       </div>
 
-            
+
     <!-- Main Container end -->
 
-    
+
 @endsection
