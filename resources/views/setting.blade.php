@@ -26,7 +26,7 @@
                             <div class="card-header">
                                 <h4>Transfer Fee</h4>
                             </div>
-                         
+
                             <div class="card-body">
                                 {{$transfer_fee}}
                             </div>
@@ -57,7 +57,7 @@
 
 
         <div class="card mt-4">
-      
+
             <div class="row">
                 <div class="card-header">
                     <h4>Update Settings</h4>
@@ -91,8 +91,50 @@
                 </div>
 
 
-               
-               
+
+
+            </div>
+
+        </div>
+
+
+        <div class="card mt-4">
+
+            <div class="row">
+                <div class="card-header">
+                    <h4>Email Greetings</h4>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-6 col-12 mb-5 ml-4">
+
+                    <form action="/charge-per-kg" method="GET">
+                        @csrf
+
+                        <label>Email Verification</label>
+                        <input type="text" name="price_per_kg" class="form-control" value="{{ $price_per_kg }}"  />
+
+                        <button type="submit" class="btn btn-primary mt-3">Update</button>
+                    </form>
+
+                </div>
+
+
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+
+                    <form action="/transfer-fee" method="GET">
+                        @csrf
+
+                        <label> Order Title (MALE)</label>
+                        <textarea type="text" name="price_per_kg" class="form-control"> {{ $price_per_kg }} </textarea>
+
+                        <button type="submit" class="btn btn-primary mt-3 mb-6">Update</button>
+                    </form>
+
+                </div>
+
+
+
+
             </div>
 
         </div>

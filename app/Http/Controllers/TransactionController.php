@@ -258,11 +258,11 @@ class TransactionController extends Controller
         }
 
 
-        if ($amount < 100) {
+        if ($amount <= 1000) {
 
             return response()->json([
                 "status" => $this->FailedStatus,
-                "message" => "You can not withdrwal less than NGN 100",
+                "message" => "You can not withdrwal less than NGN 1000",
             ], 500);
 
         }
@@ -315,29 +315,29 @@ class TransactionController extends Controller
                $transaction->type = 'Debit';
                $transaction->trans_id = $var->data->id;
                $transaction->save();
-   
+
                //update wallet
                $userwallet = Auth()->user();
                $useramount = $userwallet->wallet;
                $removemoney = (int) $useramount - (int) $amount;
-   
+
                $update = User::where('id', $user_id)
                    ->update(['wallet' => $removemoney]);
-   
+
                $receiveremail = Auth::user()->email;
-   
+
                //send email
                $data = array(
                    'fromsender' => 'notification@kaltanimis.com', 'KALTANI',
                    'subject' => "Withdwral",
                    'toreceiver' => $receiveremail,
                );
-   
+
                Mail::send('withdwral', $data, function ($message) use ($data) {
                    $message->from($data['fromsender']);
                    $message->to($data['toreceiver']);
                    $message->subject($data['subject']);
-   
+
                });
 
             return response()->json([
@@ -348,7 +348,7 @@ class TransactionController extends Controller
             ], 200);
         }
 
-     
+
 
             return response()->json([
 
@@ -356,13 +356,13 @@ class TransactionController extends Controller
                 'message' => 'Error, try again later',
 
             ], 500);
-       
 
-      
+
+
 
         // if ($var->status == "success") {
 
-         
+
 
         //     $id = $var->data->id;
 
@@ -414,9 +414,9 @@ class TransactionController extends Controller
         // }
 
         // return response()->json([
-        //     'status' => $this->SuccessStatus, 
+        //     'status' => $this->SuccessStatus,
         //     'message' => 'Your transfer is processing...',
-        
+
         // ], 200);
 
     }
