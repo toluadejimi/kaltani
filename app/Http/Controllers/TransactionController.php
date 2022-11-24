@@ -249,7 +249,7 @@ class TransactionController extends Controller
 
         $user_wallet = Auth::user()->wallet;
 
-        if ($user_wallet < $amount) {
+        if ($user_wallet <= $amount) {
             return response()->json([
                 "status" => $this->FailedStatus,
                 "message" => "Insufficient Balance",
@@ -258,7 +258,7 @@ class TransactionController extends Controller
         }
 
 
-        if ($amount <= 1000) {
+        if ($amount >= 1000) {
 
             return response()->json([
                 "status" => $this->FailedStatus,
