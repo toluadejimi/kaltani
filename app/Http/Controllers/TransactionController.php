@@ -259,7 +259,7 @@ class TransactionController extends Controller
         }
 
 
-        if ($amount >= 1000) {
+        if ($amount <= 1000) {
 
             return response()->json([
                 "status" => $this->FailedStatus,
