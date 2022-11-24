@@ -249,7 +249,6 @@ class TransactionController extends Controller
 
         $user_wallet = Auth::user()->wallet;
 
-        dd( $user_wallet,$amount );
 
         if ($amount > $user_wallet) {
             return response()->json([
