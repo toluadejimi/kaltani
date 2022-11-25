@@ -69,7 +69,7 @@
                       <thead>
                         <tr>
                           <th>Agent  Name</th>
-                          <th>Agent Title</th>
+                          <th>Center Name</th>
                           <th>Address</th>
                           <th>State</th>
                           <th>Lga</th>
