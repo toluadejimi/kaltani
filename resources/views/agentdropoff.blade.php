@@ -157,7 +157,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td style="overflow-wrap:break-word;word-break:break-word;padding:26px;font-family:'Rubik',sans-serif;" align="left">
 
   <h1 style="margin: 0px; color: #000000; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: arial black,avant garde,arial; font-size: 37px;">
-    Hooray!!!
+    NOTICE!!
   </h1>
 
       </td>
@@ -171,7 +171,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Rubik',sans-serif;" align="left">
 
   <h1 style="margin: 0px; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: arial,helvetica,sans-serif; font-size: 21px;">
-    Order on the way!!!
+    Drop off Pending!
   </h1>
 
       </td>
@@ -185,7 +185,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Rubik',sans-serif;" align="left">
 
   <div style="line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;">Your Collection Center has received an order<br>Please get ready to receive order.</p>
+    <p style="font-size: 14px; line-height: 140%;">Prepare to receive pastic waste.</p>
   </div>
 
       </td>

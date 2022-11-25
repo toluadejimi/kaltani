@@ -242,11 +242,9 @@
 
                                                             <div
                                                                 style="line-height: 140%; text-align: center; word-wrap: break-word;">
-                                                                <p style="font-size: 14px; line-height: 140%;">Your
-                                                                    order for plastic
-                                                                    waste has been successfully placed<br>Head to the
-                                                                    selected collection center to make your drop off
-                                                                </p>
+                                                                <p style="font-size: 14px; line-height: 140%;">You
+                                                                    have successfully created a drop off.<br>Please procceed to your nearest
+                                                                    drop off center. </p>
                                                             </div>
 
                                                         </td>
