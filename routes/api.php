@@ -216,7 +216,7 @@ Route::group(['middleware' => ['auth:api','access']], function(){
     Route::post('udpade-dropoff-weight', [CollectionController::class, 'update_dropoff_weight']);
 
 
-    Route::get('agent-total-weight', [CollectionController::class, 'agent_total_weight']);
+    Route::post('agent-total-weight', [CollectionController::class, 'agent_total_weight']);
 
 
 
