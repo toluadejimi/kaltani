@@ -184,7 +184,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Rubik',sans-serif;" align="left">
 
   <div style="line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;">Use code above code to verify your email</p>
+    <p style="font-size: 14px; line-height: 140%;">Use code above to verify your email</p>
   </div>
 
       </td>
