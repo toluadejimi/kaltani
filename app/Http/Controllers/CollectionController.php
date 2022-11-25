@@ -594,15 +594,14 @@ class CollectionController extends Controller
 
         $location_id = $request->location_id;
 
+
         $total = Collection::where('location_id', $location_id)
         ->sum('item_weight');
 
 
         return response()->json([
-
             'status' => $this->SuccessStatus,
             'data' => $total
-
         ],200);
 
 
