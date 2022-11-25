@@ -588,4 +588,28 @@ class CollectionController extends Controller
 
     }
 
+    public function agent_total_weight(REQUEST $request)
+    {
+
+
+        $location_id = $request->location_id;
+
+        $total = Collection::where('location', $location_id)
+        ->sum('item_weight');
+
+
+        return response()->json([
+
+            'status' => $this->SuccessStatus,
+            'data' => $total
+
+        ],200);
+
+
+
+
+
+
+    }
+
 }

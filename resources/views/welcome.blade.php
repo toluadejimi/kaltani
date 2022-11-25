@@ -185,7 +185,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Rubik',sans-serif;" align="left">
 
   <div style="line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;">We are happy have your on board, At Kalltani you can earn money when reycling your plastic waste. Lets save the earth together </p>
+    <p style="font-size: 14px; line-height: 140%;">Welcome to Trash Bash, Let save the earth together. Recycle with us now.</p>
   </div>
 
       </td>

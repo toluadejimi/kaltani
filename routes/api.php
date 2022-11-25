@@ -135,7 +135,7 @@ Route::post('deviceId', [AuthCoontroller::class, 'deviceId']);
 });
 
 
-//create customer 
+//create customer
 
 Route::post('customer-register', [AuthCoontroller::class, 'customer_register']);
 Route::get('get-banks', [TransactionController::class, 'get_banks']);
@@ -160,13 +160,13 @@ Route::post('customer-login', [AuthCoontroller::class, 'customer_login']);
 //customer operations
 
 Route::group(['middleware' => ['auth:api','access']], function(){
-    
+
     Route::post('drop-off', [CollectionController::class, 'drop_off']);
 
     Route::post('delete-drop-off', [CollectionController::class, 'delete_drop_off']);
 
 
-  
+
 
     Route::post('sms-code', [AuthCoontroller::class, 'sms_email_code']);
 
@@ -184,7 +184,7 @@ Route::group(['middleware' => ['auth:api','access']], function(){
     Route::post('get-location-by-lga', [CollectionController::class, 'location_by_lga']);
 
 
-    
+
 
 
     //customer transactions
@@ -192,7 +192,7 @@ Route::group(['middleware' => ['auth:api','access']], function(){
     Route::post('bank-transfer', [TransactionController::class, 'bank_transfer']);
     Route::post('transaction-verify', [TransactionController::class, 'transaction_verify']);
 
-    
+
 
     Route::get('get-rate', [TransactionController::class, 'get_rate']);
 
@@ -203,30 +203,34 @@ Route::group(['middleware' => ['auth:api','access']], function(){
     Route::post('update-pin', [AuthCoontroller::class,'updatePin']);
     Route::post('update-account', [AuthCoontroller::class,'updateAccountDetails']);
 
- 
 
 
-    ///Agent 
+
+    ///Agent
     Route::post('agent-register', [AuthCoontroller::class, 'agent_register']);
     Route::post('agent-status', [AuthCoontroller::class, 'agent_status']);
-    
+
     Route::post('get-user', [AuthCoontroller::class, 'get_user']);
     Route::post('agent-waste-list', [CollectionController::class, 'agent_waste_list']);
     Route::post('agent-waste-list-update', [CollectionController::class, 'agent_waste_list_update']);
     Route::post('udpade-dropoff-weight', [CollectionController::class, 'update_dropoff_weight']);
 
 
-
-
-    
-
-
-
-    
+    Route::get('agent-total-weight', [CollectionController::class, 'agent_total_weight']);
 
 
 
-    
+
+
+
+
+
+
+
+
+
+
+
 
 
  });
