@@ -680,9 +680,6 @@ class MainController extends Controller
         ->first()->rate;
 
 
-        $verification_greetings = Greeting::where('title', 2)
-        ->first()->rate;
-
         return view('setting', compact('price_per_kg', 'transfer_fee'));
 
     }
