@@ -68,14 +68,14 @@
                     <table id="mytable" class="table table-striped mb-0">
                       <thead>
                         <tr>
-                          <th>Customer Name</th>
-                          <th>Agent</th>
+                          <th>Agent  Name</th>
+                          <th>Agent Title</th>
                           <th>Address</th>
                           <th>State</th>
                           <th>Lga</th>
                           <th>City</th>
                            <th>Phone</th>
-                           <th>Image</th>
+                           <th>Drop Off Image</th>
                           <th>Status</th>
                           <th>Date</th>
                           <th>Time</th>
