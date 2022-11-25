@@ -240,9 +240,7 @@ img.emoji {
 <p>Assignment: The Owner shall be permitted to assign, transfer its rights and/or obligations under these Terms. However, you shall not be permitted to assign, transfer any rights and/or obligations under these Terms.</p>
 <p>Entire Agreement: These Terms, disclaimers and any other agreement relating to the use of this Application constitutes the entire agreement and shall supersede any other agreement.</p>
 <p>Separate Agreements: You may have other legal agreements with us. Those agreements are separate from these Terms. These Terms are not intended to alter, amend, revise or replace the terms of the other agreement. d. Applicable law These Terms may be governed and construed in accordance with the Laws, regulations or guidelines of the Federal Republic of Nigeria and other treaties, or regulations which is applicable in Nigeria.</p>
-<p> </p>
-<p> </p>
-
+<p> </p><br>
 <p><strong><b>Terms of contract for Agents</b></strong></p>
 <ol>
 <li>All agents are stand alone and not employees of TRASH BASH LTD</li>
