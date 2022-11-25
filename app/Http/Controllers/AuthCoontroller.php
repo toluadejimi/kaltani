@@ -45,7 +45,7 @@ class AuthCoontroller extends Controller
 
             $token = auth()->user()->createToken('API Token')->accessToken;
 
-          
+
 
             return response()->json([
                 "status" => $this->successStatus,
@@ -179,7 +179,7 @@ class AuthCoontroller extends Controller
         $update = User::where('id', Auth::id())
         ->update(['phone2' => $phone]);
 
-     
+
         $phone2 = User::where('id', Auth::id())
         ->first()->phone2;
 
@@ -493,7 +493,7 @@ class AuthCoontroller extends Controller
             return response()->json([
                 'status' => $this->failedStatus,
                 'message' => 'User can not be registred',
-    
+
             ], 500);
 
         }
@@ -533,7 +533,7 @@ class AuthCoontroller extends Controller
         ->first()->title;
 
         }
-             
+
 
 
 
@@ -612,7 +612,7 @@ class AuthCoontroller extends Controller
 
         return response()->json([
             'status' => $this->successStatus,
-            'message' => 'Your request to become an agent has been successful, One of our agent will get back to you shortly',
+            'message' => 'Your request to become an agent has been successful. A member of Trash Bash team will get back to you shortly',
             'data' => $input,
         ], 200);
 
