@@ -55,7 +55,7 @@ img.emoji {
 <link rel="https://api.w.org/" href="{{url('')}}/public/wp-json/index.html">
 <link rel="alternate" type="application/json" href="{{url('')}}/public/wp-json/wp/v2/pages/311/index.html">
 <link rel="EditURI" type="application/rsd+xml" title="RSD" href="{{url('')}}/public/xmlrpc.php?rsd">
-<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="{{url('')}}/public/wp-includes/wlwmanifest.xml"> 
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="{{url('')}}/public/wp-includes/wlwmanifest.xml">
 <meta name="generator" content="WordPress 5.9.3">
 <link rel="canonical" href="./index.html">
 <link rel="shortlink" href="{{url('')}}/public/index.html?p=311">
@@ -242,29 +242,18 @@ img.emoji {
 <p>Separate Agreements: You may have other legal agreements with us. Those agreements are separate from these Terms. These Terms are not intended to alter, amend, revise or replace the terms of the other agreement. d. Applicable law These Terms may be governed and construed in accordance with the Laws, regulations or guidelines of the Federal Republic of Nigeria and other treaties, or regulations which is applicable in Nigeria.</p>
 <p> </p>
 <p> </p>
-<p> </p>
-<p> </p>
-<p> </p>
-<p> </p>
-<p> </p>
-<p> </p>
-<p><strong><b>Terms of contract for agents</b></strong></p>
+
+<p><strong><b>Terms of contract for Agents</b></strong></p>
 <ol>
 <li>All agents are stand alone and not employees of TRASH BASH LTD</li>
 <li>All agents should send a picture of their faces with the visible contents of the bag and weight of the product in that same picture.</li>
 <li>All agents should have a land space that is equivalent to at least one car park length and breadth which is a minimum of 18 ft by 9 ft.</li>
 <li>All agents should have permits or be authorized to use the said land space.</li>
 </ol>
-<p><strong><b> </b></strong></p>
-<p><strong><b>Welcome email for Trash bash</b></strong></p>
-<p>Hi there,</p>
-<p>We&#8217;re excited to welcome you to the Trash Bash community!</p>
-<p>Powered by TRASH BASH LTD, Trash Bash’s aim is to be the leading app on plastic waste recovery. We are here to give you value for your plastic waste. Together, we would create wealth and clean up the streets and oceans.</p>
-<p>To make sure you have the best experience possible, start by finding the nearest drop off centers to you.</p>
-<p>Welcome aboard.</p>
+
 <p> </p>
 <p> </p>
-<p> </p>						</div>
+					</div>
 				</div>
 					</div>
 		</div>
@@ -276,7 +265,7 @@ img.emoji {
 		</section>
 						</div>
 					</div>
-		
+
 		<style id="skip-link-styles">.skip-link.screen-reader-text {
 			border: 0;
 			clip: rect(1px,1px,1px,1px);
