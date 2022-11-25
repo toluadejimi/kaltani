@@ -594,7 +594,7 @@ class CollectionController extends Controller
 
         $location_id = $request->location_id;
 
-        $total = Collection::where('location', $location_id)
+        $total = Collection::where('location_id', $location_id)
         ->sum('item_weight');
 
 
