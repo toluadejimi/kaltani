@@ -240,14 +240,6 @@ class CollectionController extends Controller
             $drop->sender_id = Auth::id();
             $drop->receiver_id = $collection_center_id;
 
-            // if($file = $request->hasFile('image')) {
-            //     $file = $request->file('image') ;
-            //     $fileName = $file->getClientOriginalName() ;
-            //     $destinationPath = public_path().'upload/customer' ;
-            //     $request->image->move(public_path('upload/customer'),$fileName);
-            //     $drop->image = $fileName ;
-            // }
-
             $drop->status = 0;
             $drop->collection_center = $location_name;
             $drop->user_id = Auth::id();
@@ -574,7 +566,7 @@ class CollectionController extends Controller
         if ($status == 1) {
             return response()->json([
                 "status" => $this->FailedStatus,
-                "message" => "Order has already been confirmed",
+                "message" => "Drop off has already been confirmed",
             ], 500);
         }
 

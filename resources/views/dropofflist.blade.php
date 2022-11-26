@@ -140,7 +140,7 @@
                                 @if ($item->status == '0')
                                     <td><span class="badge rounded-pill bg-danger text-white">Pending</span></td>
                                 @elseif ($item->status == '2')
-                                    <td><span class="badge rounded-pill bg-warning text-white">Not Paid</span></td>
+                                    <td><span class="badge rounded-pill bg-warning text-white">Payment Pending</span></td>
                                 @else
                                     <td><span class="badge rounded-pill bg-success">Completed</span></td>
                                 @endif
