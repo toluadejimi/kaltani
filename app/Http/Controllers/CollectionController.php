@@ -542,9 +542,17 @@ class CollectionController extends Controller
         $drop_off = DropOff::where('receiver_id', $get_user->location_id)
             ->get();
 
+
+        $total = Collection::where('location_id', $get_user->location_id)
+        ->sum('item_weight');
+
+
+
         return response()->json([
             "status" => $this->SuccessStatus,
             "drop_off" => $drop_off,
+            "total_weight" => $total,
+
         ], 200);
 
     }
@@ -588,27 +596,8 @@ class CollectionController extends Controller
 
     }
 
-    public function agent_total_weight(REQUEST $request)
-    {
-
-
-        $location_id = $request->location_id;
-
-
-        $total = Collection::where('location_id', $location_id)
-        ->sum('item_weight');
-
-
-        return response()->json([
-            'status' => $this->SuccessStatus,
-            'data' => $total
-        ],200);
 
 
 
-
-
-
-    }
 
 }
