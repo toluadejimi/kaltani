@@ -539,8 +539,12 @@ class CollectionController extends Controller
             'user_type' => 'agent',
         ])->first();
 
-        $drop_off = DropOff::where('receiver_id', $get_user->location_id)
-            ->get();
+        $drop_off = DropOff::where([
+
+            'receiver_id' => $get_user->location_id,
+            'status' => 0,
+
+            ])->get();
 
 
         $total = Collection::where('location_id', $get_user->location_id)
