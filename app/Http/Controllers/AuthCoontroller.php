@@ -658,11 +658,11 @@ class AuthCoontroller extends Controller
         $email = $request->email;
 
         $check = User::where('email', $email)
-        ->first();
+        ->first()->email;
 
         if($check == $email){
 
-             //send email
+       //send email
         $data = array(
             'fromsender' => 'notification@kaltanimis.com', 'KALTANI',
             'subject' => "Reset Password",
@@ -685,12 +685,16 @@ class AuthCoontroller extends Controller
 
         }
 
-        return response()->json([
+        else{
+
+            return response()->json([
 
             'status' => $this->failedStatus,
             'message' => 'User not found on our system'
 
         ], 500);
+
+    }
 
 
 
