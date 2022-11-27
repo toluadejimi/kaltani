@@ -28,6 +28,8 @@ use App\Http\Controllers\TransactionController;
 |
 */
 
+    //forgetpassword
+    Route::post('forgot-password', [AuthCoontroller::class, 'forgot_password']);
 
 
 
@@ -204,11 +206,10 @@ Route::group(['middleware' => ['auth:api','access']], function(){
     Route::post('update-account', [AuthCoontroller::class,'updateAccountDetails']);
 
 
-    //forgetpassword
-    Route::post('forgot-password', [AuthCoontroller::class, 'forgot_password']);
 
 
-    
+
+
 
     ///Agent
     Route::post('agent-register', [AuthCoontroller::class, 'agent_register']);
