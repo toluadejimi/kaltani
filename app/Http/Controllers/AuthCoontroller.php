@@ -658,10 +658,10 @@ class AuthCoontroller extends Controller
         $email = $request->email;
 
         $check = User::where('email', $email)
-        ->first()->email;
+        ->first()->email ?? null;
 
         $first_name = User::where('email', $email)
-        ->first()->first_name;
+        ->first()->first_name ?? null;
 
 
 
