@@ -251,9 +251,9 @@ button:hover {
 
       <div class="bottomHalf">
 
-        <p>Well Done!, you actually managed to accomplish something today...</p>
+        <p>Password Changed Successfully;<br/> Procceed to login on your mobile app</p>
 
-        <button id="alertMO">Moving On</button>
+        <button id="alertMO">Back to Trash Bash</button>
 
       </div>
 
