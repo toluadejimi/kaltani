@@ -216,11 +216,11 @@ button {
   cursor: pointer;
   border-radius: 12px;
   padding: 10px 18px;
-  background-color: #100198;
+  background-color: #019871;
   text-shadow: 0 1px rgba(128, 128, 128, 0.75);
 }
 button:hover {
-  background-color: #0b033f;
+  background-color: #85ddbf;
 }
 </style>
 
@@ -251,7 +251,7 @@ button:hover {
 
       <div class="bottomHalf">
 
-        <p>Password Changed Successfully;<br/> Procceed to login on your mobile app</p>
+        <p>Password Changed Successfully;<br/> Procceed to login on your Trash Bash App</p>
 
         <button id="alertMO">Back to Trash Bash</button>
 
