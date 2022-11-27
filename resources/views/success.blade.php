@@ -22,7 +22,7 @@
           margin: 0;
         }
       i {
-        color: #9ABC66;
+        color: #6a66bc;
         font-size: 100px;
         line-height: 200px;
         margin-left:-15px;
@@ -216,11 +216,11 @@ button {
   cursor: pointer;
   border-radius: 12px;
   padding: 10px 18px;
-  background-color: #019871;
+  background-color: #100198;
   text-shadow: 0 1px rgba(128, 128, 128, 0.75);
 }
 button:hover {
-  background-color: #85ddbf;
+  background-color: #0b033f;
 }
 </style>
 
