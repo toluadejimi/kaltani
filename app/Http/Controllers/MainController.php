@@ -2049,7 +2049,7 @@ class MainController extends Controller
         ]);
 
 
-        return back()->with('message', 'Your password has been changed successfully');
+        return view('success');
 
     }
 
