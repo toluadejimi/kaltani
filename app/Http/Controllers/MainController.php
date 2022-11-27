@@ -2037,38 +2037,19 @@ class MainController extends Controller
     public function forgot_password_now(Request $request)
     {
 
-        $email_code = random_int(100000, 999999);
-
         $email = $request->email;
 
-        $get_email = User::where('email', $email)
-            ->first()->email ?? null;
-
-        if ($get_email == null) {
-            return back()->with('error', 'Email not found on our system');
-        }
+        $input = $request->validate([
+            'password' => ['required', 'confirmed', 'string'],
+        ]);
 
         $update = User::where('email', $email)
-            ->update(['email_code' => $email_code]);
+        ->update([
+            'password' => $request->password,
+        ]);
 
-        $greeting = Greeting::where('gender', 'both')
-            ->first()->title;
 
-        //send email
-        $data = array(
-            'fromsender' => 'notification@kaltanimis.com', 'KALTANI',
-            'subject' => "Verification Code",
-            'toreceiver' => $email,
-            'email_code' => $email_code,
-        );
-
-        Mail::send('verify-email-notification', ["data1" => $data], function ($message) use ($data) {
-            $message->from($data['fromsender']);
-            $message->to($data['toreceiver']);
-            $message->subject($data['subject']);
-        });
-
-        return view('verify-email-code', compact('email'));
+        return back()->with('message', 'Your password has been changed successfully');
 
     }
 
@@ -2079,23 +2060,6 @@ class MainController extends Controller
 
     }
 
-    public function verify_email_code_now(Request $request)
-    {
 
-        $code = $request->code;
-        $email = $request->email;
-
-        $get_code = User::where('email', $email)
-            ->first()->email_code;
-
-        if ($get_code == $code) {
-
-            return view('change-password');
-
-        }
-
-        return back()->with('error', 'Invalid Verification Code');
-
-    }
 
 }

@@ -59,9 +59,9 @@
                                         {{ session()->get('error') }}
                                     </div>
                                 @endif
-                  <h4 class="card-title">Forgot Password</h4>
+                  <h4 class="card-title">Reset Password</h4>
                   <p class="card-description">
-                    Email Verification
+                    Fill in your new password
                   </p>
                   <form class="forms-sample" action="/forgot-password-now" method="POST">
                     @csrf
