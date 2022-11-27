@@ -66,6 +66,10 @@ Route::get('forgot_password', [MainController::class,'forgot_password']);
 Route::post('forgot-password-now', [MainController::class,'forgot_password_now']);
 
 
+Route::get('forgot_pin', [MainController::class,'forgot_pin']);
+Route::post('forgot-pin-now', [MainController::class,'forgot_pin_now']);
+
+
 Route::get('verify-email-code', [MainController::class,'verify_email_code']);
 Route::get('verify-email-code-now', [MainController::class,'verify_email_code_now']);
 

@@ -32,6 +32,10 @@ use App\Http\Controllers\TransactionController;
     Route::post('forgot-password', [AuthCoontroller::class, 'forgot_password']);
 
 
+    //forgetpassword
+    Route::post('forgot-pin', [AuthCoontroller::class, 'forgot_pin']);
+
+
 
 Route::post('verify-bank-account', [TransactionController::class, 'verify_bank_account']);
    // customer settings

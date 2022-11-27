@@ -565,7 +565,7 @@ class MainController extends Controller
 
         //send email
         $data = array(
-            'fromsender' => 'notification@kaltanimis.com', 'KALTANI',
+            'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
             'subject' => "Wallet Updated",
             'bodyMessage' => "This email is to let you know your wallet has been credited with $amount",
             'toreceiver' => $receiveremail,
@@ -838,7 +838,7 @@ class MainController extends Controller
 
         //send email to sender
         $data = array(
-            'fromsender' => 'notification@kaltanimis.com', 'KALTANI',
+            'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
             'subject' => "Agent Approval",
             'toreceiver' => $user_email,
         );
@@ -2025,6 +2025,35 @@ class MainController extends Controller
         return view('sortedtransfer', compact('sortedTransfer', 'collection', 'item'));
     }
 
+    public function forgot_pin(Request $request)
+    {
+
+        $email = $request->email;
+
+        return view('forgotpin', compact('email'));
+
+    }
+
+    public function forgot_pin_now(Request $request)
+    {
+
+        $email = $request->email;
+
+        $input = $request->validate([
+            'password' => ['required', 'confirmed', 'string'],
+        ]);
+
+        $update = User::where('email', $email)
+        ->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+
+        return view('pin-success');
+
+    }
+
+
     public function forgot_password(Request $request)
     {
 
@@ -2052,6 +2081,7 @@ class MainController extends Controller
         return view('success');
 
     }
+
 
     public function verify_email_code(Request $request)
     {

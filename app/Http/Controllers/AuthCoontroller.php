@@ -105,7 +105,7 @@ class AuthCoontroller extends Controller
 
         //send email
         $data = array(
-            'fromsender' => 'notification@kaltanimis.com', 'KALTANI',
+            'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
             'subject' => "Verification Code",
             'toreceiver' => $email,
             'email_code' => $email_code,
@@ -541,7 +541,7 @@ class AuthCoontroller extends Controller
 
         //send email
         $data = array(
-            'fromsender' => 'notification@kaltanimis.com', 'KALTANI',
+            'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
             'subject' => "Account Creation",
             'toreceiver' => $email,
             'greeting' => $greeting
@@ -669,7 +669,7 @@ class AuthCoontroller extends Controller
 
        //send email
         $data = array(
-            'fromsender' => 'notification@kaltanimis.com', 'KALTANI',
+            'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
             'subject' => "Reset Password",
             'toreceiver' => $email,
             'first_name' => $first_name,
@@ -701,9 +701,56 @@ class AuthCoontroller extends Controller
         ], 500);
 
     }
+    }
+
+    public function forgot_pin(Request $request){
+
+        $email = $request->email;
+
+        $check = User::where('email', $email)
+        ->first()->email ?? null;
+
+        $first_name = User::where('email', $email)
+        ->first()->first_name ?? null;
 
 
 
+        if($check == $email){
+
+       //send email
+        $data = array(
+            'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
+            'subject' => "Reset Pin",
+            'toreceiver' => $email,
+            'first_name' => $first_name,
+            'link' => url('')."/forgot_pin/?email=$email",
+        );
+
+        Mail::send('pinlink', ["data1" => $data], function ($message) use ($data) {
+            $message->from($data['fromsender']);
+            $message->to($data['toreceiver']);
+            $message->subject($data['subject']);
+        });
+
+        return response()->json([
+            'status' => $this->successStatus,
+            'message' => 'Check your email for instructions',
+        ], 200);
+
+
+
+        }
+
+        else{
+
+            return response()->json([
+
+            'status' => $this->failedStatus,
+            'message' => 'User not found on our system'
+
+        ], 500);
+
+    }
     }
 
 }
