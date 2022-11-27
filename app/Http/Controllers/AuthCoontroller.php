@@ -8,8 +8,9 @@ use App\Models\AgentRequest;
 use App\Models\User;
 use App\Models\UserRole;
 use App\Models\Greeting;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use FFI\Exception;
 //use Tymon\JwtAuth\Facades\JwtAuth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -649,6 +650,49 @@ class AuthCoontroller extends Controller
             'user' => auth()->user()->load(['location']),
             'token' => $token,
         ]);
+
+    }
+
+    public function forgot_password(Request $request){
+
+        $email = $request->email;
+
+        $check = User::where('email', $email)
+        ->first();
+
+        if($check == $email){
+
+             //send email
+        $data = array(
+            'fromsender' => 'notification@kaltanimis.com', 'KALTANI',
+            'subject' => "Reset Password",
+            'toreceiver' => $email,
+            'link' => url('')."/forgot_password/?$email",
+        );
+
+        Mail::send('emaillink', ["data1" => $data], function ($message) use ($data) {
+            $message->from($data['fromsender']);
+            $message->to($data['toreceiver']);
+            $message->subject($data['subject']);
+        });
+
+        return response()->json([
+            'status' => $this->successStatus,
+            'message' => 'Check your email for instructions',
+        ], 200);
+
+
+
+        }
+
+        return response()->json([
+
+            'status' => $this->failedStatus,
+            'message' => 'User not found on our system'
+
+        ], 500);
+
+
 
     }
 
