@@ -13,6 +13,10 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="x-apple-disable-message-reformatting">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <!--[if !mso]><!-->
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <!--<![endif]-->
@@ -70,8 +74,8 @@
 
     a:link,
     a:visited {
-      background-color: #f44336;
-      color: white;
+      background-color: #e7ecfd;
+      text-color: white;
       padding: 14px 25px;
       text-align: center;
       text-decoration: none;
@@ -80,7 +84,7 @@
 
     a:hover,
     a:active {
-      background-color: blue;
+      background-color: rgb(0, 0, 0);
     }
 
     table,
@@ -224,7 +228,7 @@
                           <tr>
                             <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Rubik',sans-serif;" align="center">
 
-                              <a href="{{ $data1['link'] }}" target="_blank">Reset Your
+                                <a href="{{ $data1['link'] }}" class="btn btn-primary" role="button">Reset Your
                                 Password</a>
 
                             </td>

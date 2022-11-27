@@ -673,7 +673,7 @@ class AuthCoontroller extends Controller
             'subject' => "Reset Password",
             'toreceiver' => $email,
             'first_name' => $first_name,
-            'link' => url('')."/forgot_password/?$email",
+            'link' => url('')."/forgot_password/?email=$email",
         );
 
         Mail::send('emaillink', ["data1" => $data], function ($message) use ($data) {
