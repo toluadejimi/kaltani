@@ -62,7 +62,7 @@ Route::get('update-password', [MainController::class,'update_password']);
 Route::post('updatepassword', [MainController::class,'updatepassword']);
 
 
-Route::get('forgot-password', [MainController::class,'forgot_password']);
+Route::get('forgot_password', [MainController::class,'forgot_password']);
 Route::post('forgot-password-now', [MainController::class,'forgot_password_now']);
 
 

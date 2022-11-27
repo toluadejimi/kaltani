@@ -24,17 +24,17 @@
 <body>
   <div class="container-scroller">
     <!-- partial:{{url('')}}/public/partials/_navbar.html -->
-    
+
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:{{url('')}}/public/partials/_settings-panel.html -->
-     
-    
+
+
       <!-- partial -->
       <!-- partial:{{url('')}}/public/partials/_sidebar.html -->
-      
+
       <!-- partial -->
-      <div class="main-panel">        
+      <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
             <div class="col-md-6 grid-margin stretch-card">
@@ -65,23 +65,36 @@
                   </p>
                   <form class="forms-sample" action="/forgot-password-now" method="POST">
                     @csrf
+
                     <div class="form-group">
-                      <label for="email">Enter your Registered Email</label>
-                      <input type="email" required class="form-control" name="email" id="email" placeholder="Enter your email" autofocus >
+                      <label for="email">Email</label>
+                      <input type="email" readonly class="form-control" name="email" id="email" value="{{$email}}" autofocus >
                     </div>
+
+                    <div class="form-group">
+                        <label for="email">Password</label>
+                        <input type="password" required class="form-control" name="password" id="email" placeholder="Enter new password" autofocus >
+                      </div>
+
+                      <div class="form-group">
+                        <label for="email">Confirm Password</label>
+                        <input type="password" required class="form-control" name="confirmation_password" id="email" placeholder="Confirm Password" autofocus >
+                      </div>
+
+
 
                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
                   </form>
                 </div>
               </div>
             </div>
-       
-         
+
+
           </div>
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:{{url('')}}/public/partials/_footer.html -->
-       
+
         <!-- partial -->
       </div>
       <!-- main-panel ends -->

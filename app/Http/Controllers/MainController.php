@@ -2025,10 +2025,12 @@ class MainController extends Controller
         return view('sortedtransfer', compact('sortedTransfer', 'collection', 'item'));
     }
 
-    public function forgot_password()
+    public function forgot_password(Request $request)
     {
 
-        return view('forgotemail');
+        $email = $request->email;
+
+        return view('forgotemail', compact('email'));
 
     }
 
