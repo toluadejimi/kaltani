@@ -78,7 +78,7 @@
 
                       <div class="form-group">
                         <label for="email">Confirm Password</label>
-                        <input type="password" required class="form-control" name="confirmation_password" id="email" placeholder="Confirm Password" autofocus >
+                        <input type="password" required class="form-control" name="password_confirmation" id="email" placeholder="Confirm Password" autofocus >
                       </div>
 
 

@@ -2045,7 +2045,7 @@ class MainController extends Controller
 
         $update = User::where('email', $email)
         ->update([
-            'password' => $request->password,
+            'password' => Hash::make($request->password),
         ]);
 
 
