@@ -660,6 +660,11 @@ class AuthCoontroller extends Controller
         $check = User::where('email', $email)
         ->first()->email;
 
+        $first_name = User::where('email', $email)
+        ->first()->first_name;
+
+
+
         if($check == $email){
 
        //send email
@@ -667,6 +672,7 @@ class AuthCoontroller extends Controller
             'fromsender' => 'notification@kaltanimis.com', 'KALTANI',
             'subject' => "Reset Password",
             'toreceiver' => $email,
+            'first_name' => $first_name,
             'link' => url('')."/forgot_password/?$email",
         );
 
