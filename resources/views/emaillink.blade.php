@@ -72,20 +72,7 @@
       padding: 0;
     }
 
-    a:link,
-    a:visited {
-      background-color: #e7ecfd;
-      text-color: white;
-      padding: 14px 25px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-    }
 
-    a:hover,
-    a:active {
-      background-color: rgb(0, 0, 0);
-    }
 
     table,
     tr,
@@ -228,7 +215,7 @@
                           <tr>
                             <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Rubik',sans-serif;" align="center">
 
-                                <a href="{{ $data1['link'] }}" class="btn btn-primary" role="button">Reset Your
+                                <a href="{{ $data1['link'] }}" class="btn btn-default" role="button">Reset Your
                                 Password</a>
 
                             </td>
