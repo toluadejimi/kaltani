@@ -777,7 +777,7 @@ class MainController extends Controller
         $location->longitude = $longitude;
         $location->latitude = $latitude;
         $location->user_id = $user_id;
-        $location->type = 'c';
+        $location->type = 'd';
         $location->save();
 
         $items = AgentRequest::find($id);
