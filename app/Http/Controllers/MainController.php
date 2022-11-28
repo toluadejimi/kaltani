@@ -2040,7 +2040,7 @@ class MainController extends Controller
         $email = $request->email;
 
         $input = $request->validate([
-            'password' => ['required', 'confirmed', 'string'],
+            'password' => ['required', 'confirmed', 'string', 'min:4'],
         ]);
 
         $update = User::where('email', $email)
