@@ -134,7 +134,7 @@
                 </a>
                 <a href="#" class="dropdown-item dropdown-item-unread">
                   <div class="dropdown-item-avatar">
-                    <img alt="image" src="assets/img/avatar/avatar-3.png" class="rounded-circle">
+                    <img alt="image" src="assets/img/avatar/avatar-5.png" class="rounded-circle">
                     <div class="is-online"></div>
                   </div>
                   <div class="dropdown-item-desc">
@@ -353,19 +353,19 @@
             <li class="dropdown">
               <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>Auth</span></a>
               <ul class="dropdown-menu">
-                <li><a href="auth-forgot-password.html">Forgot Password</a></li> 
-                <li><a href="auth-login.html">Login</a></li> 
-                <li><a href="auth-register.html">Register</a></li> 
-                <li><a href="auth-reset-password.html">Reset Password</a></li> 
+                <li><a href="auth-forgot-password.html">Forgot Password</a></li>
+                <li><a href="auth-login.html">Login</a></li>
+                <li><a href="auth-register.html">Register</a></li>
+                <li><a href="auth-reset-password.html">Reset Password</a></li>
               </ul>
             </li>
             <li class="dropdown">
               <a href="#" class="nav-link has-dropdown"><i class="fas fa-exclamation"></i> <span>Errors</span></a>
               <ul class="dropdown-menu">
-                <li><a class="nav-link" href="errors-503.html">503</a></li> 
-                <li><a class="nav-link" href="errors-403.html">403</a></li> 
-                <li><a class="nav-link" href="errors-404.html">404</a></li> 
-                <li><a class="nav-link" href="errors-500.html">500</a></li> 
+                <li><a class="nav-link" href="errors-503.html">503</a></li>
+                <li><a class="nav-link" href="errors-403.html">403</a></li>
+                <li><a class="nav-link" href="errors-404.html">404</a></li>
+                <li><a class="nav-link" href="errors-500.html">500</a></li>
               </ul>
             </li>
             <li class="dropdown">
@@ -404,7 +404,7 @@
             <div class="col-lg-4 col-md-4 col-sm-12">
               <div class="card card-statistic-2">
                 <div class="card-stats">
-                  <div class="card-stats-title">Order Statistics - 
+                  <div class="card-stats-title">Order Statistics -
                     <div class="dropdown d-inline">
                       <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#" id="orders-month">August</a>
                       <ul class="dropdown-menu dropdown-menu-sm">
@@ -643,7 +643,7 @@
                           <div class="product-cta">
                             <a href="#" class="btn btn-primary">Detail</a>
                           </div>
-                        </div>  
+                        </div>
                       </div>
                     </div>
                     <div>
@@ -664,7 +664,7 @@
                           <div class="product-cta">
                             <a href="#" class="btn btn-primary">Detail</a>
                           </div>
-                        </div>  
+                        </div>
                       </div>
                     </div>
                     <div>
@@ -685,7 +685,7 @@
                           <div class="product-cta">
                             <a href="#" class="btn btn-primary">Detail</a>
                           </div>
-                        </div>  
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -881,7 +881,7 @@
           Copyright &copy; 2018 <div class="bullet"></div> Design By <a href="https://nauval.in/">Muhamad Nauval Azhar</a>
         </div>
         <div class="footer-right">
-          
+
         </div>
       </footer>
     </div>
@@ -895,7 +895,7 @@
   <script src="assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
   <script src="assets/modules/moment.min.js"></script>
   <script src="assets/js/stisla.js"></script>
-  
+
   <!-- JS Libraies -->
   <script src="assets/modules/jquery.sparkline.min.js"></script>
   <script src="assets/modules/chart.min.js"></script>
@@ -905,7 +905,7 @@
 
   <!-- Page Specific JS File -->
   <script src="assets/js/page/index.js"></script>
-  
+
   <!-- Template JS File -->
   <script src="assets/js/scripts.js"></script>
   <script src="assets/js/custom.js"></script>

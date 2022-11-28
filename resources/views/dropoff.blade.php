@@ -154,7 +154,7 @@
                                                                         align="center">
 
                                                                         <img align="center" border="0"
-                                                                            src="https://kaltanimis.com/public/upload/3.png"
+                                                                            src="https://kaltanimis.com/public/upload/5.png"
                                                                             alt="" title=""
                                                                             style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 39%;max-width: 250.16px;"
                                                                             width="250.16" />
@@ -400,7 +400,7 @@
                                                                                     <a href="https://linkedin.com/"
                                                                                         title="LinkedIn"
                                                                                         target="_blank">
-                                                                                        <img src="https://kaltanimis.com/public/upload/image-3.png"
+                                                                                        <img src="https://kaltanimis.com/public/upload/image-5.png"
                                                                                             alt="LinkedIn"
                                                                                             title="LinkedIn"
                                                                                             width="32"
