@@ -145,6 +145,7 @@
                               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
                                   <td style="padding-right: 0px;padding-left: 0px;" align="center">
+                                    
 
                                     <img align="center" border="0" src="https://kaltanimis.com/public/upload/3.png" alt="" title="" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 39%;max-width: 250.16px;" width="250.16" />
 
