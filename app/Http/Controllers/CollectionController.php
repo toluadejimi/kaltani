@@ -112,7 +112,7 @@ class CollectionController extends Controller
     {
         try {
             // $state = State::where('name', 'lagos')
-            // ->first()->name;
+            // ->get()->name;
 
              $state = State::all();
 
@@ -485,6 +485,7 @@ class CollectionController extends Controller
 
         $location = Location::where([
             'state' => $state,
+            'type' => 'd',
         ])->get();
 
         return response()->json([
