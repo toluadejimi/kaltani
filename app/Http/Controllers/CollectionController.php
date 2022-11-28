@@ -111,8 +111,10 @@ class CollectionController extends Controller
     public function all_state(Request $request)
     {
         try {
-            $state = State::where('name', 'lagos')
-            ->first()->name;
+            // $state = State::where('name', 'lagos')
+            // ->first()->name;
+
+             $state = State::all();
 
             return response()->json([
                 "status" => $this->SuccessStatus,
