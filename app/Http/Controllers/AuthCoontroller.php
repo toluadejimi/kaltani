@@ -11,6 +11,7 @@ use App\Models\Greeting;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use FFI\Exception;
+use App\Models\Slider;
 //use Tymon\JwtAuth\Facades\JwtAuth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -46,6 +47,7 @@ class AuthCoontroller extends Controller
 
             $token = auth()->user()->createToken('API Token')->accessToken;
 
+            $slider = Slider::all();
 
 
             return response()->json([
@@ -54,8 +56,11 @@ class AuthCoontroller extends Controller
                 'user' => auth()->user()->load(['location']),
                 'role' => auth()->user()->role->name,
                 'token' => $token,
+                'slider' => $slider,
                 'expiresIn' => Auth::guard('api')->check(),
             ], 200);
+
+
         } catch (Exception $e) {
             return response()->json([
                 'status' => $this->failedStatus,
@@ -643,6 +648,8 @@ class AuthCoontroller extends Controller
 
         $user_id = Auth::id();
 
+        $slider = Slider::all();
+
         $result = User::where('id', $user_id)
             ->first();
 
@@ -652,6 +659,7 @@ class AuthCoontroller extends Controller
             'status' => $this->successStatus,
             'role' => auth()->user()->role->name,
             'user' => auth()->user()->load(['location']),
+            'slider' => $slider,
             'token' => $token,
         ]);
 
