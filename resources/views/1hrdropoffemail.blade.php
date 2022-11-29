@@ -232,7 +232,7 @@
 
                                                             <div
                                                                 style="line-height: 140%; text-align: center; word-wrap: break-word;">
-                                                                <p style="font-size: 14px; line-height: 140%;">Don't forget to drop off your plastic waste to the drop off center.<br> </p>
+                                                                <p style="font-size: 14px; line-height: 140%;">Don't forget to drop off your plastic waste at your choosen drop off center.<br> </p>
                                                             </div>
 
                                                         </td>

@@ -479,6 +479,8 @@ class AuthCoontroller extends Controller
         $account_name = $request->account_name;
         $account_number = $request->account_number;
         $pin = $request->pin;
+        $dob = $request->dob;
+        $age = $request->age;
         $bank_code = $request->bank_code;
         $bank_name = $request->bank_name;
         $password = $request->password;
@@ -510,6 +512,8 @@ class AuthCoontroller extends Controller
             'lga' => $lga,
             'state' => $state,
             'gender' => $gender,
+            'dob' => $dob,
+            'age' => $age,
             'wallet' => 0,
             'bank_name' => $bank_name,
             'account_number' => $account_number,
