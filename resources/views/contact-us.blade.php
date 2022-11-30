@@ -123,7 +123,7 @@
 		}
 
 		.bee-row-1 .bee-col-1 {
-			background-color: #040d45
+			background-color: #060b39
 		}
 
 		@media (max-width:1190px) {
@@ -167,6 +167,18 @@
 			text-align: center
 		}
 
+		.bee-row-4 .bee-col-1 .bee-block-1 .bee-icon-image {
+			padding: 5px 6px 5px 5px
+		}
+
+		.bee-row-4 .bee-col-1 .bee-block-1 .bee-icon:not(.bee-icon-first) .bee-content {
+			margin-left: 0
+		}
+
+		.bee-row-4 .bee-col-1 .bee-block-1 .bee-icon::not(.bee-icon-last) .bee-content {
+			margin-right: 0
+		}
+
 		.bee-row-3 .bee-col-1 .bee-block-2 .bee-icon-image,
 		.bee-row-3 .bee-col-1 .bee-block-3 .bee-icon-image {
 			padding: 15px
@@ -199,21 +211,18 @@
 			margin-bottom: 16px
 		}
 
-		.bee-row-4 .bee-col-1 .bee-block-1 .bee-icon-image {
-			padding: 5px 6px 5px 5px
-		}
-
-		.bee-row-4 .bee-col-1 .bee-block-1 .bee-icon:not(.bee-icon-first) .bee-content {
-			margin-left: 0
-		}
-
-		.bee-row-4 .bee-col-1 .bee-block-1 .bee-icon::not(.bee-icon-last) .bee-content {
-			margin-right: 0
-		}
-
 		@media (max-width:768px) {
 			.bee-row-content:not(.no_stack) {
 				display: block
+			}
+
+			.bee-row-1 .bee-col-1 .bee-block-1 {
+				padding: 0 !important
+			}
+
+			.bee-row-1 .bee-col-1 .bee-block-1 img {
+				float: none !important;
+				margin: 0 auto !important
 			}
 
 			.bee-row-3 .bee-col-1 .bee-block-3 {
@@ -228,26 +237,17 @@
 			}
 
 			.bee-row-3 .bee-col-1 .bee-block-2 {
-				padding: 45px 15px 15px !important;
+				padding: 20px 15px 15px !important;
 				text-align: center !important
 			}
 
 			.bee-row-3 .bee-col-1 .bee-block-1 {
-				padding: 40px !important;
+				padding: 20px !important;
 				text-align: center !important
 			}
 
-			.bee-row-1 .bee-col-1 .bee-block-1 {
-				padding: 0 !important
-			}
-
-			.bee-row-1 .bee-col-1 .bee-block-1 img {
-				float: none !important;
-				margin: 0 auto !important
-			}
-
 			.bee-row-3 .bee-col-1 .bee-block-4 {
-				padding: 60px !important
+				padding: 40px !important
 			}
 		}
 	</style>
@@ -277,18 +277,18 @@
 </div>
 <div class="bee-block bee-block-2 bee-icons">
 <div class="bee-icon bee-icon-last">
-<div class="bee-icon-image"><a href="mailto:info@trashnash.com?subject=Contact%20IS%20from%20Trash%20Bash%20APP" target="_blank" title=""><img alt="" height="64px" src="https://kaltanimis.com/public/upload/email.png" width="auto"/></a></div>
-<div class="bee-icon-label bee-icon-label-bottom"><a href="mailto:info@trashnash.com?subject=Contact%20IS%20from%20Trash%20Bash%20APP" target="_blank" title="">info@trashbash.com</a></div>
+<div class="bee-icon-image"><a href="#" target="_self" title=""><img alt="" height="64px" src="https://kaltanimis.com/public/upload/email.png" width="auto"/></a></div>
+<div class="bee-icon-label bee-icon-label-bottom"><a href="#" target="_self" title="">info@trashbash.com</a></div>
 </div>
 </div>
 <div class="bee-block bee-block-3 bee-icons">
 <div class="bee-icon bee-icon-last">
-<div class="bee-icon-image"><a href="tel:+12345678" target="_blank" title=""><img alt="" height="64px" src="https://kaltanimis.com/public/upload/teleohone.png" width="auto"/></a></div>
-<div class="bee-icon-label bee-icon-label-bottom"><a href="tel:+12345678" target="_blank" title="">+23412345678</a></div>
+<div class="bee-icon-image"><a href="#" target="_self" title=""><img alt="" height="64px" src="https://kaltanimis.com/public/upload/teleohone.png" width="auto"/></a></div>
+<div class="bee-icon-label bee-icon-label-bottom"><a href="#" target="_self" title="">+23412345678</a></div>
 </div>
 </div>
 <div class="bee-block bee-block-4 bee-social">
-<div class="content"><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://www.facebook.com/"><img alt="Facebook" src="images/facebook2x.png" title="Facebook"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://twitter.com/"><img alt="Twitter" src="images/twitter2x.png" title="Twitter"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://instagram.com/"><img alt="Instagram" src="images/instagram2x.png" title="Instagram"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://www.linkedin.com/"><img alt="LinkedIn" src="images/linkedin2x.png" title="LinkedIn"/></a></span></div>
+<div class="content"><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://www.facebook.com/"><img alt="Facebook" src="{{url('')}}public/images/facebook2x.png" title="Facebook"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://twitter.com/"><img alt="Twitter" src="{{url('')}}public/images/twitter2x.png" title="Twitter"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://instagram.com/"><img alt="Instagram" src="{{url('')}}public/images/instagram2x.png" title="Instagram"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="{{url('')}}public/https://www.linkedin.com/"><img alt="LinkedIn" src="{{url('')}}public/images/linkedin2x.png" title="LinkedIn"/></a></span></div>
 </div>
 </div>
 <div class="bee-col bee-col-2 bee-col-w5"></div>
