@@ -273,7 +273,7 @@
 <p>Contact us for any issues</p>
 <p>our support will be available </p>
 <p>Monday  - Friday</p>
-<p>9AM - 4pm </p>
+<p>9am - 4pm </p>
 </div>
 <div class="bee-block bee-block-2 bee-icons">
 <div class="bee-icon bee-icon-last">
