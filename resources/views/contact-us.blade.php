@@ -288,7 +288,7 @@
 </div>
 </div>
 <div class="bee-block bee-block-4 bee-social">
-<div class="content"><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://www.facebook.com/"><img alt="Facebook" src="{{url('')}}public/images/facebook2x.png" title="Facebook"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://twitter.com/"><img alt="Twitter" src="{{url('')}}public/images/twitter2x.png" title="Twitter"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://instagram.com/"><img alt="Instagram" src="{{url('')}}public/images/instagram2x.png" title="Instagram"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="{{url('')}}public/https://www.linkedin.com/"><img alt="LinkedIn" src="{{url('')}}public/images/linkedin2x.png" title="LinkedIn"/></a></span></div>
+<div class="content"><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://www.facebook.com/"><img alt="Facebook" src="{{url('')}}/public/images/facebook2x.png" title="Facebook"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://twitter.com/"><img alt="Twitter" src="{{url('')}}/public/images/twitter2x.png" title="Twitter"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://instagram.com/"><img alt="Instagram" src="{{url('')}}/public/images/instagram2x.png" title="Instagram"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="{{url('')}}/public/https://www.linkedin.com/"><img alt="LinkedIn" src="{{url('')}}/public/images/linkedin2x.png" title="LinkedIn"/></a></span></div>
 </div>
 </div>
 <div class="bee-col bee-col-2 bee-col-w5"></div>
