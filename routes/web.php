@@ -54,6 +54,10 @@ Route::get('/', function () {
 });
 
 Route::get('/terms', [MainController::class,'terms']);
+Route::get('/contact-us', [MainController::class,'contact_us']);
+
+
+
 
 Route::get('signin', [MainController::class,'signin']);
 

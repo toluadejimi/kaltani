@@ -2090,6 +2090,13 @@ class MainController extends Controller
 
     }
 
+    public function contact_us(Request $request)
+    {
+
+        return view('contact-us');
+
+    }
+
 
 
 }
