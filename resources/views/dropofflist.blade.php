@@ -163,13 +163,13 @@
                                 <td>{{ $item->collection_center }}</td>
                                 <td>{{ $item->customer }}</td>
                                 @if ($item->status == '0')
-                                    <td><span class="badge rounded-pill bg-primary text-white">Agent Pending</span></td>
+                                    <td><span class="badge rounded-pill bg-primary text-white">Drop Off Pending</span></td>
                                 @elseif ($item->status == '2')
                                     <td><span class="badge rounded-pill bg-warning text-white">Payment Pending</span></td>
                                 @elseif ($item->status == '4')
-                                    <td><span class="badge rounded-pill bg-danger text-white">Admin Rejected</span></td>
+                                    <td><span class="badge rounded-pill bg-danger text-white">Drop Off Rejected</span></td>
                                 @else
-                                    <td><span class="badge rounded-pill bg-success">Completed</span></td>
+                                    <td><span class="badge rounded-pill bg-success">Drop Off Completed</span></td>
                                 @endif
 
                                 <td>{{ date('F d, Y', strtotime($item->created_at)) }}</td>

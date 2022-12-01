@@ -77,13 +77,13 @@
                                 <h4>Status</h4>
 
                             @if ($status == '0')
-                                <td><span class="badge rounded-pill bg-primary text-white">Agent Pending</span></td>
+                                <td><span class="badge rounded-pill bg-primary text-white">Drop Off Pending</span></td>
                             @elseif ($status == '2')
                                 <td><span class="badge rounded-pill bg-warning text-white">Payment Pending</span></td>
                             @elseif ($status == '4')
-                                <td><span class="badge rounded-pill bg-danger text-white">Admin Rejected</span></td>
+                                <td><span class="badge rounded-pill bg-danger text-white">Drop Off Rejected</span></td>
                             @else
-                                <td><span class="badge rounded-pill bg-success">Completed</span></td>
+                                <td><span class="badge rounded-pill bg-success">Drop Off Completed</span></td>
                             @endif
                             </div>
                             <div class="card-body">
@@ -126,20 +126,20 @@
                         </div>
                     </div>
                 </div>
-                    
+
                 @endif
 
-              
+
 
             </div>
 
 
 
-            
+
 
             <div class="row">
 
-            
+
 
                 @if ($status == '4' )
                 <div class="col-2 ml-4">
@@ -163,7 +163,7 @@
                 </div>
 
                 <div class="col-1 mr-4">
-                    <button type="button" class="btn btn-warning mr-2" 
+                    <button type="button" class="btn btn-warning mr-2"
                         data-toggle="modal" data-target="#exampleModal"
                         data-whatever="{{$id}}"> Reject Drop Off </button>
                 </div>
@@ -176,10 +176,10 @@
                     </form>
                 </div>
 
-             
 
 
-                
+
+
 
                 @endif
 
@@ -189,7 +189,7 @@
 
 
 
-           
+
         </div>
 
 
