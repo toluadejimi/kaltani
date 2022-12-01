@@ -156,8 +156,8 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
     <tr>
       <td style="overflow-wrap:break-word;word-break:break-word;padding:26px;font-family:'Rubik',sans-serif;" align="left">
 
-  <h1 style="margin: 0px; color: #152272; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: arial black,avant garde,arial; font-size: 32px;">
-    {{ $data1['greeting'] }}
+  <h1 style="margin: 0px; color: #152272; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: arial black,avant garde,arial; font-size: 20px;">
+    Welcome To Trash Bash
   </h1>
 
       </td>
