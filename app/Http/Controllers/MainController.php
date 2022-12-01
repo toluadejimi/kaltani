@@ -702,20 +702,34 @@ class MainController extends Controller
         $center_email = User::where('location_id',$receiver_id)
         ->first()->email;
 
+        $center_f_name = User::where('location_id',$receiver_id)
+        ->first()->first_name;
+
         //send email to agent
-        $data = array(
-            'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
-            'subject' => "Drop Off Rejected",
-            'toreceiver' => $center_email,
+
+        $details = [
+            'subject' => 'Cardy Daily Rate',
+            'fname' => $center_f_name,
             'reason' => $reason,
+          ];
 
-        );
+          Mail::to($center_email)->send(new Reject($details));
 
-        Mail::send('reject', ["data1" => $data], function ($message) use ($data) {
-            $message->from($data['fromsender']);
-            $message->to($data['toreceiver']);
-            $message->subject($data['subject']);
-        });
+        // $data = array(
+        //     'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
+        //     'subject' => "Drop Off Rejected",
+        //     'toreceiver' => $center_email,
+        //     'reason' => $reason,
+
+        // );
+
+        // Mail::send('reject', ["data1" => $data], function ($message) use ($data) {
+        //     $message->from($data['fromsender']);
+        //     $message->to($data['toreceiver']);
+        //     $message->subject($data['subject']);
+        // });
+
+
 
         //send app nofication to customer
         $user_firebaseToken = User::where('id', $user_id)
