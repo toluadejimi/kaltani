@@ -157,7 +157,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td style="overflow-wrap:break-word;word-break:break-word;padding:26px;font-family:'Rubik',sans-serif;" align="left">
 
   <h1 style="margin: 0px; color: #000000; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: arial black,avant garde,arial; font-size: 37px;">
-    Hooray!!!
+   Notification
   </h1>
 
       </td>
@@ -171,7 +171,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Rubik',sans-serif;" align="left">
 
   <h1 style="margin: 0px; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: arial,helvetica,sans-serif; font-size: 21px;">
-    Your wallet has been Debited
+    Your wallet has been debited.
   </h1>
 
       </td>
@@ -185,7 +185,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Rubik',sans-serif;" align="left">
 
   <div style="line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;">we are happy to inform you that you withdrwal is successful</br>Check your bank account for Transaction </p>
+    <p style="font-size: 14px; line-height: 140%;">Kidnly check your bank account for your money</p>
   </div>
 
       </td>
@@ -199,7 +199,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td style="overflow-wrap:break-word;word-break:break-word;padding:39px;font-family:'Rubik',sans-serif;" align="left">
 
   <div style="line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;">Got a question? Email us at <a rel="noopener" href="mailto:support@kaltani.com?subject=&body=" target="_blank">support@kaltani.com</a></p>
+    <p style="font-size: 14px; line-height: 140%;">Got a question? Email us at <a rel="noopener" href="mailto:support@trashbash.com?subject=&body=" target="_blank">support@trashbash.com</a></p>
 <p style="font-size: 14px; line-height: 140%;">or give us a call at +234 704 109 3833.</p>
   </div>
 
@@ -326,7 +326,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Rubik',sans-serif;" align="left">
 
   <div style="line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 10px; line-height: 14px;">Kaltani© 2022  Kaltani Ltd. All Rights Reserved</span></p>
+    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 10px; line-height: 14px;">Trash Bash ©  All Rights Reserved</span></p>
 <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 10px; line-height: 14px;">14 Aliu Animashaun Ave, Lekki Phase 1 106104, Lagos</span></p>
   </div>
 

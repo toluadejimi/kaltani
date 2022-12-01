@@ -113,7 +113,7 @@ class CollectionController extends Controller
         try {
             $state = State::where('name', 'lagos')
             ->get();
-            
+
             return response()->json([
                 "status" => $this->SuccessStatus,
                 "message" => "Successful",
@@ -590,7 +590,7 @@ class CollectionController extends Controller
 
         return response()->json([
             "status" => $this->SuccessStatus,
-            "message" => "Drop Off Successfully Updated",
+            "message" => "Drop Off Successfull",
         ], 200);
 
     }

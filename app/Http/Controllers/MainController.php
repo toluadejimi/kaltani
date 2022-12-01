@@ -12,7 +12,6 @@ use App\Models\Collection;
 use App\Models\DropOff;
 use App\Models\Factory;
 use App\Models\FactoryTotal;
-use App\Models\Greeting;
 use App\Models\History;
 use App\Models\Item;
 use App\Models\Location;
@@ -547,17 +546,17 @@ class MainController extends Controller
         $collection->save();
 
         //get location id
-        $get_location_id = Location::where('id',$receiver_id)
-        ->first()->user_id;
+        $get_location_id = Location::where('id', $receiver_id)
+            ->first()->user_id;
 
         //add total weight
         $get_total = AgentRequest::where('user_id', $get_location_id)
-        ->first()->total_weight;
+            ->first()->total_weight;
 
         $new_total = $get_total + $weight;
 
-        $update  = AgentRequest::where('user_id', $get_location_id)
-        ->update(['total_weight' =>  $new_total ]);
+        $update = AgentRequest::where('user_id', $get_location_id)
+            ->update(['total_weight' => $new_total]);
 
         $get_user_email = User::where('id', $user_id)
             ->first();
@@ -618,6 +617,134 @@ class MainController extends Controller
 
     }
 
+    public function dropoffreject(Request $request)
+    {
+        $id = $request->id;
+        $reason = $request->reason;
+
+        $user_id = DropOff::where('id', $id)
+            ->first()->user_id;
+
+        $amount = DropOff::where('id', $id)
+            ->first()->amount;
+
+        $receiver_id = DropOff::where('id', $id)
+            ->first()->receiver_id;
+
+        $sender_id = DropOff::where('id', $id)
+            ->first()->sender_id;
+
+        $f_name = User::where('id', Auth::id())
+            ->first()->first_name;
+
+        $l_name = User::where('id', Auth::id())
+            ->first()->last_name;
+
+        $org_name = DropOff::where('id', $id)
+            ->first()->collection_center;
+
+        $status = DropOff::where('id', $id)
+            ->first()->status;
+
+        $weight = DropOff::where('id', $id)
+            ->first()->weight;
+
+        if ($weight == null) {
+            return back()->with('error', 'Agent has not approve drop off');
+        }
+
+        if ($amount == null) {
+            return back()->with('error', 'Agent has not approve drop off');
+        }
+
+        if ($status == 1) {
+            return back()->with('error', 'Drop off has been already paid');
+        }
+
+        $update_drop = DropOff::where('id', $id)
+            ->update(['status' => 4,
+                'reason' => $reason]);
+
+        $get_user_email = User::where('id', $user_id)
+            ->first();
+        $senderemail = $get_user_email->email;
+
+        //send email to customer
+        $data = array(
+            'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
+            'subject' => "Drop Off Rejected",
+            'toreceiver' => $senderemail,
+            'f_name' => $f_name,
+            'reason' => $reason,
+
+        );
+
+        Mail::send('reject', ["data1" => $data], function ($message) use ($data) {
+            $message->from($data['fromsender']);
+            $message->to($data['toreceiver']);
+            $message->subject($data['subject']);
+        });
+
+
+
+        $center_email = User::where('location_id',$receiver_id)
+        ->first()->email;
+
+        //send email to agent
+        $data = array(
+            'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
+            'subject' => "Drop Off Rejected",
+            'toreceiver' => $center_email,
+            'reason' => $reason,
+
+        );
+
+        Mail::send('reject', ["data1" => $data], function ($message) use ($data) {
+            $message->from($data['fromsender']);
+            $message->to($data['toreceiver']);
+            $message->subject($data['subject']);
+        });
+
+        //send app nofication to customer
+        $user_firebaseToken = User::where('id', $user_id)
+            ->first()->device_id;
+
+        $SERVER_API_KEY = env('FCM_SERVER_KEY');
+
+        $data = [
+            "registration_ids" => array($user_firebaseToken),
+            "notification" => [
+                "title" => 'Drop Off Rejected',
+                "body" => "Your drop off has been rejected",
+            ],
+
+            "data" => [
+                "message" => "Drop off Rejected",
+            ],
+
+        ];
+        $dataString = json_encode($data);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+
+        return back()->with('message', 'Drop off rejected successfully');
+
+    }
+
     public function terms()
     {
 
@@ -627,17 +754,34 @@ class MainController extends Controller
     public function settings()
     {
 
-        $price_per_kg = Rate::where('id', 1)
+        $customer_price_per_kg = Rate::where('id', 1)
+            ->first()->rate;
+
+            $agent_price_per_kg = Rate::where('id', 4)
             ->first()->rate;
 
         $transfer_fee = Rate::where('id', 2)
             ->first()->rate;
 
-        return view('setting', compact('price_per_kg', 'transfer_fee'));
+    
+
+        return view('setting', compact('customer_price_per_kg', 'agent_price_per_kg', 'transfer_fee'));
 
     }
 
-    public function charge_per_kg(Request $request)
+    public function agent_charge_per_kg(Request $request)
+    {
+
+        $price_per_kg = $request->price_per_kg;
+
+        $update = Rate::where('id', 4)
+            ->update(['rate' => $price_per_kg]);
+
+        return back()->with('message', 'Price per KG updated successfully');
+
+    }
+
+    public function customer_charge_per_kg(Request $request)
     {
 
         $price_per_kg = $request->price_per_kg;
@@ -703,9 +847,15 @@ class MainController extends Controller
             ->first();
         $id = $get_order_id->id;
 
+        $get_order_id = DropOff::where('id', $drop_off->id)
+            ->first();
+        $reason = $get_order_id->reason;
+
+
+
         $drop_off_list = DropOff::all();
 
-        return view('drop_off_details', compact('drop_off_list', 'id', 'order_id', 'status', 'agent_image', 'image', 'customer', 'collection_center', 'amount', 'drop_off', 'weight'));
+        return view('drop_off_details', compact('drop_off_list', 'id', 'order_id', 'status', 'agent_image', 'image', 'customer', 'collection_center', 'reason', 'amount', 'drop_off', 'weight'));
     }
 
     public function dropoffDelete($id)
@@ -870,7 +1020,8 @@ class MainController extends Controller
     {
         $get_all_agent = User::where('user_type', 'agent')->first();
 
-
+        $rate = Rate::where('id', 4)
+        ->first()->rate;
 
         $agents = AgentRequest::where('status', '1')->get();
 
@@ -880,14 +1031,7 @@ class MainController extends Controller
         $agentfunds = Transaction::where('type', 'Agent Credit')
             ->sum('amount');
 
-
-
-
-
-
-
-
-        return view('fund-agent', compact('agents',  'fund_transaction', 'agentfunds'));
+        return view('fund-agent', compact('agents', 'fund_transaction', 'rate', 'agentfunds'));
 
     }
 
@@ -897,17 +1041,20 @@ class MainController extends Controller
         $amount = $request->amount;
         $weight = $request->weight;
 
-
+        
 
         $initial_weight = AgentRequest::where('user_id', $request->user_id)
-        ->first()->total_weight;
+            ->first()->total_weight;
+
+
+        if($initial_weight < $weight){
+            return back()->with('error', "Insufficient Agent Weight");
+        }
 
         $new_weight = $initial_weight - $weight;
 
-        $update  = AgentRequest::where('user_id', $user_id)
-        ->update(['total_weight' =>  $new_weight ]);
-
-
+        $update = AgentRequest::where('user_id', $user_id)
+            ->update(['total_weight' => $new_weight]);
 
         $org_name = AgentRequest::where('user_id', $request->user_id)
             ->first()->org_name;
@@ -975,7 +1122,6 @@ class MainController extends Controller
         $response = curl_exec($ch);
 
         return back()->with('message', "Agent has been funded  NGN $amount");
-
 
     }
 
@@ -2040,19 +2186,17 @@ class MainController extends Controller
         $email = $request->email;
 
         $input = $request->validate([
-            'password' => ['required', 'confirmed', 'string', 'min:1', 'max:4' ],
+            'password' => ['required', 'confirmed', 'string', 'min:1', 'max:4'],
         ]);
 
         $update = User::where('email', $email)
-        ->update([
-            'pin' => Hash::make($request->password),
-        ]);
-
+            ->update([
+                'pin' => Hash::make($request->password),
+            ]);
 
         return view('pin-success');
 
     }
-
 
     public function forgot_password(Request $request)
     {
@@ -2073,15 +2217,13 @@ class MainController extends Controller
         ]);
 
         $update = User::where('email', $email)
-        ->update([
-            'password' => Hash::make($request->password),
-        ]);
-
+            ->update([
+                'password' => Hash::make($request->password),
+            ]);
 
         return view('success');
 
     }
-
 
     public function verify_email_code(Request $request)
     {
@@ -2096,7 +2238,5 @@ class MainController extends Controller
         return view('contact-us');
 
     }
-
-
 
 }

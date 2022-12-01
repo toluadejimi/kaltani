@@ -58,19 +58,28 @@
 
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="">Amount (NGN)</label>
-                                    <input type="number" name="amount" class="form-control" required>
-                                </div>
-                            </div>
+
 
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="">Weight (KG)</label>
-                                    <input type="text" name="weight" class="form-control" required>
+                                    <input type="number" id="weight" name="weight" class="form-control" required>
                                 </div>
                             </div>
+
+
+                            <div class="mb-3">
+                                <input type="number" hidden class="form-control" name="rate" id="rate" value="{{$rate}}" />
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">Amount (NGN)</label>
+                                    <input type="number" name="amount" id="result" class="form-control" value="result">
+                                </div>
+                            </div>
+
 
                         </div>
 
@@ -139,4 +148,15 @@
                 $('.selectpicker').selectpicker();
             });
         </script>
+
+
+<script>
+    $('input').keyup(function() { // run anytime the value changes
+        var rate = Number($('#rate').val()); // get value of field
+        var weight = Number($('#weight').val()); // convert it to a float
+
+        document.getElementById('result').value = rate * weight;
+        // add them and output it
+    });
+</script>
     @endsection

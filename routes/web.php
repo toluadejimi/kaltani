@@ -94,13 +94,16 @@ Route::group(['middleware' => ['adminAuth']], function()
     Route::delete('dropoffDelete/{id}', [MainController::class,'dropoffDelete']);
     Route::get('drop_off_details/{id}', [MainController::class,  'viewdropoff']);
     Route::get('dropoffupdate/{id}', [MainController::class,  'dropoffupdate']);
+    Route::get('dropoffreject', [MainController::class,  'dropoffreject']);
+
 
 
 
 
     //settings
     Route::get('/setting', [MainController::class,'settings']);
-    Route::get('/charge-per-kg', [MainController::class,'charge_per_kg']);
+    Route::get('/agent-charge-per-kg', [MainController::class,'agent_charge_per_kg']);
+    Route::get('/customer-charge-per-kg', [MainController::class,'customer_charge_per_kg']);
     Route::get('/transfer-fee', [MainController::class,'transfer_fee']);
 
 

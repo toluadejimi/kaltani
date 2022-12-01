@@ -206,8 +206,8 @@
                                                             align="left">
 
                                                             <h1
-                                                                style="margin: 0px; color: #000000; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: arial black,avant garde,arial; font-size: 37px;">
-                                                                {{ $data1['greeting'] }}
+                                                                style="margin: 0px; color: #000000; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: arial black,avant garde,arial; font-size: 20px;">
+                                                                Hi, {{ $data1['f_name'] }}
                                                             </h1>
 
                                                         </td>
@@ -218,17 +218,7 @@
                                             <table style="font-family:'Rubik',sans-serif;" role="presentation"
                                                 cellpadding="0" cellspacing="0" width="100%" border="0">
                                                 <tbody>
-                                                    <tr>
-                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Rubik',sans-serif;"
-                                                            align="left">
-
-                                                            <h1
-                                                                style="margin: 0px; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: arial,helvetica,sans-serif; font-size: 21px;">
-                                                                OrderID  -  {{ $data1['order_id'] }} </h1>
-
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
+                                                                                     </tbody>
                                             </table>
 
                                             <table style="font-family:'Rubik',sans-serif;" role="presentation"
@@ -238,13 +228,21 @@
                                                         <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Rubik',sans-serif;"
                                                             align="left">
 
+                                                            <div
+                                                                style="line-height: 140%; text-align: center; word-wrap: break-word;">
+                                                                <p style="font-size: 14px; line-height: 140%;">We are sorry to inform you that your drop off was rejected. <br> </p>
+                                                            </div>
 
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Rubik',sans-serif;"
+                                                            align="left">
 
                                                             <div
                                                                 style="line-height: 140%; text-align: center; word-wrap: break-word;">
-                                                                <p style="font-size: 14px; line-height: 140%;">You
-                                                                    have successfully created a drop off.<br>Please procceed to your nearest
-                                                                    drop off center. </p>
+                                                                <p style="font-size: 14px; line-height: 140%;">Reasons: {{ $data1['reason'] }} . <br> </p>
                                                             </div>
 
                                                         </td>

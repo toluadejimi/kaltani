@@ -41,10 +41,28 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Price Per KG</h4>
+                                <h4>Agent Price Per KG</h4>
                             </div>
                             <div class="card-body">
-                                {{$price_per_kg}}
+                                {{$agent_price_per_kg}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+         
+
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-success">
+                            <i class="fas fa-sharp fa-pallet-boxes"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Customer Price Per KG</h4>
+                            </div>
+                            <div class="card-body">
+                                {{$customer_price_per_kg}}
                             </div>
                         </div>
                     </div>
@@ -63,13 +81,13 @@
                     <h4>Update Settings</h4>
                 </div>
 
-                <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-5 ml-4">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-5 ml-4">
 
-                    <form action="/charge-per-kg" method="GET">
+                    <form action="/customer-charge-per-kg" method="GET">
                         @csrf
 
-                        <label> Price Per KG </label>
-                        <input type="number" name="price_per_kg" class="form-control" autofocus value="{{ $price_per_kg }}" />
+                        <label> Customer Price Per KG </label>
+                        <input type="number" name="price_per_kg" class="form-control" autofocus value="{{ $customer_price_per_kg }}" />
 
                         <button type="submit" class="btn btn-primary mt-3">Update</button>
                     </form>
@@ -77,7 +95,21 @@
                 </div>
 
 
-                <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-5 ml-4">
+
+                    <form action="/agent-charge-per-kg" method="GET">
+                        @csrf
+
+                        <label> Agent Price Per KG </label>
+                        <input type="number" name="price_per_kg" class="form-control" autofocus value="{{ $agent_price_per_kg }}" />
+
+                        <button type="submit" class="btn btn-primary mt-3">Update</button>
+                    </form>
+
+                </div>
+
+
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-5">
 
                     <form action="/transfer-fee" method="GET">
                         @csrf
@@ -98,46 +130,6 @@
         </div>
 
 
-        <div class="card mt-4">
-
-            <div class="row">
-                <div class="card-header">
-                    <h4>Email Greetings</h4>
-                </div>
-
-                <div class="col-lg-6 col-md-6 col-sm-6 col-12 mb-5 ml-4">
-
-                    <form action="/charge-per-kg" method="GET">
-                        @csrf
-
-                        <label>Email Verification</label>
-                        <input type="text" name="price_per_kg" class="form-control" value="{{ $price_per_kg }}"  />
-
-                        <button type="submit" class="btn btn-primary mt-3">Update</button>
-                    </form>
-
-                </div>
-
-
-                <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
-
-                    <form action="/transfer-fee" method="GET">
-                        @csrf
-
-                        <label> Order Title (MALE)</label>
-                        <textarea type="text" name="price_per_kg" class="form-control"> {{ $price_per_kg }} </textarea>
-
-                        <button type="submit" class="btn btn-primary mt-3 mb-6">Update</button>
-                    </form>
-
-                </div>
-
-
-
-
-            </div>
-
-        </div>
 
 
 
