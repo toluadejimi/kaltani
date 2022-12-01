@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Mail\Reject;
 use Mail;
 use Session;
 use Termwind\Components\Raw;
@@ -670,20 +671,31 @@ class MainController extends Controller
         $senderemail = $get_user_email->email;
 
         //send email to customer
-        $data = array(
-            'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
-            'subject' => "Drop Off Rejected",
-            'toreceiver' => $senderemail,
+
+        $details = [
+            'subject' => 'Cardy Daily Rate',
             'fname' => $f_name,
             'reason' => $reason,
+          ];
 
-        );
+          Mail::to($senderemail)->send(new Reject($details));
 
-        Mail::send('reject', ["data1" => $data], function ($message) use ($data) {
-            $message->from($data['fromsender']);
-            $message->to($data['toreceiver']);
-            $message->subject($data['subject']);
-        });
+
+
+        // $data = array(
+        //     'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
+        //     'subject' => "Drop Off Rejected",
+        //     'toreceiver' => $senderemail,
+        //     'fname' => $f_name,
+        //     'reason' => $reason,
+
+        // );
+
+        // Mail::send('reject', ["data1" => $data], function ($message) use ($data) {
+        //     $message->from($data['fromsender']);
+        //     $message->to($data['toreceiver']);
+        //     $message->subject($data['subject']);
+        // });
 
 
 
