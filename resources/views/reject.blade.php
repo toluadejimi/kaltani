@@ -207,7 +207,7 @@
 
                                                             <h1
                                                                 style="margin: 0px; color: #000000; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: arial black,avant garde,arial; font-size: 20px;">
-                                                                Hi, {{ $data1['f_name'] }}
+                                                                Hi, {{ $data1['fname'] }}
                                                             </h1>
 
                                                         </td>

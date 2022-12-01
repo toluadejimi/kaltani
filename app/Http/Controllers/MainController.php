@@ -674,7 +674,7 @@ class MainController extends Controller
             'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
             'subject' => "Drop Off Rejected",
             'toreceiver' => $senderemail,
-            'f_name' => $f_name,
+            'fname' => $f_name,
             'reason' => $reason,
 
         );
@@ -763,7 +763,7 @@ class MainController extends Controller
         $transfer_fee = Rate::where('id', 2)
             ->first()->rate;
 
-    
+
 
         return view('setting', compact('customer_price_per_kg', 'agent_price_per_kg', 'transfer_fee'));
 
@@ -1041,7 +1041,7 @@ class MainController extends Controller
         $amount = $request->amount;
         $weight = $request->weight;
 
-        
+
 
         $initial_weight = AgentRequest::where('user_id', $request->user_id)
             ->first()->total_weight;
