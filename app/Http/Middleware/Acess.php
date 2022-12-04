@@ -18,18 +18,26 @@ class Acess
      */
     public function handle(Request $request, Closure $next)
     {
+
+
+        $user = (Auth::check());
+
+        dd ($user);
+
         //dd($request->bearerToken());
         //$request->headers('Authorization', 'Bearer '.$request->bearerToken());
         if($request->header('Authorization') == 'Bearer '.$request->bearerToken() )
         {
 
             return $next($request);
+
         }elseif($request->header('Authorization') != 'Bearer '.$request->bearerToken() ){
             abort(response()->json(
                 [
                     'status' => false,
                     'message' => 'UnAuthenticated',
                 ], 401));
+
         }elseif (Auth::guard('api')->check() != true) {
             abort(response()->json(
                 [
