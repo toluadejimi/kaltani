@@ -56,7 +56,7 @@ class AuthCoontroller extends Controller
                 'role' => auth()->user()->role->name,
                 'token' => $token,
                 'slider' => $slider,
-                'expiresIn' =>  config('jwt.ttl'), //Auth::guard('api')->check(),
+                'expiresIn' =>  Auth::guard('api')->check(),
             ], 200);
 
 
