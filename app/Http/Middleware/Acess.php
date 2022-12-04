@@ -21,7 +21,7 @@ class Acess
     {
 
 
-        $user = (Auth::check());
+        $user = (Auth::guard('api')->check());
 
         dd($user);
 
