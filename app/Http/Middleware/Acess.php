@@ -21,8 +21,9 @@ class Acess
     {
 
 
-        // $user = (Auth::check());
+        $user = (Auth::check());
 
+        dd($user);
 
         //dd($request->bearerToken());
         //$request->headers('Authorization', 'Bearer '.$request->bearerToken());
