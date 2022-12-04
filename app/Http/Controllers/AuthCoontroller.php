@@ -35,9 +35,12 @@ class AuthCoontroller extends Controller
 
             $credentials = request(['email', 'password']);
 
-            Passport::tokensExpireIn(Carbon::now()->addDays(3));
-            Passport::refreshTokensExpireIn(Carbon::now()->addDays(3));
+           // Passport::tokensExpireIn(Carbon::now()->addDays(3));
+           Passport::tokensExpireIn(Carbon::now()->addMinutes(1));
+           // Passport::refreshTokensExpireIn(Carbon::now()->addDays(3));
+           Passport::refreshTokensExpireIn(Carbon::now()->addMinutes(1));
 
+           
             if (!auth()->attempt($credentials)) {
                 return response()->json([
                     'status' => $this->failedStatus,
