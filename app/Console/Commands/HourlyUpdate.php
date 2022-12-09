@@ -37,25 +37,31 @@ class HourlyUpdate extends Command
         $user_id = DropOff::where('status', 0)
         ->get('user_id');
 
+
        $user = User::whereIn('id', $user_id)
         ->get('email');
 
+
         $customer_gender = User::whereIn('id', $user_id)
         ->get('gender');
+
+        $age = User::whereIn('id', $user_id)
+        ->get('age');
 
 
 
         foreach ($user as $a)
 
 
-        if($customer_gender = 'Male'){
 
-            $greeting = Greeting::where('gender', '1hrMale' )
-            ->first()->title;
+        if($customer_gender  == 'Male' && $age < 45 ){
+
+            $greeting = Greeting::where('title', '1hrMale' )
+            ->first()->gender;
         }else{
 
-            $greeting = Greeting::where('gender', '1hrFemale' )
-            ->first()->title;
+            $greeting = Greeting::where('title', '1hrFemale' )
+            ->first()->gender;
 
         }
 
