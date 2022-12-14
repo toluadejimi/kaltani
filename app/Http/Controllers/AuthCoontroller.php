@@ -554,7 +554,7 @@ class AuthCoontroller extends Controller
 
                 return response()->json([
                     'status' => $this->failedStatus,
-                    'message' => 'User can not be registred',
+                    'message' => 'User can not be be found on the system',
 
                 ], 500);
 
@@ -864,7 +864,7 @@ class AuthCoontroller extends Controller
             'message' => $e->getMessage(),
         ], 500);
     }
-    
+
     }
 
 }
