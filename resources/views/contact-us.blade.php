@@ -284,11 +284,11 @@
 <div class="bee-block bee-block-3 bee-icons">
 <div class="bee-icon bee-icon-last">
 <div class="bee-icon-image"><a href="#" target="_self" title=""><img alt="" height="64px" src="https://kaltanimis.com/public/upload/teleohone.png" width="auto"/></a></div>
-<div class="bee-icon-label bee-icon-label-bottom"><a href="#" target="_self" title="">+23412345678</a></div>
+<div class="bee-icon-label bee-icon-label-bottom"><a href="#" target="_self" title=""> +234 704 109 3833</a></div>
 </div>
 </div>
 <div class="bee-block bee-block-4 bee-social">
-<div class="content"><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://www.facebook.com/"><img alt="Facebook" src="{{url('')}}/public/images/facebook2x.png" title="Facebook"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://twitter.com/"><img alt="Twitter" src="{{url('')}}/public/images/twitter2x.png" title="Twitter"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://instagram.com/"><img alt="Instagram" src="{{url('')}}/public/images/instagram2x.png" title="Instagram"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="{{url('')}}/public/https://www.linkedin.com/"><img alt="LinkedIn" src="{{url('')}}/public/images/linkedin2x.png" title="LinkedIn"/></a></span></div>
+<div class="content"><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://www.facebook.com/Kaltanihq"><img alt="Facebook" src="{{url('')}}/public/images/facebook2x.png" title="Facebook"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://twitter.com/kaltanihq"><img alt="Twitter" src="{{url('')}}/public/images/twitter2x.png" title="Twitter"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://www.instagram.com/kaltanihq/"><img alt="Instagram" src="{{url('')}}/public/images/instagram2x.png" title="Instagram"/></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://www.linkedin.com/company/34582357/admin/"><img alt="LinkedIn" src="{{url('')}}/public/images/linkedin2x.png" title="LinkedIn"/></a></span></div>
 </div>
 </div>
 <div class="bee-col bee-col-2 bee-col-w5"></div>
