@@ -278,13 +278,13 @@
 <div class="bee-block bee-block-2 bee-icons">
 <div class="bee-icon bee-icon-last">
 <div class="bee-icon-image"><a href="#" target="_self" title=""><img alt="" height="64px" src="https://kaltanimis.com/public/upload/email.png" width="auto"/></a></div>
-<div class="bee-icon-label bee-icon-label-bottom"><a href="#" target="_self" title="">info@trashbash.com</a></div>
+<div class="bee-icon-label bee-icon-label-bottom"><a href="mailto:info@kaltani.com" target="_self" title="">info@trashbash.com</a></div>
 </div>
 </div>
 <div class="bee-block bee-block-3 bee-icons">
 <div class="bee-icon bee-icon-last">
 <div class="bee-icon-image"><a href="#" target="_self" title=""><img alt="" height="64px" src="https://kaltanimis.com/public/upload/teleohone.png" width="auto"/></a></div>
-<div class="bee-icon-label bee-icon-label-bottom"><a href="#" target="_self" title=""> +234 704 109 3833</a></div>
+<div class="bee-icon-label bee-icon-label-bottom"><a href="tel:+2347041093833" target="_self" title=""> +234 704 109 3833</a></div>
 </div>
 </div>
 <div class="bee-block bee-block-4 bee-social">
