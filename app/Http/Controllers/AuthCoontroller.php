@@ -107,7 +107,7 @@ class AuthCoontroller extends Controller
 
             //send email
             $data = array(
-                'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
+                'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
                 'subject' => "Verification Code",
                 'toreceiver' => $email,
                 'email_code' => $email_code,
@@ -600,7 +600,7 @@ class AuthCoontroller extends Controller
 
             //send email
             $data = array(
-                'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
+                'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
                 'subject' => "Account Creation",
                 'toreceiver' => $email,
                 'greeting' => $greeting,
@@ -775,7 +775,7 @@ class AuthCoontroller extends Controller
 
                 //send email
                 $data = array(
-                    'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
+                    'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
                     'subject' => "Reset Password",
                     'toreceiver' => $email,
                     'first_name' => $first_name,
@@ -830,7 +830,7 @@ class AuthCoontroller extends Controller
 
             //send email
             $data = array(
-                'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
+                'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
                 'subject' => "Reset Pin",
                 'toreceiver' => $email,
                 'first_name' => $first_name,

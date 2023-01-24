@@ -329,7 +329,7 @@ class TransactionController extends Controller
 
                //send email
                $data = array(
-                   'fromsender' => 'notification@kaltanimis.com', 'TRASH BASH',
+                   'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
                    'subject' => "Withdwral",
                    'toreceiver' => $receiveremail,
                );
