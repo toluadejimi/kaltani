@@ -391,7 +391,7 @@ class CollectionController extends Controller
         return response()->json([
 
             'status' => $this->FailedStatus,
-            'message' => $e,
+            'message' => $e->getMessage(),
 
         ], 500);
 
