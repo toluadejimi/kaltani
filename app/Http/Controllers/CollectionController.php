@@ -16,6 +16,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Mail;
+use Exception;
 
 class CollectionController extends Controller
 {
@@ -385,7 +386,7 @@ class CollectionController extends Controller
             ], 200);
 
         }
-    } catch (\Execption $e){
+    } catch (\Exception $e){
 
         return response()->json([
 
