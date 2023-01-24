@@ -161,6 +161,9 @@ class CollectionController extends Controller
     public function drop_off(Request $request)
     {
 
+        try{
+
+
         $collection_center_id = $request->collection_center;
 
         $sender_id = Auth::id();
@@ -382,6 +385,16 @@ class CollectionController extends Controller
             ], 200);
 
         }
+    } catch (\Execption $e){
+
+        return response()->json([
+
+            'status' => $this->FailedStatus,
+            'message' => $e,
+
+        ], 500);
+
+    }
 
     }
 
