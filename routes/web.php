@@ -178,7 +178,10 @@ Route::group(['middleware' => ['adminAuth']], function()
     Route::get('/bailing', [MainController::class,'bailing']);
     Route::post('bailed', [MainController::class,'bailed']);
 
-    Route::get('/addCollection', [MainController::class,'viewCollect']);
+    //Route::get('/addCollection', [MainController::class,'viewCollect']);
+    Route::get('/addCollection', [MainController::class, 'viewCollect'])->name('addCollection.viewCollect');
+    Route::get('/search','MainController@search');
+
     Route::get('/collectioncenter', [MainController::class,'collectionCenter']);
     Route::post('collect', [MainController::class,'collect']);
     Route::get('collectionsDetails/{id}', [MainController::class,  'viewcollection']);

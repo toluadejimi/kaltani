@@ -6,17 +6,23 @@ use App\Models\CollectedDetails;
 use App\Models\Collection;
 use App\Models\DropOff;
 use App\Models\Greeting;
+use App\Models\Item;
 use App\Models\Location;
 use App\Models\PlasticWaste;
 use App\Models\Rate;
+use App\Models\SortDetails;
+use App\Models\Sorting;
 use App\Models\State;
 use App\Models\StateLga;
 use App\Models\User;
 use Auth;
+use Exception;
+use Carbon\Carbon;
+use DB;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Mail;
-use Exception;
 
 class CollectionController extends Controller
 {
@@ -24,41 +30,712 @@ class CollectionController extends Controller
     public $SuccessStatus = true;
     public $FailedStatus = false;
 
-    public function collect(Request $request)
+    public function get_item()
     {
 
-        $collect = new Collection();
-        $collect->item_id = $request->input('item');
-        $collect->item_weight = $request->input('item_weight') ?? 0;
-        $collect->price_per_kg = $request->input('price_per_kg') ?? 0;
-        $collect->transport = $request->input('transport') ?? 0;
-        $collect->loader = $request->input('loader') ?? 0;
-        $collect->others = $request->input('others') ?? 0;
-        $collect->location_id = Auth::user()->location_id;
-        $collect->amount = $request->input('amount') ?? 0;
-        $collect->user_id = Auth::id();
-        $collect->save();
-
-        $collected = $request->input('item_weight') ?? 0;
-        $locationId = Auth::user()->location_id;
-
-        $t = CollectedDetails::where('location_id', Auth::user()->location_id)->first();
-        if (empty($t)) {
-            $sort = new CollectedDetails();
-            $sort->collected = $request->input('item_weight') ?? 0;
-            $sort->location_id = Auth::user()->location_id;
-            $sort->user_id = Auth::id();
-            $sort->save();
-        } else {
-            CollectedDetails::where('location_id', Auth::user()->location_id)->increment('collected', $collected);
-        }
+        $items = Item::select('id', 'item')->get();
 
         return response()->json([
             "status" => $this->SuccessStatus,
-            "message" => "Collection created successfull",
-            "data" => $collect,
-            "total" => $t->collected,
+            "data" => $items,
         ], 200);
+
+    }
+
+    public function collect(Request $request)
+    {
+
+        $item_id = $request->item;
+        $item_weight = $request->item_weight;
+
+        $get_item_id = Item::where('id', $item_id)->first()->id ?? null;
+
+        if ($get_item_id == null) {
+
+            return response()->json([
+                "status" => $this->FailedStatus,
+                "message" => "Item not found, Please check item select carefully",
+            ], 200);
+
+        }
+
+        if ($get_item_id == 1) {
+
+            $collect = new Collection();
+            $collect->item_id = $request->input('item');
+            $collect->item_weight = $request->input('item_weight') ?? 0;
+            $collect->price_per_kg = $request->input('price_per_kg') ?? 0;
+            $collect->transport = $request->input('transport') ?? 0;
+            $collect->loader = $request->input('loader') ?? 0;
+            $collect->others = $request->input('others') ?? 0;
+            $collect->location_id = Auth::user()->location_id;
+            $collect->amount = $request->input('amount') ?? 0;
+            $collect->user_id = Auth::id();
+            $collect->save();
+
+            $collected = $request->input('item_weight') ?? 0;
+            $locationId = Auth::user()->location_id;
+
+            $t = CollectedDetails::where('location_id', Auth::user()->location_id)->first();
+            if (empty($t)) {
+                $sort = new CollectedDetails();
+                $sort->collected = $request->input('item_weight') ?? 0;
+                $sort->location_id = Auth::user()->location_id;
+                $sort->user_id = Auth::id();
+                $sort->save();
+            } else {
+                CollectedDetails::where('location_id', Auth::user()->location_id)->increment('collected', $collected);
+            }
+
+            return response()->json([
+                "status" => $this->SuccessStatus,
+                "message" => "Collection created successfull",
+                "data" => $collect,
+                "total" => $t->collected,
+            ], 200);
+
+        }
+
+        $data = Item::where('id', $item_id)->first()->item_name;
+        $item_weight = $request->item_weight;
+
+        if ($data == 'cleanclear') {
+
+
+            $sort = new Sorting();
+            $sort->item_id = $request->item_id;
+            $sort->Clean_Clear = $item_weight ?? 0;
+            $sort->save();
+
+            $dataset = [
+                'Clean_Clear' => $request->item_weight ?? 0,
+                'Green_Colour' => $request->Green_Colour ?? 0,
+                'Others' => $request->Others ?? 0,
+                'Trash' => $request->Trash ?? 0,
+                'hdpe' => $request->hdpe ?? 0,
+                'ldpe' => $request->ldpe ?? 0,
+                'brown' => $request->brown ?? 0,
+                'black' => $request->black ?? 0,
+                'Caps' => $request->Caps ?? 0,
+
+
+
+            ];
+            //dd($tweight);
+
+            $other_value_history = [
+
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+            $other_value = [
+                'user_id' => Auth::id(),
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+
+            $old_sorting = DB::table('sort_details')->where('location_id', Auth::user()->location_id)->first();
+
+            if (empty($old_sorting)) {
+
+                DB::table('sort_details')->insert([
+                    array_merge($dataset, $other_value),
+                ]);
+            } else {
+
+                //dd($new_dataset);
+                $updated = SortDetails::where('location_id', Auth::user()->location_id)->first();
+                $updated->update(['Clean_Clear' => ($updated->Clean_Clear + $request->item_weight ?? 0)]);
+                $updated->update(['Green_Colour' => ($updated->Green_Colour + $request->Green_Colour ?? 0)]);
+                $updated->update(['Others' => ($updated->Others + $request->Others ?? 0)]);
+                $updated->update(['Trash' => ($updated->Trash + $request->Trash ?? 0)]);
+                $updated->update(['Caps' => ($updated->Caps + $request->Caps ?? 0)]);
+                $updated->update(['hdpe' => ($updated->hdpe + $request->hdpe?? 0)]);
+                $updated->update(['ldpe' => ($updated->ldpe + $request->ldpe ?? 0)]);
+                $updated->update(['brown' => ($updated->brown + $request->brown ?? 0)]);
+                $updated->update(['black' => ($updated->black + $request->black ?? 0)]);
+
+            }
+
+            return response()->json([
+                "status" => $this->SuccessStatus,
+                "message" => "Collection created successfull",
+            ], 200);
+
+
+        }
+
+        if ($data == 'green') {
+
+            $sort = new Sorting();
+            $sort->item_id = $request->item_id;
+            $sort->Green_Colour = $item_weight ?? 0;
+            $sort->location_id = Auth::user()->location_id;
+            $sort->user_id = Auth::id();
+            $sort->save();
+
+            $dataset = [
+                'Clean_Clear' => $request->Clean_Clear ?? 0,
+                'Green_Colour' => $request->$item_weight ?? 0,
+                'Others' => $request->Others ?? 0,
+                'Trash' => $request->Trash ?? 0,
+                'hdpe' => $request->hdpe ?? 0,
+                'ldpe' => $request->ldpe ?? 0,
+                'brown' => $request->brown ?? 0,
+                'black' => $request->black ?? 0,
+                'Caps' => $request->Caps ?? 0,
+
+
+
+            ];
+            //dd($tweight);
+
+            $other_value_history = [
+
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+            $other_value = [
+                'user_id' => Auth::id(),
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+
+            $old_sorting = DB::table('sort_details')->where('location_id', Auth::user()->location_id)->first();
+
+            if (empty($old_sorting)) {
+
+                DB::table('sort_details')->insert([
+                    array_merge($dataset, $other_value),
+                ]);
+            } else {
+
+                //dd($new_dataset);
+                $updated = SortDetails::where('location_id', Auth::user()->location_id)->first();
+                $updated->update(['Clean_Clear' => ($updated->Clean_Clear + $request->Clean_Clear ?? 0)]);
+                $updated->update(['Green_Colour' => ($updated->$item_weight + $item_weight ?? 0)]);
+                $updated->update(['Others' => ($updated->Others + $request->Others ?? 0)]);
+                $updated->update(['Trash' => ($updated->Trash + $request->Trash ?? 0)]);
+                $updated->update(['Caps' => ($updated->Caps + $request->Caps ?? 0)]);
+                $updated->update(['hdpe' => ($updated->hdpe + $request->hdpe?? 0)]);
+                $updated->update(['ldpe' => ($updated->ldpe + $request->ldpe ?? 0)]);
+                $updated->update(['brown' => ($updated->brown + $request->brown ?? 0)]);
+                $updated->update(['black' => ($updated->black + $request->black ?? 0)]);
+
+            }
+
+            return response()->json([
+                "status" => $this->SuccessStatus,
+                "message" => "Collection created successfull",
+            ], 200);
+
+        }
+
+        if ($data == 'others') {
+
+            $sort = new Sorting();
+            $sort->item_id = $request->item_id;
+            $sort->Others = $item_weight ?? 0;
+            $sort->location_id = Auth::user()->location_id;
+            $sort->user_id = Auth::id();
+            $sort->save();
+
+
+            $dataset = [
+                'Clean_Clear' => $request->Clean_Clear ?? 0,
+                'Green_Colour' => $request->Green_Colour ?? 0,
+                'Others' => $request->item_weight ?? 0,
+                'Trash' => $request->Trash ?? 0,
+                'hdpe' => $request->hdpe ?? 0,
+                'ldpe' => $request->ldpe ?? 0,
+                'brown' => $request->brown ?? 0,
+                'black' => $request->black ?? 0,
+                'Caps' => $request->Caps ?? 0,
+
+
+
+            ];
+            //dd($tweight);
+
+            $other_value_history = [
+
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+            $other_value = [
+                'user_id' => Auth::id(),
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+
+            $old_sorting = DB::table('sort_details')->where('location_id', Auth::user()->location_id)->first();
+
+            if (empty($old_sorting)) {
+
+                DB::table('sort_details')->insert([
+                    array_merge($dataset, $other_value),
+                ]);
+            } else {
+
+                //dd($new_dataset);
+                $updated = SortDetails::where('location_id', Auth::user()->location_id)->first();
+                $updated->update(['Clean_Clear' => ($updated->Clean_Clear + $request->Clean_Clear ?? 0)]);
+                $updated->update(['Green_Colour' => ($updated->Green_Colour + $request->Green_Colour ?? 0)]);
+                $updated->update(['Others' => ($updated->Others + $request->item_weight ?? 0)]);
+                $updated->update(['Trash' => ($updated->Trash + $request->Trash ?? 0)]);
+                $updated->update(['Caps' => ($updated->Caps + $request->Caps ?? 0)]);
+                $updated->update(['hdpe' => ($updated->hdpe + $request->hdpe?? 0)]);
+                $updated->update(['ldpe' => ($updated->ldpe + $request->ldpe ?? 0)]);
+                $updated->update(['brown' => ($updated->brown + $request->brown ?? 0)]);
+                $updated->update(['black' => ($updated->black + $request->black ?? 0)]);
+
+            }
+
+            return response()->json([
+                "status" => $this->SuccessStatus,
+                "message" => "Collection created successfull",
+            ], 200);
+
+        }
+
+        if ($data == 'trash') {
+
+            $sort = new Sorting();
+            $sort->item_id = $request->item_id;
+            $sort->Trash = $item_weight ?? 0;
+            $sort->location_id = Auth::user()->location_id;
+            $sort->user_id = Auth::id();
+            $sort->save();
+
+
+            $dataset = [
+                'Clean_Clear' => $request->Clean_Clear ?? 0,
+                'Green_Colour' => $request->Green_Colour ?? 0,
+                'Others' => $request->Others ?? 0,
+                'Trash' => $request->item_weight ?? 0,
+                'hdpe' => $request->hdpe ?? 0,
+                'ldpe' => $request->ldpe ?? 0,
+                'brown' => $request->brown ?? 0,
+                'black' => $request->black ?? 0,
+                'Caps' => $request->Caps ?? 0,
+
+
+            ];
+            //dd($tweight);
+
+            $other_value_history = [
+
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+            $other_value = [
+                'user_id' => Auth::id(),
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+
+            $old_sorting = DB::table('sort_details')->where('location_id', Auth::user()->location_id)->first();
+
+            if (empty($old_sorting)) {
+
+                DB::table('sort_details')->insert([
+                    array_merge($dataset, $other_value),
+                ]);
+            } else {
+
+                //dd($new_dataset);
+                $updated = SortDetails::where('location_id', Auth::user()->location_id)->first();
+                $updated->update(['Clean_Clear' => ($updated->Clean_Clear + $request->Clean_Clear ?? 0)]);
+                $updated->update(['Green_Colour' => ($updated->Green_Colour + $request->Green_Colour ?? 0)]);
+                $updated->update(['Others' => ($updated->Others + $request->Others ?? 0)]);
+                $updated->update(['Trash' => ($updated->Trash + $request->item_weight ?? 0)]);
+                $updated->update(['Caps' => ($updated->Caps + $request->Caps ?? 0)]);
+                $updated->update(['hdpe' => ($updated->hdpe + $request->hdpe?? 0)]);
+                $updated->update(['ldpe' => ($updated->ldpe + $request->ldpe ?? 0)]);
+                $updated->update(['brown' => ($updated->brown + $request->brown ?? 0)]);
+                $updated->update(['black' => ($updated->black + $request->black ?? 0)]);
+
+            }
+
+            return response()->json([
+                "status" => $this->SuccessStatus,
+                "message" => "Collection created successfull",
+            ], 200);
+
+
+        }
+
+        if ($data == 'caps') {
+
+            $sort = new Sorting();
+            $sort->item_id = $request->item_id;
+            $sort->Caps = $item_weight ?? 0;
+            $sort->location_id = Auth::user()->location_id;
+            $sort->user_id = Auth::id();
+            $sort->save();
+
+
+            $dataset = [
+                'Clean_Clear' => $request->Clean_Clear ?? 0,
+                'Green_Colour' => $request->Green_Colour ?? 0,
+                'Others' => $request->Others ?? 0,
+                'Trash' => $request->Trash ?? 0,
+                'Caps' => $request->item_weight ?? 0,
+                'hdpe' => $request->hdpe ?? 0,
+                'ldpe' => $request->ldpe ?? 0,
+                'brown' => $request->brown ?? 0,
+                'black' => $request->black ?? 0,
+
+
+            ];
+            //dd($tweight);
+
+            $other_value_history = [
+
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+            $other_value = [
+                'user_id' => Auth::id(),
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+
+            $old_sorting = DB::table('sort_details')->where('location_id', Auth::user()->location_id)->first();
+
+            if (empty($old_sorting)) {
+
+                DB::table('sort_details')->insert([
+                    array_merge($dataset, $other_value),
+                ]);
+            } else {
+
+                //dd($new_dataset);
+                $updated = SortDetails::where('location_id', Auth::user()->location_id)->first();
+                $updated->update(['Clean_Clear' => ($updated->Clean_Clear + $request->Clean_Clear ?? 0)]);
+                $updated->update(['Green_Colour' => ($updated->Green_Colour + $request->Green_Colour ?? 0)]);
+                $updated->update(['Others' => ($updated->Others + $request->Others ?? 0)]);
+                $updated->update(['Trash' => ($updated->Trash + $request->Trash ?? 0)]);
+                $updated->update(['Caps' => ($updated->Caps + $request->item_weight ?? 0)]);
+                $updated->update(['hdpe' => ($updated->hdpe + $request->hdpe?? 0)]);
+                $updated->update(['ldpe' => ($updated->ldpe + $request->ldpe ?? 0)]);
+                $updated->update(['brown' => ($updated->brown + $request->brown ?? 0)]);
+                $updated->update(['black' => ($updated->black + $request->black ?? 0)]);
+
+            }
+
+            return response()->json([
+                "status" => $this->SuccessStatus,
+                "message" => "Collection created successfull",
+            ], 200);
+
+        }
+
+
+
+        if($data == 'hdpe'){
+
+
+            $sort = new Sorting();
+            $sort->item_id = $request->item_id;
+            $sort->hdpe = $item_weight ?? 0;
+            $sort->location_id = Auth::user()->location_id;
+            $sort->user_id = Auth::id();
+            $sort->save();
+
+
+            $dataset = [
+                'Clean_Clear' => $request->Clean_Clear ?? 0,
+                'Green_Colour' => $request->Green_Colour ?? 0,
+                'Others' => $request->Others ?? 0,
+                'Trash' => $request->Trash ?? 0,
+                'Caps' => $request->Caps ?? 0,
+                'hdpe' => $request->item_weight ?? 0,
+                'ldpe' => $request->ldpe ?? 0,
+                'brown' => $request->brown ?? 0,
+                'black' => $request->black ?? 0,
+
+
+            ];
+            //dd($tweight);
+
+            $other_value_history = [
+
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+            $other_value = [
+                'user_id' => Auth::id(),
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+
+            $old_sorting = DB::table('sort_details')->where('location_id', Auth::user()->location_id)->first();
+
+            if (empty($old_sorting)) {
+
+                DB::table('sort_details')->insert([
+                    array_merge($dataset, $other_value),
+                ]);
+            } else {
+
+
+                //dd($new_dataset);
+                $updated = SortDetails::where('location_id', Auth::user()->location_id)->first();
+                $updated->update(['Clean_Clear' => ($updated->Clean_Clear + $request->Clean_Clear ?? 0)]);
+                $updated->update(['Green_Colour' => ($updated->Green_Colour + $request->Green_Colour ?? 0)]);
+                $updated->update(['Others' => ($updated->Others + $request->Others ?? 0)]);
+                $updated->update(['Trash' => ($updated->Trash + $request->Trash ?? 0)]);
+                $updated->update(['Caps' => ($updated->Caps + $request->Caps ?? 0)]);
+                $updated->update(['hdpe' => ($updated->hdpe + $item_weight ?? 0)]);
+                $updated->update(['ldpe' => ($updated->ldpe + $request->ldpe ?? 0)]);
+                $updated->update(['brown' => ($updated->brown + $request->brown ?? 0)]);
+                $updated->update(['black' => ($updated->black + $request->black ?? 0)]);
+
+            }
+
+
+            return response()->json([
+                "status" => $this->SuccessStatus,
+                "message" => "Collection created successfull",
+            ], 200);
+
+        }
+
+        if ($data == 'ldpe') {
+
+            $sort = new Sorting();
+            $sort->item_id = $request->item_id;
+            $sort->ldpe = $item_weight ?? 0;
+            $sort->location_id = Auth::user()->location_id;
+            $sort->user_id = Auth::id();
+            $sort->save();
+
+
+            $dataset = [
+                'Clean_Clear' => $request->Clean_Clear ?? 0,
+                'Green_Colour' => $request->Green_Colour ?? 0,
+                'Others' => $request->Others ?? 0,
+                'Trash' => $request->Trash ?? 0,
+                'Caps' => $request->Caps ?? 0,
+                'hdpe' => $request->hdpe ?? 0,
+                'ldpe' => $request->item_weight ?? 0,
+                'brown' => $request->brown ?? 0,
+                'black' => $request->black ?? 0,
+
+
+            ];
+            //dd($tweight);
+
+            $other_value_history = [
+
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+            $other_value = [
+                'user_id' => Auth::id(),
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+
+            $old_sorting = DB::table('sort_details')->where('location_id', Auth::user()->location_id)->first();
+
+            if (empty($old_sorting)) {
+
+                DB::table('sort_details')->insert([
+                    array_merge($dataset, $other_value),
+                ]);
+
+            } else {
+
+
+
+                //dd($new_dataset);
+                $updated = SortDetails::where('location_id', Auth::user()->location_id)->first();
+                $updated->update(['Clean_Clear' => ($updated->Clean_Clear + $request->Clean_Clear ?? 0)]);
+                $updated->update(['Green_Colour' => ($updated->Green_Colour + $request->Green_Colour ?? 0)]);
+                $updated->update(['Others' => ($updated->Others + $request->Others ?? 0)]);
+                $updated->update(['Trash' => ($updated->Trash + $request->Trash ?? 0)]);
+                $updated->update(['Caps' => ($updated->Caps + $request->Caps ?? 0)]);
+                $updated->update(['hdpe' => ($updated->hdpe + $request->hdpe?? 0)]);
+                $updated->update(['ldpe' => ($updated->ldpe + $item_weight ?? 0)]);
+                $updated->update(['brown' => ($updated->brown + $request->brown ?? 0)]);
+                $updated->update(['black' => ($updated->black + $request->black ?? 0)]);
+
+            }
+
+            return response()->json([
+                "status" => $this->SuccessStatus,
+                "message" => "Collection created successfull",
+            ], 200);
+
+        }
+
+        if ($data == 'brown') {
+
+            $sort = new Sorting();
+            $sort->item_id = $request->item_id;
+            $sort->brown = $item_weight ?? 0;
+            $sort->location_id = Auth::user()->location_id;
+            $sort->user_id = Auth::id();
+            $sort->save();
+
+            $dataset = [
+                'Clean_Clear' => $request->Clean_Clear ?? 0,
+                'Green_Colour' => $request->Green_Colour ?? 0,
+                'Others' => $request->Others ?? 0,
+                'Trash' => $request->Trash ?? 0,
+                'Caps' => $request->Caps ?? 0,
+                'hdpe' => $request->hdpe ?? 0,
+                'ldpe' => $request->ldpe ?? 0,
+                'brown' => $request->item_weight ?? 0,
+                'black' => $request->black ?? 0,
+
+
+            ];
+            //dd($tweight);
+
+            $other_value_history = [
+
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+            $other_value = [
+                'user_id' => Auth::id(),
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+
+            $old_sorting = DB::table('sort_details')->where('location_id', Auth::user()->location_id)->first();
+
+            if (empty($old_sorting)) {
+
+                DB::table('sort_details')->insert([
+                    array_merge($dataset, $other_value),
+                ]);
+            } else {
+
+                //dd($new_dataset);
+                $updated = SortDetails::where('location_id', Auth::user()->location_id)->first();
+                $updated->update(['Clean_Clear' => ($updated->Clean_Clear + $request->Clean_Clear ?? 0)]);
+                $updated->update(['Green_Colour' => ($updated->Green_Colour + $request->Green_Colour ?? 0)]);
+                $updated->update(['Others' => ($updated->Others + $request->Others ?? 0)]);
+                $updated->update(['Trash' => ($updated->Trash + $request->Trash ?? 0)]);
+                $updated->update(['Caps' => ($updated->Caps + $request->Caps ?? 0)]);
+                $updated->update(['hdpe' => ($updated->hdpe + $request->hdpe?? 0)]);
+                $updated->update(['ldpe' => ($updated->ldpe + $request->ldpe ?? 0)]);
+                $updated->update(['brown' => ($updated->brown + $request->item_weight ?? 0)]);
+                $updated->update(['black' => ($updated->black + $request->black ?? 0)]);
+
+            }
+
+            return response()->json([
+                "status" => $this->SuccessStatus,
+                "message" => "Collection created successfull",
+            ], 200);
+
+        }
+
+        if ($data == 'black') {
+
+            $sort = new Sorting();
+            $sort->item_id = $request->item_id;
+            $sort->black = $item_weight ?? 0;
+            $sort->location_id = Auth::user()->location_id;
+            $sort->user_id = Auth::id();
+            $sort->save();
+
+
+
+
+
+            $dataset = [
+                'Clean_Clear' => $request->Clean_Clear ?? 0,
+                'Green_Colour' => $request->Green_Colour ?? 0,
+                'Others' => $request->Others ?? 0,
+                'Trash' => $request->Trash ?? 0,
+                'Caps' => $request->Caps ?? 0,
+                'hdpe' => $request->hdpe ?? 0,
+                'ldpe' => $request->ldpe ?? 0,
+                'brown' => $request->brown ?? 0,
+                'black' => $request->item_weight ?? 0,
+
+
+            ];
+            //dd($tweight);
+
+            $other_value_history = [
+
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+            $other_value = [
+                'user_id' => Auth::id(),
+                'location_id' => Auth::user()->location_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+
+            $old_sorting = DB::table('sort_details')->where('location_id', Auth::user()->location_id)->first();
+
+            if (empty($old_sorting)) {
+
+                DB::table('sort_details')->insert([
+                    array_merge($dataset, $other_value),
+                ]);
+            } else {
+
+                //dd($new_dataset);
+                $updated = SortDetails::where('location_id', Auth::user()->location_id)->first();
+                $updated->update(['Clean_Clear' => ($updated->Clean_Clear + $request->Clean_Clear ?? 0)]);
+                $updated->update(['Green_Colour' => ($updated->Green_Colour + $request->Green_Colour ?? 0)]);
+                $updated->update(['Others' => ($updated->Others + $request->Others ?? 0)]);
+                $updated->update(['Trash' => ($updated->Trash + $request->Trash ?? 0)]);
+                $updated->update(['Caps' => ($updated->Caps + $request->Caps ?? 0)]);
+                $updated->update(['hdpe' => ($updated->hdpe + $request->hdpe?? 0)]);
+                $updated->update(['ldpe' => ($updated->ldpe + $request->ldpe ?? 0)]);
+                $updated->update(['brown' => ($updated->brown + $request->brown ?? 0)]);
+                $updated->update(['black' => ($updated->black + $request->item_weight ?? 0)]);
+
+            }
+
+
+            return response()->json([
+                "status" => $this->SuccessStatus,
+                "message" => "Collection created successfull",
+            ], 200);
+
+        }
+
+        //$t = CollectedDetails::where('location_id',Auth::user()->location_id)->decrement('collected', $sorted);
+
+
+        return response()->json([
+            "status" => $this->FailedStatus,
+            "message" => "Item not selected",
+        ], 500);
+
+
+
+
+
     }
 
     public function getCollection(Request $request)
@@ -113,14 +790,13 @@ class CollectionController extends Controller
     {
         try {
             $state = State::where('name', 'lagos')
-            ->get();
+                ->get();
 
             return response()->json([
                 "status" => $this->SuccessStatus,
                 "message" => "Successful",
                 "data" => $state,
             ], 200);
-
 
         } catch (Exception $e) {
             return response()->json([
@@ -162,247 +838,238 @@ class CollectionController extends Controller
     public function drop_off(Request $request)
     {
 
-        try{
+        try {
 
+            $collection_center_id = $request->collection_center;
 
-        $collection_center_id = $request->collection_center;
+            $sender_id = Auth::id();
+            $receiver_id = $collection_center_id;
 
-        $sender_id = Auth::id();
-        $receiver_id = $collection_center_id;
+            //get collection_center(location)
+            $get_location = Location::where('id', $collection_center_id)
+                ->first();
 
-        //get collection_center(location)
-        $get_location = Location::where('id', $collection_center_id)
-            ->first();
+            //get collection center number
+            $get_agent_user_id = Location::where('id', $collection_center_id)
+                ->first()->user_id;
 
-        //get collection center number
-        $get_agent_user_id = Location::where('id', $collection_center_id)
-        ->first()->user_id;
+            $agent_phone = User::where('id', $get_agent_user_id)
+                ->first()->phone;
 
-        $agent_phone = User::where('id', $get_agent_user_id)
-            ->first()->phone;
+            $customer_phone = User::where('id', Auth::id())
+                ->first()->phone;
 
-        $customer_phone = User::where('id', Auth::id())
-            ->first()->phone;
+            $customer_gender = User::where('id', Auth::id())
+                ->first()->gender;
 
+            $location_name = $get_location->name;
+            $location_address = $get_location->address;
+            $agent_log = $get_location->longitude;
+            $agent_lat = $get_location->latitude;
 
-        $customer_gender = User::where('id', Auth::id())
-            ->first()->gender;
+            //get user address
+            $address = Auth::user()->address;
+            $state = Auth::user()->state;
+            $lga = Auth::user()->lga;
+            $city = Auth::user()->city;
+            $long = Auth::user()->long;
+            $lat = Auth::user()->lat;
 
-        $location_name = $get_location->name;
-        $location_address = $get_location->address;
-        $agent_log = $get_location->longitude;
-        $agent_lat = $get_location->latitude;
+            //get rate
+            $get_rate = Rate::where('id', 1)->first();
+            $rate = $get_rate->rate;
 
-        //get user address
-        $address = Auth::user()->address;
-        $state = Auth::user()->state;
-        $lga = Auth::user()->lga;
-        $city = Auth::user()->city;
-        $long = Auth::user()->long;
-        $lat = Auth::user()->lat;
+            //get weight
+            // $get_weight = PlasticWaste::where('id', $weight_id)
+            // ->first();
 
-        //get rate
-        $get_rate = Rate::where('id', 1)->first();
-        $rate = $get_rate->rate;
+            // $plastic_weight_name = $get_weight->name;
+            // $plastic_weight = $get_weight->weight;
 
-        //get weight
-        // $get_weight = PlasticWaste::where('id', $weight_id)
-        // ->first();
+            //calculate amount
+            // $amount = $rate * $plastic_weight;
+            if ($sender_id == $receiver_id) {
+                return response()->json([
+                    'status' => $this->FailedStatus,
+                    'msg' => 'You cant send drop off to yourself',
+                ], 500);
 
-        // $plastic_weight_name = $get_weight->name;
-        // $plastic_weight = $get_weight->weight;
+            } else {
 
-        //calculate amount
-        // $amount = $rate * $plastic_weight;
-        if ($sender_id == $receiver_id) {
+                function generateRandomString($length = 6)
+                {
+                    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    $charactersLength = strlen($characters);
+                    $randomString = '';
+                    for ($i = 0; $i < $length; $i++) {
+                        $randomString .= $characters[rand(0, $charactersLength - 1)];
+                    }
+                    return $randomString;
+                }
+
+                $order_id = generateRandomString();
+
+                $drop = new DropOff();
+                $drop->order_id = $order_id;
+                $drop->city = $city;
+                $drop->lat = $lat;
+                $drop->long = $long;
+                $drop->address = $address;
+                $drop->lga = $lga;
+                $drop->state = $state;
+                $drop->sender_id = Auth::id();
+                $drop->receiver_id = $collection_center_id;
+
+                $drop->status = 0;
+                $drop->collection_center = $location_name;
+                $drop->user_id = Auth::id();
+                $drop->customer = Auth::user()->first_name . " " . Auth::user()->last_name;
+                // $drop->waste_weight = $plastic_weight;
+                $drop->agent_log = $agent_log;
+                $drop->agent_lat = $agent_lat;
+                $drop->agent_phone = $agent_phone;
+                $drop->customer_phone = $customer_phone;
+
+                $drop->save();
+
+                $user_firebaseToken = User::where('id', Auth::id())
+                    ->first()->device_id;
+
+                $SERVER_API_KEY = env('FCM_SERVER_KEY');
+                $data = [
+                    "registration_ids" => array($user_firebaseToken),
+                    "notification" => [
+                        "title" => 'Drop Off Created',
+                        "body" => "Your order has been successfully created. Head to collection center to Drop off your Plastic waste.",
+                    ],
+
+                    "data" => [
+                        "message" => "Your order has been successfully created",
+                    ],
+
+                ];
+
+                $dataString = json_encode($data);
+
+                $headers = [
+                    'Authorization: key=' . $SERVER_API_KEY,
+                    'Content-Type: application/json',
+                ];
+
+                $ch = curl_init();
+
+                curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+                $response = curl_exec($ch);
+
+                //send to Agent
+                $get_agent_firebaseToken = User::where('location_id', $collection_center_id)
+                    ->first();
+                $agent_firebaseToken = $get_agent_firebaseToken->device_id;
+
+                $SERVER_API_KEY = env('FCM_SERVER_KEY');
+
+                $data = [
+                    "registration_ids" => array($agent_firebaseToken),
+                    "notification" => [
+                        "title" => 'Drop Off Created',
+                        "body" => "An order is coming your way. Get ready to receive the order",
+                    ],
+
+                    "data" => [
+                        "message" => "Incoming Order",
+                    ],
+                ];
+                $dataString = json_encode($data);
+
+                $headers = [
+                    'Authorization: key=' . $SERVER_API_KEY,
+                    'Content-Type: application/json',
+                ];
+
+                $ch = curl_init();
+
+                curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+                $get_response = curl_exec($ch);
+
+                $user_email = Auth()->user();
+                $receiveremail = $user_email->email;
+
+                if ($customer_gender = 'Male') {
+
+                    $greeting = Greeting::where('gender', 'Male')
+                        ->first()->title;
+                } else {
+
+                    $greeting = Greeting::where('gender', 'Female')
+                        ->first()->title;
+
+                }
+
+                //send email to sender
+                $data = array(
+                    'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
+                    'subject' => "New Drop Off",
+                    'toreceiver' => $receiveremail,
+                    'greeting' => $greeting,
+                    'order_id' => $order_id,
+
+                );
+
+                Mail::send('dropoff', ["data1" => $data], function ($message) use ($data) {
+                    $message->from($data['fromsender']);
+                    $message->to($data['toreceiver']);
+                    $message->subject($data['subject']);
+
+                });
+
+                $get_receiver_email = User::where('location_id', $collection_center_id)
+                    ->first();
+                $receiveremail = $get_receiver_email->email;
+
+                //send email to receiver
+                $data = array(
+                    'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
+                    'subject' => "New Drop Off",
+                    'toreceiver' => $receiveremail,
+                    'order' => $order_id,
+                );
+
+                Mail::send('agentdropoff', ["data1" => $data], function ($message) use ($data) {
+                    $message->from($data['fromsender']);
+                    $message->to($data['toreceiver']);
+                    $message->subject($data['subject']);
+
+                });
+
+                return response()->json([
+                    "status" => $this->SuccessStatus,
+                    "message" => "Drop Off created successfully",
+                    "data" => $drop,
+                ], 200);
+
+            }
+        } catch (\Exception$e) {
+
             return response()->json([
+
                 'status' => $this->FailedStatus,
-                'msg' => 'You cant send drop off to yourself',
+                'message' => $e->getMessage(),
+
             ], 500);
 
-        } else {
-
-            function generateRandomString($length = 6)
-            {
-                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                $charactersLength = strlen($characters);
-                $randomString = '';
-                for ($i = 0; $i < $length; $i++) {
-                    $randomString .= $characters[rand(0, $charactersLength - 1)];
-                }
-                return $randomString;
-            }
-
-            $order_id = generateRandomString();
-
-            $drop = new DropOff();
-            $drop->order_id = $order_id;
-            $drop->city = $city;
-            $drop->lat = $lat;
-            $drop->long = $long;
-            $drop->address = $address;
-            $drop->lga = $lga;
-            $drop->state = $state;
-            $drop->sender_id = Auth::id();
-            $drop->receiver_id = $collection_center_id;
-
-            $drop->status = 0;
-            $drop->collection_center = $location_name;
-            $drop->user_id = Auth::id();
-            $drop->customer = Auth::user()->first_name . " " . Auth::user()->last_name;
-            // $drop->waste_weight = $plastic_weight;
-            $drop->agent_log = $agent_log;
-            $drop->agent_lat = $agent_lat;
-            $drop->agent_phone = $agent_phone;
-            $drop->customer_phone = $customer_phone;
-
-            $drop->save();
-
-            $user_firebaseToken = User::where('id', Auth::id())
-                ->first()->device_id;
-
-            $SERVER_API_KEY = env('FCM_SERVER_KEY');
-            $data = [
-                "registration_ids" => array($user_firebaseToken),
-                "notification" => [
-                    "title" => 'Drop Off Created',
-                    "body" => "Your order has been successfully created. Head to collection center to Drop off your Plastic waste.",
-                ],
-
-                "data" => [
-                    "message" => "Your order has been successfully created",
-                ],
-
-            ];
-
-            $dataString = json_encode($data);
-
-            $headers = [
-                'Authorization: key=' . $SERVER_API_KEY,
-                'Content-Type: application/json',
-            ];
-
-            $ch = curl_init();
-
-            curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
-
-            $response = curl_exec($ch);
-
-            //send to Agent
-            $get_agent_firebaseToken = User::where('location_id', $collection_center_id)
-                ->first();
-            $agent_firebaseToken = $get_agent_firebaseToken->device_id;
-
-            $SERVER_API_KEY = env('FCM_SERVER_KEY');
-
-            $data = [
-                "registration_ids" => array($agent_firebaseToken),
-                "notification" => [
-                    "title" => 'Drop Off Created',
-                    "body" => "An order is coming your way. Get ready to receive the order",
-                ],
-
-                "data" => [
-                    "message" => "Incoming Order",
-                ],
-            ];
-            $dataString = json_encode($data);
-
-            $headers = [
-                'Authorization: key=' . $SERVER_API_KEY,
-                'Content-Type: application/json',
-            ];
-
-            $ch = curl_init();
-
-            curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
-
-            $get_response = curl_exec($ch);
-
-            $user_email = Auth()->user();
-            $receiveremail = $user_email->email;
-
-            if($customer_gender = 'Male'){
-
-                $greeting = Greeting::where('gender', 'Male' )
-                ->first()->title;
-            }else{
-
-                $greeting = Greeting::where('gender', 'Female' )
-                ->first()->title;
-
-            }
-
-            //send email to sender
-            $data = array(
-                'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
-                'subject' => "New Drop Off",
-                'toreceiver' => $receiveremail,
-                'greeting' => $greeting,
-                'order_id' => $order_id,
-
-            );
-
-            Mail::send('dropoff', ["data1" => $data], function ($message) use ($data) {
-                $message->from($data['fromsender']);
-                $message->to($data['toreceiver']);
-                $message->subject($data['subject']);
-
-            });
-
-            $get_receiver_email = User::where('location_id', $collection_center_id)
-                ->first();
-            $receiveremail = $get_receiver_email->email;
-
-            //send email to receiver
-            $data = array(
-                'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
-                'subject' => "New Drop Off",
-                'toreceiver' => $receiveremail,
-                'order' => $order_id,
-            );
-
-            Mail::send('agentdropoff', ["data1" => $data], function ($message) use ($data) {
-                $message->from($data['fromsender']);
-                $message->to($data['toreceiver']);
-                $message->subject($data['subject']);
-
-            });
-
-            return response()->json([
-                "status" => $this->SuccessStatus,
-                "message" => "Drop Off created successfully",
-                "data" => $drop,
-            ], 200);
-
         }
-    } catch (\Exception $e){
-
-        return response()->json([
-
-            'status' => $this->FailedStatus,
-            'message' => $e->getMessage(),
-
-        ], 500);
-
-    }
-
-
-
-
-
-
-
 
     }
 
@@ -560,13 +1227,10 @@ class CollectionController extends Controller
             'receiver_id' => $get_user->location_id,
             'status' => 0,
 
-            ])->get();
-
+        ])->get();
 
         $total = Collection::where('location_id', $get_user->location_id)
-        ->sum('item_weight');
-
-
+            ->sum('item_weight');
 
         return response()->json([
             "status" => $this->SuccessStatus,
@@ -615,9 +1279,5 @@ class CollectionController extends Controller
         ], 200);
 
     }
-
-
-
-
 
 }

@@ -27,6 +27,8 @@ use App\Http\Controllers\TransactionController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+    Route::get('getItem', [CollectionController::class, 'get_item']);
+
 
     //forgetpassword
     Route::post('forgot-password', [AuthCoontroller::class, 'forgot_password']);
@@ -76,7 +78,9 @@ Route::group(['middleware' => ['auth:api','access']], function(){
 Route::post('pin-login', [AuthCoontroller::class, 'pin_login']);
 
 
-//create and get collection
+//create and get collections
+
+Route::post('get-item', [CollectionController::class, 'get_item']);
 Route::post('collection', [CollectionController::class, 'collect']);
 Route::get('getCollection', [CollectionController::class, 'getCollection']);
 
@@ -220,7 +224,7 @@ Route::group(['middleware' => ['auth:api','access']], function(){
     Route::post('agent-status', [AuthCoontroller::class, 'agent_status']);
 
     Route::post('get-user', [AuthCoontroller::class, 'get_user']);
-    
+
     Route::post('agent-waste-list', [CollectionController::class, 'agent_waste_list']);
     Route::post('agent-waste-list-update', [CollectionController::class, 'agent_waste_list_update']);
     Route::post('udpade-dropoff-weight', [CollectionController::class, 'update_dropoff_weight']);

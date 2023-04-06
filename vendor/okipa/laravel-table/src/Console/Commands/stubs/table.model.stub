@@ -1,0 +1,40 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyFullModelClass;
+use Okipa\LaravelTable\Table;
+use Okipa\LaravelTable\Column;
+use Okipa\LaravelTable\RowActions\EditRowAction;
+use Okipa\LaravelTable\RowActions\DestroyRowAction;
+use Okipa\LaravelTable\Formatters\DateFormatter;
+use Okipa\LaravelTable\Abstracts\AbstractTableConfiguration;
+
+class DummyClass extends AbstractTableConfiguration
+{
+    protected function table(): Table
+    {
+        return Table::make()->model(DummyModelClass::class)
+            ->rowActions(fn(DummyModelClass $dummyModel) => [
+                new EditRowAction(route('dummyRoute.edit', $dummyModel)),
+                new DestroyRowAction(),
+            ]);
+    }
+
+    protected function columns(): array
+    {
+        return [
+            Column::make('id')->sortable(),
+            Column::make('created_at')->format(new DateFormatter('d/m/Y H:i'))->sortable(),
+            Column::make('updated_at')->format(new DateFormatter('d/m/Y H:i'))->sortable()->sortByDefault('desc'),
+        ];
+    }
+
+    protected function results(): array
+    {
+        return [
+            // The table results configuration.
+            // As results are optional on tables, you may delete this method if you do not use it.
+        ];
+    }
+}

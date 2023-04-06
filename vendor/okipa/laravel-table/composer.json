@@ -1,0 +1,72 @@
+{
+    "name": "okipa/laravel-table",
+    "description": "Generate tables from Eloquent models.",
+    "type": "library",
+    "keywords": [
+        "Okipa",
+        "package",
+        "laravel",
+        "php",
+        "livewire",
+        "table",
+        "list",
+        "laravel-table",
+        "generate",
+        "generator",
+        "generation",
+        "html"
+    ],
+    "homepage": "https://github.com/okipa/laravel-table",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Arthur LORENT",
+            "email": "arthur.lorent@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "8.1.*|8.2.*",
+        "illuminate/contracts": "^9.0|^10.0",
+        "livewire/livewire": "^2.0"
+    },
+    "require-dev": {
+        "ext-pdo": "*",
+        "brianium/paratest": "^6.4",
+        "laravel/pint": "^1.1",
+        "nunomaduro/collision": "^6.0",
+        "nunomaduro/larastan": "^2.0",
+        "orchestra/testbench": "^7.0|^8.0",
+        "phpmd/phpmd": "^2.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "Okipa\\LaravelTable\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/",
+            "Tests\\Database\\Factories\\": "tests/database/factories/"
+        }
+    },
+    "scripts": {
+        "pint": ["vendor/bin/pint"],
+        "phpmd": "vendor/bin/phpmd config,src,tests text phpmd.xml",
+        "phpstan": "vendor/bin/phpstan analyse --memory-limit=2G",
+        "phpunit" : "vendor/bin/testbench package:test --parallel --no-coverage",
+        "test": ["@pint", "@phpmd", "@phpstan", "@phpunit"]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Okipa\\LaravelTable\\LaravelTableServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

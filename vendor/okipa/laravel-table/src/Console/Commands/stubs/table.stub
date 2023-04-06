@@ -1,0 +1,29 @@
+<?php
+
+namespace DummyNamespace;
+
+use Okipa\LaravelTable\Table;
+use Okipa\LaravelTable\Abstracts\AbstractTableConfiguration;
+
+class DummyClass extends AbstractTableConfiguration
+{
+    protected function table(): Table
+    {
+        // The table configuration.
+    }
+
+    protected function columns(): array
+    {
+        return [
+            // The table columns configuration.
+        ];
+    }
+
+    protected function results(): array
+    {
+        return [
+            // The table results configuration.
+            // As results are optional on tables, you may delete this method if you do not use it.
+        ];
+    }
+}

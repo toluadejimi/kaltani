@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Traits\HistoryTrait;
+use App\Mail\Reject;
 use App\Models\AgentRequest;
 use App\Models\BailedDetails;
 use App\Models\Bailing;
@@ -38,7 +39,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use App\Mail\Reject;
 use Mail;
 use Session;
 use Termwind\Components\Raw;
@@ -104,13 +104,63 @@ class MainController extends Controller
 
         return back()->with('message', 'Collection Created Successfully');
     }
-    public function viewCollect()
+    public function viewCollect(request $request)
     {
         $item = Item::all();
         $center = Location::all();
-        $collections = Collection::orderBy('created_at', 'desc')->get();
+        $collections = Collection::latest()->paginate(15);
+
+        if ($request->ajax()) {
+            $data = Collection::select('*');
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+
+                    $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
+
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
 
         return view('addCollection', compact('center', 'item', 'collections'));
+    }
+
+
+    public function search(Request $request)
+    {
+
+        if ($request->ajax()) {
+
+            $output = "";
+
+            $collection = DB::table('colletions')->where('title', 'LIKE', '%' . $request->search . "%")->get();
+
+            if ($collection) {
+
+                foreach ($collection as $key => $collect) {
+
+                    $output .= '<tr>' .
+
+                    '<td>' . $collect->id . '</td>' .
+
+                    '<td>' . $collect->item_id . '</td>' .
+
+                    '<td>' . $collect->price_per_kg . '</td>' .
+
+                    '<td>' . $collect->price . '</td>' .
+
+                        '</tr>';
+
+                }
+
+                return Response($output);
+
+            }
+
+        }
+
     }
 
     public function update_password()
@@ -360,10 +410,16 @@ class MainController extends Controller
     public function createItem(Request $request)
     {
 
+        $get_item = $request->item;
+        $get_item_name =strtolower($get_item);
+        $item_name =str_replace(' ', '', $get_item_name);
+
         $items = new Item();
-        $items->item = $request->input('item');
+        $items->item = $get_item;
         $items->user_id = Auth::id();
+        $items->item_name = $item_name;
         $items->save();
+
 
         return back()->with('message', 'Item Created Successfully');
     }
@@ -676,11 +732,9 @@ class MainController extends Controller
             'subject' => 'Cardy Daily Rate',
             'fname' => $f_name,
             'reason' => $reason,
-          ];
+        ];
 
-          Mail::to($senderemail)->send(new Reject($details));
-
-
+        Mail::to($senderemail)->send(new Reject($details));
 
         // $data = array(
         //     'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
@@ -697,13 +751,11 @@ class MainController extends Controller
         //     $message->subject($data['subject']);
         // });
 
+        $center_email = User::where('location_id', $receiver_id)
+            ->first()->email;
 
-
-        $center_email = User::where('location_id',$receiver_id)
-        ->first()->email;
-
-        $center_f_name = User::where('location_id',$receiver_id)
-        ->first()->first_name;
+        $center_f_name = User::where('location_id', $receiver_id)
+            ->first()->first_name;
 
         //send email to agent
 
@@ -711,9 +763,9 @@ class MainController extends Controller
             'subject' => 'Cardy Daily Rate',
             'fname' => $center_f_name,
             'reason' => $reason,
-          ];
+        ];
 
-          Mail::to($center_email)->send(new Reject($details));
+        Mail::to($center_email)->send(new Reject($details));
 
         // $data = array(
         //     'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
@@ -728,8 +780,6 @@ class MainController extends Controller
         //     $message->to($data['toreceiver']);
         //     $message->subject($data['subject']);
         // });
-
-
 
         //send app nofication to customer
         $user_firebaseToken = User::where('id', $user_id)
@@ -783,13 +833,11 @@ class MainController extends Controller
         $customer_price_per_kg = Rate::where('id', 1)
             ->first()->rate;
 
-            $agent_price_per_kg = Rate::where('id', 4)
+        $agent_price_per_kg = Rate::where('id', 4)
             ->first()->rate;
 
         $transfer_fee = Rate::where('id', 2)
             ->first()->rate;
-
-
 
         return view('setting', compact('customer_price_per_kg', 'agent_price_per_kg', 'transfer_fee'));
 
@@ -876,8 +924,6 @@ class MainController extends Controller
         $get_order_id = DropOff::where('id', $drop_off->id)
             ->first();
         $reason = $get_order_id->reason;
-
-
 
         $drop_off_list = DropOff::all();
 
@@ -1047,7 +1093,7 @@ class MainController extends Controller
         $get_all_agent = User::where('user_type', 'agent')->first();
 
         $rate = Rate::where('id', 4)
-        ->first()->rate;
+            ->first()->rate;
 
         $agents = AgentRequest::where('status', '1')->get();
 
@@ -1067,13 +1113,10 @@ class MainController extends Controller
         $amount = $request->amount;
         $weight = $request->weight;
 
-
-
         $initial_weight = AgentRequest::where('user_id', $request->user_id)
             ->first()->total_weight;
 
-
-        if($initial_weight < $weight){
+        if ($initial_weight < $weight) {
             return back()->with('error', "Insufficient Agent Weight");
         }
 

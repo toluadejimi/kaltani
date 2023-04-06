@@ -14,6 +14,10 @@ class SortDetails extends Model
         'Green_Colour',
         'Others',
         'Trash',
-        'Caps'
+        'Caps',
+        'hdpe',
+        'ldpe',
+        'black',
+        'brown'
     ];
 }
