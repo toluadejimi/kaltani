@@ -1573,7 +1573,7 @@ class MainController extends Controller
         //dd($bailingItems);
         $collection = Location::all();
 
-        $sorting = Sorting::orderBy('created_at', 'desc')->get();
+        $sorting = Sorting::latest()->orderBy('created_at', 'desc')->paginate('10');
 
         return view('sorting', compact('bailingItems', 'item', 'collection', 'sorting'));
     }
@@ -1607,8 +1607,8 @@ class MainController extends Controller
 
         $st = Sorting::where('id', $id)->first();
         //dd($st);
-        $sorting = Sorting::where('location_id', $st->location_id)
-            ->get();
+        $sorting = Sorting::latest()->where('location_id', $st->location_id)
+            ->paginate('10');
         $bailing = Bailing::where('location_id', $st->location_id)
             ->get();
         //$totals = Total::where('location_id',$st->location_id)->first();

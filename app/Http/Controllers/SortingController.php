@@ -121,7 +121,7 @@ class SortingController extends Controller
                     "data" => $sort
                 ],200);
 
-                
+
             } catch (Exception $e) {
                 return response()->json([
                     'status' => $this->failedStatus,
@@ -138,6 +138,8 @@ class SortingController extends Controller
         $sorting_items = BailingItem::all();
         $total = Collection::where('location_id',Auth::user()->location_id)->first();
         $totals = CollectedDetails::where('location_id',Auth::user()->location_id)->first();
+
+
         $items = Item::all();
         if(empty($getSorted))
         {

@@ -64,11 +64,11 @@
           </div>
         </div>
       </div>
-      
-        
+
+
         <div class="row">
             <div class="col-md-12 shadow-sm table-responsive">
-                
+
                     <div class="row p-2">
                         <div class="col-md-8">
                             <p>Latest Sorting</p>
@@ -86,6 +86,10 @@
                             <th >Others</th>
                             <th >Trash</th>
                             <th >Caps</th>
+                            <th>HDPE</th>
+                            <th>LDPE</th>
+                            <th>BROWN</th>
+                            <th>BLACK</th>
                             <th >Total</th>
                             <th >Date</th>
                             <th>Time</th>
@@ -99,6 +103,11 @@
                             <td>{{$item->Others}}kg</td>
                             <td>{{$item->Trash}}kg</td>
                             <td>{{$item->Caps}}kg</td>
+                            <td >{{$item->hdpe}}kg</td>
+                            <td >{{$item->ldpe}}kg</td>
+                            <td >{{$item->brown}}kg</td>
+                            <td >{{$item->black}}kg</td>
+
                             <td>
                               {{($item->Clean_Clear + $item->Green_Colour + $item->Others + $item->Trash + $item->Caps)}}kg
                             </td>
@@ -115,15 +124,15 @@
                         </tr>
                     @endforelse
 
-                        
+
                     </tbody>
                 </table>
             </div>
-        
+
         </div>
         <div class="row">
           <div class="col-md-12 shadow-sm table-responsive">
-              
+
                   <div class="row p-2">
                       <div class="col-md-8">
                           <p>Latest Bailed</p>
@@ -146,7 +155,7 @@
                       </tr>
                   </thead>
                   <tbody>
-                      
+
                       @forelse ($bailing as $item)
                         <tr>
                             <td>{{$item->Clean_Clear}}kg</td>
@@ -168,13 +177,13 @@
                             </td>
                         </tr>
                     @endforelse
-                      
+
                   </tbody>
               </table>
           </div>
-      
+
       </div>
     </div>
-        
+
 </div>
 @endsection

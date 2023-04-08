@@ -38,7 +38,7 @@ class TransferController extends Controller
         if(empty($total)){
             $transfered = 0;
         }else{
-            
+
         $transfered = ($total->Clean_Clear ?? "0" + $total->Others ?? "0" + $total->Green_Colour ?? "0" + $total->Trash ?? "0" + $total->Caps ?? "0");
         }
         //dd($total);
@@ -55,7 +55,7 @@ class TransferController extends Controller
                                 ->whereBetween('created_at',[$dateS,$dateE])
                                 ->get();
         $transfer_item = BailingItem::all();
-        
+
         return response()->json([
             "status" => $this->successStatus,
             "bailed" => (string)$transfered ,
@@ -64,12 +64,12 @@ class TransferController extends Controller
             "factory" => $factory,
             "collection_center" => $collection,
             "items" => $items,
-            "transfer_item" => $transfer_item,
+            "transfer_item" => $items,
             "transfer_history"  => $transfer_history,
 
         ],200);
-        
-        
+
+
         return response()->json([
                 "status" => $this->failedStatus,
                 "message" => "No material available for transfer",
@@ -83,7 +83,7 @@ class TransferController extends Controller
         return response()->json([
             "status" => $this->successStatus,
             "data" => $transfer
-            
+
         ],200);
     }
 
@@ -98,9 +98,9 @@ class TransferController extends Controller
                         'status' => $this->failedStatus,
                         'message'    => 'No Record Found',
                     ], 500);
-                    
+
                 }
-                
+
                 if( $t->location_id == $request->factory_id){
                         return response()->json([
                             'status' => $this->failedStatus,
@@ -140,8 +140,8 @@ class TransferController extends Controller
                         'message'    => 'Insufficent Trash Items',
                     ], 500);
                 }
-                
-         
+
+
 
                     $transfer = new Transfer();
                     $transfer->Clean_Clear = $request->Clean_Clear["total_weight"] ?? 0;
@@ -150,28 +150,28 @@ class TransferController extends Controller
                     $transfer->Trash = $request->Trash["total_weight"] ?? 0;
                     $transfer->location_id = Auth::user()->location_id;
                     $transfer->factory_id = $request->factory_id;
-                    
+
                     $transfer->clean_clear_qty = $request-> Clean_Clear["quantity"]?? 0;
                     $transfer->green_color_qty = $request->Green_Colour["quantity"]?? 0;
                     $transfer->other_qty = $request->Others["quantity"] ?? 0;
                     $transfer->trash_qty = $request->Trash["quantity"] ?? 0;
 
-                    
+
                     $transfer->collection_id = Auth::user()->location_id;
                     $transfer->user_id = Auth::id();
                     $transfer->status = 0;
                     //dd($transfer);
                     $transfer->save();
-    
-    
+
+
                     $transfered = ($transfer->Clean_Clear + $transfer->Others + $transfer->Green_Colour + $transfer->Trash);
                     // $total = Total::where('location_id',Auth::user()->location_id)->first();
                     // $old_total_transfered = $total->transfered;
                     // $total->update(['transfered' => ($total->transfered + $transfered)]);
                     // $total->update(['bailed' => ($total->bailed - $transfered)]);
-    
-    
-                    
+
+
+
 
                         $dataset = [
                         'Clean_Clear' => $request->Clean_Clear["total_weight"] ?? 0,
@@ -180,7 +180,7 @@ class TransferController extends Controller
                         'Trash' => $request->Trash["total_weight"] ?? 0
                         ];
                         //dd($tweight);
-                        
+
                         $other_value_history = [
                             'location_id'=> Auth::user()->location_id,
                             'created_at' => Carbon::now(),
@@ -192,19 +192,19 @@ class TransferController extends Controller
                             'updated_at' => Carbon::now()
                         ];
 
-    
+
                         $old_transfer = DB::table('transfer_details')->where('location_id', Auth::user()->location_id)->first();
-                        
-                        
+
+
 
                         if(empty($old_transfer)){
-                            
+
                             DB::table('transfer_details')->insert([
                                 array_merge($dataset, $other_value)
                             ]);
 
                         }else{
-                            
+
                             //dd($new_dataset);
                             $updated = TransferDetails::where('location_id', Auth::user()->location_id)->first();
                            $updated->update(['Clean_Clear' => ($updated->Clean_Clear + ($request->Clean_Clear["total_weight"] ?? 0))]);
@@ -212,8 +212,8 @@ class TransferController extends Controller
                            $updated->update(['Others' => ($updated->Others + ($request->Others["total_weight"] ?? 0))]);
                            $updated->update(['Trash' => ($updated->Trash + ($request->Trash["total_weight"] ?? 0))]);
                         }
-                    
-                    
+
+
                         $updated = BailedDetails::where('location_id', Auth::user()->location_id)->first();
                         //dd($updated->Clean_Clear);
                         $updated->update(['Clean_Clear' => ($updated->Clean_Clear - ($request->Clean_Clear["total_weight"] ?? 0))]);
@@ -221,13 +221,13 @@ class TransferController extends Controller
                         $updated->update(['Others' => ($updated->Others - ($request->Others["total_weight"] ?? 0))]);
                         $updated->update(['Trash' => ($updated->Trash - ($request->Trash["total_weight"] ?? 0))]);
 
-                    
+
                     $notification_id = User::where('factory_id',$request->factory_id)
                         ->whereNotNull('device_id')
                         ->pluck('device_id');
                         //dd($notification_id);
                     if (!empty($notification_id)) {
-                        
+
                         $factory = Factory::where('id',Auth::user()->location_id)->first();
                         $response = Http::withHeaders([
                             'Authorization' => 'key=AAAAva2Kaz0:APA91bHSiOJFPwd-9-2quGhhiyCU263oFWWrnYKtmuF1jGmDSMBHWiFkGy3tiaP3bLhJNMy9ki0YY061y5riGULckZtBkN9WkDZGX5X9HN60a2NvwHFR8Yevnat_zHzomC5O7AkdYwT8',
@@ -241,8 +241,8 @@ class TransferController extends Controller
                         ]);
                         $notification = $response->json('results');
                     }
-                   
-                   
+
+
                     return response()->json([
                         "status" => $this->successStatus,
                         "message" => "Transfer created successfull",
@@ -251,7 +251,7 @@ class TransferController extends Controller
                         "total_bailed" => $t->bailed,
                         "notification" => $notification
                     ],200);
-            
+
             } catch (Exception $e) {
                 return response()->json([
                     'status' => $this->failedStatus,
@@ -259,7 +259,7 @@ class TransferController extends Controller
                     'errors' => $e->getMessage(),
                 ], 500);
             }
-        
+
 
     }
     public function updateTransfer(Request $request)
@@ -288,5 +288,5 @@ class TransferController extends Controller
         ];
     }
 
-   
+
 }
