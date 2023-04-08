@@ -42,14 +42,14 @@ class TransferController extends Controller
         $bailed_details = BailedDetails::where('location_id', Auth::user()->location_id)->first();
 
         $sorted_details = SortDetails::select('Caps', 'Others', 'brown', 'black', 'Trash', 'ldpe', 'Green_Colour', 'Clean_Clear', 'hdpe', )
-            ->where('location_id', Auth::user()->location_id)->get();
+            ->where('location_id', Auth::user()->location_id)->first();
 
         $sortedArray = (array) $sorted_details; // cast object to array
         $itemList = [];
 
-        $itemList[] = ['value' => $sorted_details["Caps"], 'key' => ""];
+        $itemList[] = ['value' => $sorted_details->Caps, 'key' => "Caps"];
 
-       
+
 
 
 
