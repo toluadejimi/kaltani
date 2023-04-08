@@ -43,7 +43,7 @@ class TransferController extends Controller
         }
         //dd($total);
         $bailed_details = BailedDetails::where('location_id',Auth::user()->location_id)->first();
-        $sorted_details = SortDetails::where('location_id',Auth::user()->location_id)->first();
+        $sorted_details = SortDetails::where('location_id',Auth::user()->location_id)->get();
         $factory = Location::all();
         $collection = Location::all();
         $items = Item::all();
