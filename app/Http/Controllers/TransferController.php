@@ -47,11 +47,9 @@ class TransferController extends Controller
         $sortedArray = (array) $sorted_details; // cast object to array
         $itemList = [];
 
-        foreach ($sortedArray as $key => $value) {
-            if (!is_null($value)) {
-                $itemList[] = ['value' => $value, 'key' => $key];
-            }
-        }
+        $itemList[] = ['value' => $sorted_details["Caps"], 'key' => ""];
+
+       
 
 
 
