@@ -48,6 +48,17 @@ class TransferController extends Controller
         $itemList = [];
 
         $itemList[] = ['value' => $sorted_details->Caps, 'key' => "Caps"];
+        $itemList[] = ['value' => $sorted_details->brown, 'key' => "Brown"];
+
+        $itemList[] = ['value' => $sorted_details->black, 'key' => "Black"];
+
+        $itemList[] = ['value' => $sorted_details->Trash, 'key' => "Trash"];
+
+        $itemList[] = ['value' => $sorted_details->ldpe, 'key' => "LDPE"];
+
+        $itemList[] = ['value' => $sorted_details->Green_Colour, 'key' => "Green Colour"];
+        $itemList[] = ['value' => $sorted_details->Clean_Clear, 'key' => "Clean Clear"];
+        $itemList[] = ['value' => $sorted_details->hdpe, 'key' => "HDPE"];
 
 
 
