@@ -164,8 +164,8 @@ class TransferController extends Controller
             $transfer->Others = $request->Others["total_weight"] ?? 0;
             $transfer->Trash = $request->Trash["total_weight"] ?? 0;
             $transfer->Caps = $request->Caps["total_weight"] ?? 0;
-            $transfer->brown = $request->Brown["total_weight"] ?? 0;
-            $transfer->black = $request->Black["total_weight"] ?? 0;
+            $transfer->brown = $request->BROWN["total_weight"] ?? 0;
+            $transfer->black = $request->BLACK["total_weight"] ?? 0;
             $transfer->ldpe = $request->LDPE["total_weight"] ?? 0;
             $transfer->hdpe = $request->HDPE["total_weight"] ?? 0;
 
@@ -196,8 +196,8 @@ class TransferController extends Controller
                 'Others' => $request->Others["total_weight"] ?? 0,
                 'Trash' => $request->Trash["total_weight"] ?? 0,
                 'Caps' => $request->Caps["total_weight"] ?? 0,
-                'brown' => $request->Brown["total_weight"] ?? 0,
-                'black' => $request->Black["total_weight"] ?? 0,
+                'brown' => $request->BROWN["total_weight"] ?? 0,
+                'black' => $request->BLACK["total_weight"] ?? 0,
                 'ldpe' => $request->LDPE["total_weight"] ?? 0,
                 'hdpe' => $request->HDPE["total_weight"] ?? 0,
             ];
@@ -231,8 +231,8 @@ class TransferController extends Controller
                 $updated->update(['Others' => ($updated->Others + ($request->Others["total_weight"] ?? 0))]);
                 $updated->update(['Trash' => ($updated->Trash + ($request->Trash["total_weight"] ?? 0))]);
                 $updated->update(['Caps' => ($updated->Caps + ($request->Caps["total_weight"] ?? 0))]);
-                $updated->update(['brown' => ($updated->brown + ($request->Brown["total_weight"] ?? 0))]);
-                $updated->update(['black' => ($updated->black + ($request->Black["total_weight"] ?? 0))]);
+                $updated->update(['brown' => ($updated->brown + ($request->BROWN["total_weight"] ?? 0))]);
+                $updated->update(['black' => ($updated->black + ($request->BLACK["total_weight"] ?? 0))]);
                 $updated->update(['ldpe' => ($updated->ldpe + ($request->LDPE["total_weight"] ?? 0))]);
                 $updated->update(['hdpe' => ($updated->hdpe + ($request->HDPE["total_weight"] ?? 0))]);
 
@@ -245,8 +245,8 @@ class TransferController extends Controller
             $updated->update(['Others' => ($updated->Others - ($request->Others["total_weight"] ?? 0))]);
             $updated->update(['Trash' => ($updated->Trash - ($request->Trash["total_weight"] ?? 0))]);
             $updated->update(['Caps' => ($updated->Caps - ($request->Caps["total_weight"] ?? 0))]);
-            $updated->update(['brown' => ($updated->brown - ($request->Brown["total_weight"] ?? 0))]);
-            $updated->update(['black' => ($updated->black - ($request->Black["total_weight"] ?? 0))]);
+            $updated->update(['brown' => ($updated->brown - ($request->BROWN["total_weight"] ?? 0))]);
+            $updated->update(['black' => ($updated->black - ($request->BLACK["total_weight"] ?? 0))]);
             $updated->update(['ldpe' => ($updated->ldpe - ($request->LDPE["total_weight"] ?? 0))]);
             $updated->update(['hdpe' => ($updated->hdpe - ($request->HDPE["total_weight"] ?? 0))]);
 
