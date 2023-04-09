@@ -121,18 +121,6 @@ class SortedTransferController extends Controller
 
 
 
-
-                if(isEmpty($request->toLocation)){
-
-                    return response()->json([
-                        'status' => $this->failedStatus,
-                        'message'    => 'Please select destination location',
-                    ], 500);
-
-
-                }
-
-
             $sortedTransfer = new SortedTransfer();
             $sortedTransfer->item_id = $request->item_id;
             $sortedTransfer->Clean_Clear = $request->Clean_Clear ?? 0;
