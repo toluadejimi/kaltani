@@ -104,6 +104,7 @@ class TransferController extends Controller
 
     public function transfer(Request $request)
     {
+
 //dd($request->Clean_Clear["total_weight"]);
         try {
             $result = (($request->Clean_Clear["total_weight"] ?? 0) + ($request->Others["total_weight"] ?? 0) + ($request->Green_Colour["total_weight"] ?? 0) + ($request->Trash["total_weight"] ?? 0));
@@ -167,6 +168,7 @@ class TransferController extends Controller
             $transfer->black = $request->Black["total_weight"] ?? 0;
             $transfer->ldpe = $request->LDPE["total_weight"] ?? 0;
             $transfer->hdpe = $request->HDPE["total_weight"] ?? 0;
+
 
             $transfer->location_id = Auth::user()->location_id;
             $transfer->factory_id = $request->factory_id;

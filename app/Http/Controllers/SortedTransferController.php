@@ -61,6 +61,26 @@ class SortedTransferController extends Controller
                         'status' => $this->failedStatus,
                         'message'    => 'Insufficent Trash',
                     ], 500);
+                }elseif ($request->Brown > $checkSort->brown) {
+                    return response()->json([
+                        'status' => $this->failedStatus,
+                        'message'    => 'Insufficent Brown',
+                    ], 500);
+                }elseif ($request->Black > $checkSort->black) {
+                    return response()->json([
+                        'status' => $this->failedStatus,
+                        'message'    => 'Insufficent Black',
+                    ], 500);
+                }elseif ($request->LDPE > $checkSort->ldpe) {
+                    return response()->json([
+                        'status' => $this->failedStatus,
+                        'message'    => 'Insufficent LDPE',
+                    ], 500);
+                }elseif ($request->HDPE > $checkSort->hdpe) {
+                    return response()->json([
+                        'status' => $this->failedStatus,
+                        'message'    => 'Insufficent HDPE',
+                    ], 500);
                 }elseif ($request->Caps > $checkSort->Caps) {
                     return response()->json([
                         'status' => $this->failedStatus,
@@ -75,6 +95,11 @@ class SortedTransferController extends Controller
             $sortedTransfer->Others = $request->Others ?? 0;
             $sortedTransfer->Trash = $request->Trash ?? 0;
             $sortedTransfer->Caps = $request->Caps ?? 0;
+            $sortedTransfer->brown = $request->Brown ?? 0;
+            $sortedTransfer->black = $request->Black ?? 0;
+            $sortedTransfer->ldpe = $request->LDPE ?? 0;
+            $sortedTransfer->hdpe = $request->HDPE ?? 0;
+
             $sortedTransfer->formLocation = Auth::user()->location_id;
             $sortedTransfer->toLocation = $request->toLocation ?? 0;
             $sortedTransfer->location_id = Auth::user()->location_id;
@@ -91,6 +116,12 @@ class SortedTransferController extends Controller
             $sortedTransfer->Others = $request->Others ?? 0;
             $sortedTransfer->Trash = $request->Trash ?? 0;
             $sortedTransfer->Caps = $request->Caps ?? 0;
+            $sortedTransfer->brown = $request->Brown ?? 0;
+            $sortedTransfer->black = $request->Black ?? 0;
+            $sortedTransfer->ldpe = $request->LDPE ?? 0;
+            $sortedTransfer->hdpe = $request->HDPE ?? 0;
+
+
             $sortedTransfer->location_id = $request->toLocation;
             $sortedTransfer->user_id = Auth::id();
             //dd($sortedTransfer);
@@ -102,6 +133,13 @@ class SortedTransferController extends Controller
             $updated->update(['Others' => ($updated->Others + $request->Others ?? 0)]);
             $updated->update(['Trash' => ($updated->Trash + $request->Trash ?? 0)]);
             $updated->update(['Caps' => ($updated->Caps + $request->Caps ?? 0)]);
+
+            $updated->update(['brown' => ($updated->brown + $request->Brown ?? 0)]);
+            $updated->update(['black' => ($updated->black + $request->Black ?? 0)]);
+            $updated->update(['ldpe' => ($updated->ldpe + $request->LDPE ?? 0)]);
+            $updated->update(['hdpe' => ($updated->hdpe + $request->HDPE ?? 0)]);
+
+
             }
 
 
@@ -112,6 +150,13 @@ class SortedTransferController extends Controller
             $updated->update(['Others' => ($updated->Others - $request->Others ?? 0)]);
             $updated->update(['Trash' => ($updated->Trash - $request->Trash ?? 0)]);
             $updated->update(['Caps' => ($updated->Caps - $request->Caps ?? 0)]);
+
+            $updated->update(['brown' => ($updated->brown - $request->Brown ?? 0)]);
+            $updated->update(['black' => ($updated->black - $request->Black ?? 0)]);
+            $updated->update(['ldpe' => ($updated->ldpe - $request->LDPE ?? 0)]);
+            $updated->update(['hdpe' => ($updated->hdpe - $request->HDPE ?? 0)]);
+
+
 
             return  response()->json([
                 "status" => $this->successStatus,
