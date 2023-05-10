@@ -107,7 +107,7 @@ class AuthCoontroller extends Controller
 
             //send email
             $data = array(
-                'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
+                'fromsender' => 'noreply@notification.kaltaniims.com', 'TRASH BASH',
                 'subject' => "Verification Code",
                 'toreceiver' => $email,
                 'email_code' => $email_code,

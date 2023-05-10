@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
-use ConsoleTVs\Charts\Registrar as Charts;
 use Illuminate\Pagination\Paginator;
 class AppServiceProvider extends ServiceProvider
 {

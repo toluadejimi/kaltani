@@ -8,6 +8,35 @@
 
 ### [Unreleased]
 
+### [v10.4.0] - 2023-03-28
+
+- feat: Allow any callable in ->addColumn() #2977
+- fix: #2976
+
+### [v10.3.1] - 2023-02-20
+
+- fix: Fix anonymous resource collection data formatting #2944
+- fix: phpunit 10 deprecation #2955
+- fix: bump orchestra/testbench to 8 #2949
+
+### [v10.3.0] - 2023-02-07
+
+- Add Laravel 10 compatibility #2948
+
+### [v10.2.3] - 2023-01-18
+
+- fix: Custom Order on eager loaded relationships was not working
+- fix #2905
+
+### [v10.2.2] - 2023-01-11
+
+- fix: prevent deprecation errors in php 8.1+ #2931
+- fixes #2930
+
+### [v10.2.1] - 2022-12-07
+
+- fix: case insensitive starts with search #2917 #2916
+
 ### [v10.2.0] - 2022-11-03
 
 - PHP 8.1 Depreciation Fix #2877
@@ -89,7 +118,12 @@
 - Drop support for `ApiResourceDataTable`
 - PHP8 syntax / method signature changed
 
-[Unreleased]: https://github.com/yajra/laravel-datatables/compare/v10.2.0...10.x
+[Unreleased]: https://github.com/yajra/laravel-datatables/compare/v10.3.1...10.x
+[v10.3.1]: https://github.com/yajra/laravel-datatables/compare/v10.3.1...v10.3.0
+[v10.3.0]: https://github.com/yajra/laravel-datatables/compare/v10.3.0...v10.2.3
+[v10.2.3]: https://github.com/yajra/laravel-datatables/compare/v10.2.3...v10.2.2
+[v10.2.2]: https://github.com/yajra/laravel-datatables/compare/v10.2.2...v10.2.1
+[v10.2.1]: https://github.com/yajra/laravel-datatables/compare/v10.2.1...v10.2.0
 [v10.2.0]: https://github.com/yajra/laravel-datatables/compare/v10.2.0...v10.1.6
 [v10.1.6]: https://github.com/yajra/laravel-datatables/compare/v10.1.6...v10.1.5
 [v10.1.5]: https://github.com/yajra/laravel-datatables/compare/v10.1.5...v10.1.4

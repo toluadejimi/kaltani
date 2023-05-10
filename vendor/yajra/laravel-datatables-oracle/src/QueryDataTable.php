@@ -107,6 +107,16 @@ class QueryDataTable extends DataTableAbstract
     }
 
     /**
+     * Get paginated results.
+     *
+     * @return \Illuminate\Support\Collection<int, array>
+     */
+    public function results(): Collection
+    {
+        return $this->query->get();
+    }
+
+    /**
      * Prepare query by executing count, filter, order and paginate.
      *
      * @return $this
@@ -123,7 +133,7 @@ class QueryDataTable extends DataTableAbstract
 
         $this->prepared = true;
 
-        return  $this;
+        return $this;
     }
 
     /**
@@ -146,9 +156,10 @@ class QueryDataTable extends DataTableAbstract
         $builder = clone $this->query;
 
         if ($this->isComplexQuery($builder)) {
-            $table = $this->getConnection()->raw('('.$builder->toSql().') count_row_table');
-
-            return $this->getConnection()->table($table)->setBindings($builder->getBindings());
+            return $this->getConnection()
+                        ->query()
+                        ->fromRaw('('.$builder->toSql().') count_row_table')
+                        ->setBindings($builder->getBindings());
         }
 
         $row_count = $this->wrap('row_count');
@@ -180,16 +191,6 @@ class QueryDataTable extends DataTableAbstract
     protected function wrap(string $column): string
     {
         return $this->getConnection()->getQueryGrammar()->wrap($column);
-    }
-
-    /**
-     * Get paginated results.
-     *
-     * @return \Illuminate\Support\Collection<int, array>
-     */
-    public function results(): Collection
-    {
-        return $this->query->get();
     }
 
     /**
@@ -307,6 +308,16 @@ class QueryDataTable extends DataTableAbstract
         }
 
         return $instance;
+    }
+
+    /**
+     * Get query builder instance.
+     *
+     * @return QueryBuilder
+     */
+    public function getQuery(): QueryBuilder
+    {
+        return $this->query;
     }
 
     /**
@@ -445,12 +456,12 @@ class QueryDataTable extends DataTableAbstract
      */
     protected function prepareKeyword(string $keyword): string
     {
-        if ($this->config->isStartsWithSearch()) {
-            return "$keyword%";
-        }
-
         if ($this->config->isCaseInsensitive()) {
             $keyword = Str::lower($keyword);
+        }
+
+        if ($this->config->isStartsWithSearch()) {
+            return "$keyword%";
         }
 
         if ($this->config->isWildcard()) {
@@ -525,20 +536,6 @@ class QueryDataTable extends DataTableAbstract
     }
 
     /**
-     * Paginate dataTable using limit without offset
-     * with additional where clause via callback.
-     *
-     * @param  callable  $callback
-     * @return $this
-     */
-    public function limit(callable $callback): static
-    {
-        $this->limitCallback = $callback;
-
-        return $this;
-    }
-
-    /**
      * Perform pagination.
      *
      * @return void
@@ -556,6 +553,20 @@ class QueryDataTable extends DataTableAbstract
         } else {
             $this->query->skip($start)->take($limit);
         }
+    }
+
+    /**
+     * Paginate dataTable using limit without offset
+     * with additional where clause via callback.
+     *
+     * @param  callable  $callback
+     * @return $this
+     */
+    public function limit(callable $callback): static
+    {
+        $this->limitCallback = $callback;
+
+        return $this;
     }
 
     /**
@@ -631,7 +642,9 @@ class QueryDataTable extends DataTableAbstract
             ->each(function ($orderable) {
                 $column = $this->resolveRelationColumn($orderable['name']);
 
-                if ($this->hasOrderColumn($column)) {
+                if ($this->hasOrderColumn($orderable['name'])) {
+                    $this->applyOrderColumn($orderable['name'], $orderable);
+                } elseif ($this->hasOrderColumn($column)) {
                     $this->applyOrderColumn($column, $orderable);
                 } else {
                     $nullsLastSql = $this->getNullsLastSql($column, $orderable['direction']);
@@ -735,7 +748,7 @@ class QueryDataTable extends DataTableAbstract
         $query_log = $this->getConnection()->getQueryLog();
         array_walk_recursive($query_log, function (&$item) {
             if (is_string($item)) {
-                $item = utf8_encode($item);
+                $item = iconv('iso-8859-1', 'utf-8', $item);
             }
         });
 
@@ -775,15 +788,5 @@ class QueryDataTable extends DataTableAbstract
         $this->prepareQuery();
 
         return $this->getQuery();
-    }
-
-    /**
-     * Get query builder instance.
-     *
-     * @return QueryBuilder
-     */
-    public function getQuery(): QueryBuilder
-    {
-        return $this->query;
     }
 }

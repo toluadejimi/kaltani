@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
-use ConsoleTVs\Charts\Registrar as Charts;
 use Illuminate\Pagination\Paginator;
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,11 +26,11 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(Charts $charts)
+    public function boot()
     {
-        $charts->register([
-            \App\Charts\UserChart::class
-        ]);
-        Paginator::useBootstrap();
+        // $charts->register([
+        //     \App\Charts\UserChart::class
+        // ]);
+        // Paginator::useBootstrap();
     }
 }
