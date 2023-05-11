@@ -83,7 +83,7 @@ class CollectionController extends Controller
 
     }
 
-    
+
 
     public function get_plastic_waste(Request $request)
     {
@@ -143,8 +143,7 @@ class CollectionController extends Controller
         try {
 
 
-            $result = StateLga::select('lga','state_id')
-            ->where('state', $state)
+            $result = StateLga::where('state', $state)
             ->get();
 
             return response()->json([
