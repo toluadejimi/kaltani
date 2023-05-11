@@ -75,10 +75,10 @@ class CollectionController extends Controller
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'msg' => 'Error',
                 'errors' => $e->getMessage(),
-            ], 401);
+            ], 500);
         }
 
     }
@@ -100,10 +100,10 @@ class CollectionController extends Controller
 
         } catch (Exception $e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'msg' => 'Error',
                 'errors' => $e->getMessage(),
-            ], 401);
+            ], 500);
         }
 
     }
@@ -124,10 +124,10 @@ class CollectionController extends Controller
 
         } catch (Exception $e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'msg' => 'Error',
                 'errors' => $e->getMessage(),
-            ], 401);
+            ], 500);
         }
 
     }
@@ -135,26 +135,28 @@ class CollectionController extends Controller
     //get lga by state
     public function get_lga(Request $request)
     {
+        dd('hello');
 
         $state = $request->all();
 
         try {
 
-            $result = StateLga::where('state', $state)
-                ->get();
+            $result = StateLga::select('lga','state_id')
+            ->where('state', $state)
+            ->get();
 
             return response()->json([
                 "status" => $this->SuccessStatus,
-                "message" => "Successfull",
+                "message" => "Successful",
                 "data" => $result,
             ], 200);
 
         } catch (Exception $e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'msg' => 'Error',
                 'errors' => $e->getMessage(),
-            ], 401);
+            ], 500);
         }
 
     }
@@ -469,10 +471,10 @@ class CollectionController extends Controller
 
     //     } catch (Exception $e) {
     //         return response()->json([
-    //             'status' => $this->failedStatus,
+    //             'status' => $this->FailedStatus,
     //             'msg' => 'Error',
     //             'errors' => $e->getMessage(),
-    //         ], 401);
+    //         ], 500);
     //     }
 
     // }
