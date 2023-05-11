@@ -135,13 +135,15 @@ class CollectionController extends Controller
     //get lga by state
     public function get_lga(Request $request)
     {
+        dd('hello');
 
         $state = $request->all();
 
         try {
 
-            $result = StateLga::select('lga')->where('state', $state)
-                ->get();
+            $result = StateLga::select('lga','state_id')
+            ->where('state', $state)
+            ->get();
 
             return response()->json([
                 "status" => $this->SuccessStatus,
