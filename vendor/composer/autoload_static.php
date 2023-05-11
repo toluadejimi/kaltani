@@ -382,8 +382,8 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -431,8 +431,8 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
         ),
         'League\\Uri\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/uri-interfaces/src',
-            1 => __DIR__ . '/..' . '/league/uri/src',
+            0 => __DIR__ . '/..' . '/league/uri/src',
+            1 => __DIR__ . '/..' . '/league/uri-interfaces/src',
         ),
         'League\\OAuth2\\Server\\' => 
         array (
@@ -605,7 +605,6 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
     );
 
     public static $classMap = array (
-        'App\\Charts\\UserChart' => __DIR__ . '/../..' . '/app/Charts/UserChart.php',
         'App\\Console\\Commands\\DailyUpdate' => __DIR__ . '/../..' . '/app/Console/Commands/DailyUpdate.php',
         'App\\Console\\Commands\\HourlyUpdate' => __DIR__ . '/../..' . '/app/Console/Commands/HourlyUpdate.php',
         'App\\Console\\Commands\\TraitMakeCommand' => __DIR__ . '/../..' . '/app/Console/Commands/TraitMakeCommand.php',

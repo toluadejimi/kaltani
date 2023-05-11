@@ -6,7 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'App\\Charts\\UserChart' => $baseDir . '/app/Charts/UserChart.php',
     'App\\Console\\Commands\\DailyUpdate' => $baseDir . '/app/Console/Commands/DailyUpdate.php',
     'App\\Console\\Commands\\HourlyUpdate' => $baseDir . '/app/Console/Commands/HourlyUpdate.php',
     'App\\Console\\Commands\\TraitMakeCommand' => $baseDir . '/app/Console/Commands/TraitMakeCommand.php',
