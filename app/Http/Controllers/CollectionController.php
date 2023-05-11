@@ -75,10 +75,10 @@ class CollectionController extends Controller
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'msg' => 'Error',
                 'errors' => $e->getMessage(),
-            ], 401);
+            ], 500);
         }
 
     }
@@ -100,10 +100,10 @@ class CollectionController extends Controller
 
         } catch (Exception $e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'msg' => 'Error',
                 'errors' => $e->getMessage(),
-            ], 401);
+            ], 500);
         }
 
     }
@@ -124,10 +124,10 @@ class CollectionController extends Controller
 
         } catch (Exception $e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'msg' => 'Error',
                 'errors' => $e->getMessage(),
-            ], 401);
+            ], 500);
         }
 
     }
@@ -140,21 +140,21 @@ class CollectionController extends Controller
 
         try {
 
-            $result = StateLga::where('state', $state)
+            $result = StateLga::select('lga')->where('state', $state)
                 ->get();
 
             return response()->json([
                 "status" => $this->SuccessStatus,
-                "message" => "Successfull",
+                "message" => "Successful",
                 "data" => $result,
             ], 200);
 
         } catch (Exception $e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'msg' => 'Error',
                 'errors' => $e->getMessage(),
-            ], 401);
+            ], 500);
         }
 
     }
@@ -469,10 +469,10 @@ class CollectionController extends Controller
 
     //     } catch (Exception $e) {
     //         return response()->json([
-    //             'status' => $this->failedStatus,
+    //             'status' => $this->FailedStatus,
     //             'msg' => 'Error',
     //             'errors' => $e->getMessage(),
-    //         ], 401);
+    //         ], 500);
     //     }
 
     // }
