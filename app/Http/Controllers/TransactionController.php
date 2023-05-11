@@ -44,13 +44,13 @@ class TransactionController extends Controller
 
             return response()->json([
                 "status" => $this->SuccessStatus,
-                "message" => "Successfull",
+                "message" => "Successful",
                 "data" => $result,
             ], 200);
 
         } catch (Exception $e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'msg' => 'Error',
                 'errors' => $e->getMessage(),
             ], 401);

@@ -12,14 +12,14 @@ use Auth;
 class ItemsController extends Controller
 {
     public $successStatus = true;
-    public $failedStatus = false;
+    public $FailedStatus = false;
     //
     public function bailingList(){
         $items = BailingItem::all();
         $t = Total::where('locationId',Auth::user()->location_id)->first();
         return response()->json([
             "status" => $this->successStatus,
-            "message" => "Successfull",
+            "message" => "Successful",
             "data" => $items,
             "total_collected" => $t->collected
         ],200);
@@ -29,7 +29,7 @@ class ItemsController extends Controller
         $items = Item::all();
         return response()->json([
             "status" => $this->successStatus,
-            "message" => "Successfull",
+            "message" => "Successful",
             "data" => $items
         ],200);
     }

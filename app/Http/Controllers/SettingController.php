@@ -33,7 +33,7 @@ class SettingController extends Controller
 
         return response()->json([
             "status" => $this->SuccessStatus,
-            "message" => "Successfull",
+            "message" => "Successful",
             "data" => $slider
         ],200);
 

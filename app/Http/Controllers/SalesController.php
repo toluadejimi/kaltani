@@ -11,14 +11,14 @@ class SalesController extends Controller
 {
     //
     public $successStatus = true;
-    public $failedStatus = false;
+    public $FailedStatus = false;
 
     public function getSales(Request $request)
     {
         $sales = Sales::where('user_id', Auth::id())->get();
         return [
             "status" => $this->successStatus,
-            "message" => "Successfull",
+            "message" => "Successful",
             "data" => $sales
         ];
     }
@@ -63,18 +63,18 @@ class SalesController extends Controller
 
         return response()->json([
             "status" => $this->successStatus,
-            "message" => "Sales record created successfull",
+            "message" => "Sales record created Successful",
             "data" => $sales,
             "total" => $t->sales
         ],200);
         }catch (Exception $e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message'    => 'Error',
                 'errors' => $e->getMessage(),
             ], 401);
         }
-        
+
 
     }
 }

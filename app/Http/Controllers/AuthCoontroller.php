@@ -23,7 +23,7 @@ use Mail;
 class AuthCoontroller extends Controller
 {
     public $successStatus = true;
-    public $failedStatus = false;
+    public $FailedStatus = false;
 
     public function Login()
     {
@@ -40,7 +40,7 @@ class AuthCoontroller extends Controller
 
             if (!auth()->attempt($credentials)) {
                 return response()->json([
-                    'status' => $this->failedStatus,
+                    'status' => $this->FailedStatus,
                     'message' => 'Invalid email or password',
                 ], 500);
             }
@@ -60,7 +60,7 @@ class AuthCoontroller extends Controller
 
         } catch (\Exception$e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => 'Error',
                 'errors' => $e->getMessage(),
             ], 500);
@@ -93,7 +93,7 @@ class AuthCoontroller extends Controller
 
                 return response()->json([
 
-                    'status' => $this->failedStatus,
+                    'status' => $this->FailedStatus,
                     'message' => 'Email Already Exist',
 
                 ], 500);
@@ -127,7 +127,7 @@ class AuthCoontroller extends Controller
 
         } catch (\Exception$e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => $e->getMessage(),
             ], 500);
         }
@@ -157,14 +157,14 @@ class AuthCoontroller extends Controller
 
             return response()->json([
 
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => 'Invalid Code',
 
             ], 200);
 
         } catch (\Exception$e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => $e->getMessage(),
             ], 500);
         }
@@ -191,7 +191,7 @@ class AuthCoontroller extends Controller
 
         } catch (\Exception$e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => $e->getMessage(),
             ], 500);
         }
@@ -222,7 +222,7 @@ class AuthCoontroller extends Controller
 
                 return response()->json([
 
-                    'status' => $this->failedStatus,
+                    'status' => $this->FailedStatus,
                     'message' => "Phone number already verified",
 
                 ], 500);
@@ -281,14 +281,14 @@ class AuthCoontroller extends Controller
 
             return response()->json([
 
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => "Error!! $message",
 
             ], 500);
 
         } catch (\Exception$e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => $e->getMessage(),
             ], 500);
         }
@@ -321,14 +321,14 @@ class AuthCoontroller extends Controller
 
             return response()->json([
 
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => "Invalid verification code",
 
             ], 500);
 
         } catch (\Exception$e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => $e->getMessage(),
             ], 500);
         }
@@ -349,7 +349,7 @@ class AuthCoontroller extends Controller
 
                 return response()->json([
 
-                    'status' => $this->failedStatus,
+                    'status' => $this->FailedStatus,
                     'message' => 'Invalid User Pin',
 
                 ], 500);
@@ -371,7 +371,7 @@ class AuthCoontroller extends Controller
 
         } catch (\Exception$e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => $e->getMessage(),
             ], 500);
         }
@@ -428,7 +428,7 @@ class AuthCoontroller extends Controller
 
         } catch (\Exception$e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => $e->getMessage(),
             ], 500);
         }
@@ -464,13 +464,13 @@ class AuthCoontroller extends Controller
         );
         $validator = Validator::make($input, $rules);
         if ($validator->fails()) {
-            $arr = array("status" => $this->failedStatus, "message" => $validator->errors()->first());
+            $arr = array("status" => $this->FailedStatus, "message" => $validator->errors()->first());
         } else {
             try {
                 if ((Hash::check(request('old_password'), $users->password)) == false) {
-                    $arr = array("status" => $this->failedStatus, "message" => "Check your old password.");
+                    $arr = array("status" => $this->FailedStatus, "message" => "Check your old password.");
                 } else if ((Hash::check(request('new_password'), $users->password)) == true) {
-                    $arr = array("status" => $this->failedStatus, "message" => "Please enter a password which is not similar then current password.");
+                    $arr = array("status" => $this->FailedStatus, "message" => "Please enter a password which is not similar then current password.");
                 } else {
                     User::where('id', $userid)->update(['password' => Hash::make($input['new_password'])]);
                     $arr = array("status" => $this->successStatus, "message" => "Password updated successfully.");
@@ -481,7 +481,7 @@ class AuthCoontroller extends Controller
                 } else {
                     $msg = $e->getMessage();
                 }
-                $arr = array("status" => $this->failedStatus, "message" => $msg);
+                $arr = array("status" => $this->FailedStatus, "message" => $msg);
             }
         }
         return \Response::json($arr);
@@ -501,13 +501,13 @@ class AuthCoontroller extends Controller
         );
         $validator = Validator::make($input, $rules);
         if ($validator->fails()) {
-            $arr = array("status" => $this->failedStatus, "message" => $validator->errors()->first());
+            $arr = array("status" => $this->FailedStatus, "message" => $validator->errors()->first());
         } else {
             try {
                 if ((Hash::check(request('old_pin'), $users->pin)) == false) {
-                    $arr = array("status" => $this->failedStatus, "message" => "Check your old pin.");
+                    $arr = array("status" => $this->FailedStatus, "message" => "Check your old pin.");
                 } else if ((Hash::check(request('new_pin'), $users->pin)) == true) {
-                    $arr = array("status" => $this->failedStatus, "message" => "Please enter a pin which is not similar then current pin.");
+                    $arr = array("status" => $this->FailedStatus, "message" => "Please enter a pin which is not similar then current pin.");
                 } else {
                     User::where('id', $userid)->update(['pin' => Hash::make($input['new_pin'])]);
                     $arr = array("status" => $this->successStatus, "message" => "Password updated successfully.");
@@ -518,7 +518,7 @@ class AuthCoontroller extends Controller
                 } else {
                     $msg = $e->getMessage();
                 }
-                $arr = array("status" => $this->failedStatus, "message" => $msg);
+                $arr = array("status" => $this->FailedStatus, "message" => $msg);
             }
         }
         return \Response::json($arr);
@@ -553,7 +553,7 @@ class AuthCoontroller extends Controller
             if ($getemail == null) {
 
                 return response()->json([
-                    'status' => $this->failedStatus,
+                    'status' => $this->FailedStatus,
                     'message' => 'User can not be be found on the system',
 
                 ], 500);
@@ -620,7 +620,7 @@ class AuthCoontroller extends Controller
 
         } catch (\Exception$e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => $e->getMessage(),
             ], 500);
         }
@@ -649,7 +649,7 @@ class AuthCoontroller extends Controller
 
         } catch (\Exception$e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => $e->getMessage(),
             ], 500);
         }
@@ -696,7 +696,7 @@ class AuthCoontroller extends Controller
 
         } catch (\Exception$e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => $e->getMessage(),
             ], 500);
         }
@@ -721,7 +721,7 @@ class AuthCoontroller extends Controller
 
         } catch (\Exception$e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => $e->getMessage(),
             ], 500);
         }
@@ -751,7 +751,7 @@ class AuthCoontroller extends Controller
 
         } catch (\Exception$e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => $e->getMessage(),
             ], 500);
         }
@@ -797,7 +797,7 @@ class AuthCoontroller extends Controller
 
                 return response()->json([
 
-                    'status' => $this->failedStatus,
+                    'status' => $this->FailedStatus,
                     'message' => 'User not found on our system',
 
                 ], 500);
@@ -806,7 +806,7 @@ class AuthCoontroller extends Controller
 
         } catch (\Exception$e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => $e->getMessage(),
             ], 500);
         }
@@ -852,7 +852,7 @@ class AuthCoontroller extends Controller
 
             return response()->json([
 
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => 'User not found on our system',
 
             ], 500);
@@ -860,7 +860,7 @@ class AuthCoontroller extends Controller
         }
     } catch (\Exception $e) {
         return response()->json([
-            'status' => $this->failedStatus,
+            'status' => $this->FailedStatus,
             'message' => $e->getMessage(),
         ], 500);
     }

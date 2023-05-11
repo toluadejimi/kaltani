@@ -16,7 +16,7 @@ use Carbon\Carbon;
 class AuthCoontroller extends Controller
 {
     public $successStatus = true;
-    public $failedStatus = false;
+    public $FailedStatus = false;
 
 
     public function Login()
@@ -31,16 +31,16 @@ class AuthCoontroller extends Controller
 
             if (! auth()->attempt($credentials)) {
                 return response()->json([
-                    'status'=>$this->failedStatus,
+                    'status'=>$this->FailedStatus,
                     'message' => 'Invalid email or password'
                 ], 500);
             }
 
             $token = auth()->user()->createToken('API Token')->accessToken;
-    
-    
+
+
             Auth::guard('api')->check();
-    
+
         return response()->json([
             "status" => $this->successStatus,
             'message' => "login Successfully",
@@ -51,7 +51,7 @@ class AuthCoontroller extends Controller
         ],200);
         } catch (Exception $e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message'    => 'Error',
                 'errors' => $e->getMessage(),
             ], 401);
@@ -74,10 +74,10 @@ class AuthCoontroller extends Controller
                 'user'=> auth()->user(),
                 'tokenType' =>'Bearer',
                 'accessToken' => $token,
-                
+
             ],200
             );
-       
+
     }
 
     public function register(Request $request) {
@@ -91,7 +91,7 @@ class AuthCoontroller extends Controller
             'password' => 'required|string|confirmed|min:6',
         ]);
         if($validator->fails()){
-            return response()->json(['status' => $this->failedStatus,$validator->errors()->toJson()], 400);
+            return response()->json(['status' => $this->FailedStatus,$validator->errors()->toJson()], 400);
         }
         $user = User::create(array_merge(
                     $validator->validated(),
@@ -121,7 +121,7 @@ class AuthCoontroller extends Controller
             'user'=> auth()->user(),
         ],200);
     }
-    
+
      public function updateUser(Request $request)
     {
         $input = $request->all();
@@ -135,13 +135,13 @@ class AuthCoontroller extends Controller
         );
         $validator = Validator::make($input, $rules);
         if ($validator->fails()) {
-            $arr = array("status" => $this->failedStatus, "message" => $validator->errors()->first());
+            $arr = array("status" => $this->FailedStatus, "message" => $validator->errors()->first());
         } else {
             try {
                 if ((Hash::check(request('old_password'), $users->password)) == false) {
-                    $arr = array("status" => $this->failedStatus, "message" => "Check your old password." );
+                    $arr = array("status" => $this->FailedStatus, "message" => "Check your old password." );
                 } else if ((Hash::check(request('new_password'), $users->password)) == true) {
-                    $arr = array("status" => $this->failedStatus, "message" => "Please enter a password which is not similar then current password.");
+                    $arr = array("status" => $this->FailedStatus, "message" => "Please enter a password which is not similar then current password.");
                 } else {
                     User::where('id', $userid)->update(['password' => Hash::make($input['new_password'])]);
                     $arr = array("status" => $this->successStatus, "message" => "Password updated successfully.");
@@ -152,7 +152,7 @@ class AuthCoontroller extends Controller
                 } else {
                     $msg = $e->getMessage();
                 }
-                $arr = array("status" => $this->failedStatus, "message" => $msg);
+                $arr = array("status" => $this->FailedStatus, "message" => $msg);
             }
         }
         return \Response::json($arr);

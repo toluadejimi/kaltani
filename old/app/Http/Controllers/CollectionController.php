@@ -19,7 +19,7 @@ class CollectionController extends Controller
     {
 
         $t = CollectedDetails::where('location_id',Auth::user()->location_id)->first();
-        
+
         if (empty($t) ){
             $create = new CollectedDetails();
             $create->location_id = Auth::user()->location_id;
@@ -42,23 +42,23 @@ class CollectionController extends Controller
 
         $collected = (int)$request->input('item_weight') ?? 0;
             $locationId = Auth::user()->location_id;
-            
+
             $t = CollectedDetails::where('location_id',$locationId)->first();
-           
+
             if (!empty($t) ) {
                 $t->update(['collected' => ($t->collected + $collected)]);
             }
-        
+
 
         return response()->json([
             "status" => $this->SuccessStatus,
-            "message" => "Collection created successfull",
+            "message" => "Collection created Successful",
             "data" => $collect,
             "total" => $t->collected
         ],200);
     }
 
-    
+
 
     public function getCollection(Request $request)
     {
@@ -66,17 +66,17 @@ class CollectionController extends Controller
             $collect = Collection::with('location','item')->where('location_id', Auth::user()->location_id)->get();
         return response()->json([
             "status" => $this->SuccessStatus,
-            "message" => "Successfull",
+            "message" => "Successful",
             "data" => $collect
         ],200);
         }catch (Exception $e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'msg'    => 'Error',
                 'errors' => $e->getMessage(),
             ], 401);
         }
-        
+
     }
 
 }

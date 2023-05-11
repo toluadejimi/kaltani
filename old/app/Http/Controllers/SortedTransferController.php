@@ -11,7 +11,7 @@ use Auth;
 class SortedTransferController extends Controller
 {
     public $successStatus = true;
-    public $failedStatus = false;
+    public $FailedStatus = false;
 
 
     public function sortedTransfer(Request $request)
@@ -19,51 +19,51 @@ class SortedTransferController extends Controller
         try {
             //dd($request->Caps);
             $result = ($request->Clean_Clear + $request->Others + $request->Green_Colour + $request->Trash + $request->Caps);
-            
+
             $t = SortDetails::where('location_id', Auth::user()->location_id)->first();
             if(empty($t)){
                 return response()->json([
-                    'status' => $this->failedStatus,
+                    'status' => $this->FailedStatus,
                     'message'    => 'No Collection Found',
                 ],500 );
             }
                  $tsortedTransfer = $t->Clean_Clear + $t->Green_Colour + $t->Others + $t->Trash + $t->Caps;
                 if($result > $tsortedTransfer){
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent Sorted ',
                     ], 500);
                 }
                 $checkSort = SortDetails::where('location_id', Auth::user()->location_id)->first();
                  if (empty($checkSort)) {
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'No Collection Record Found',
                     ],500 );
                  }
                 if ($request->Clean_Clear > $checkSort->Clean_Clear) {
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent Clean Clear',
                     ], 500);
                 }elseif ($request->Green_Colour > $checkSort->Green_Colour) {
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent  Green Colour',
                     ], 500);
                 }elseif ($request->Others > $checkSort->Others) {
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent Others',
                     ], 500);
                 }elseif ($request->Trash > $checkSort->Trash) {
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent Trash',
                     ], 500);
                 }elseif ($request->Caps > $checkSort->Caps) {
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent Caps',
                     ], 500);
                 }
@@ -81,7 +81,7 @@ class SortedTransferController extends Controller
             $sortedTransfer->user_id = Auth::id();
             //dd($sortedTransfer);
             $sortedTransfer->save();
-                
+
             $sortcheck = SortDetails::where('location_id', $request->toLocation)->first();
             if(empty($sortcheck))
             {
@@ -94,7 +94,7 @@ class SortedTransferController extends Controller
                 $sortdetails->location_id = $request->toLocation;
                 $sortdetails->user_id = Auth::id();
                 $sortdetails->save();
-                
+
             }else{
             $updated = SortDetails::where('location_id', $request->toLocation)->first();
             $updated->update(['Clean_Clear' => ($updated->Clean_Clear + $request->Clean_Clear ?? 0)]);
@@ -114,67 +114,67 @@ class SortedTransferController extends Controller
 
             return  response()->json([
                 "status" => $this->successStatus,
-                "message" => "Successfull",
+                "message" => "Successful",
                 "data" => $sortedTransfer
             ],200);
 
         } catch (Exception $e) {
             return response()->json([
-                "status" => $this->failedStatus,
+                "status" => $this->FailedStatus,
                 "message" => $e,
             ], 500);
         }
     }
-    
+
     public function transfer(Request $request){
-        
-        
+
+
         try{
             $result = ($request->Clean_Clear + $request->Others + $request->Green_Colour + $request->Trash);
                 $t = Total::where('location_id', Auth::user()->location_id)->first();
                 if(empty($t)){
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'No Record Found',
                     ], 500);
-                    
+
                 }
-    
+
                     if($result > $t->sorted){
                         return response()->json([
-                            'status' => $this->failedStatus,
+                            'status' => $this->FailedStatus,
                             'message'    => 'Insufficent Bailed Items',
                         ], 500);
                     }
                     $checkSort = SortDetails::where('location_id', Auth::user()->location_id)->first();
                  if (empty($checkSort)) {
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'No Collection Found',
                     ],500 );
                  }
                 if ($request->Clean_Clear > $checkSort->Clean_Clear) {
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent Clean Clear Items',
                     ], 500);
                 }elseif ($request->Green_Colour > $checkSort->Green_Colour) {
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent  Green Colour Items',
                     ], 500);
                 }elseif ($request->Others > $checkSort->Others) {
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent Others Items',
                     ], 500);
                 }elseif ($request->Trash > $checkSort->Trash) {
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent Trash Items',
                     ], 500);
                 }
-                
+
 
                     $transfer = new Transfer();
                     $transfer->Clean_Clear = $request->Clean_Clear ?? 0;
@@ -189,17 +189,17 @@ class SortedTransferController extends Controller
                     $transfer->status = 0;
                     //dd($transfer);
                     $transfer->save();
-                    
-    
+
+
                     $transfered = ($transfer->Clean_Clear + $transfer->Others + $transfer->Green_Colour + $transfer->Trash);
                     $total = Total::where('location_id',Auth::user()->location_id)->first();
                     $old_total_transfered = $total->transfered;
                     $total->update(['transfered' => ($total->transfered + $transfered)]);
                     $total->update(['sorted' => ($total->sorted - $transfered)]);
-    
-    
-                    
-                    
+
+
+
+
                         $dataset = [
                         'Clean_Clear' => $request->Clean_Clear ?? 0,
                         'Green_Colour' => $request->Green_Colour ?? 0,
@@ -207,7 +207,7 @@ class SortedTransferController extends Controller
                         'Trash' => $request->Trash ?? 0
                         ];
                         //dd($tweight);
-                        
+
                         $other_value_history = [
                             'location_id'=> Auth::user()->location_id,
                             'created_at' => Carbon::now(),
@@ -218,16 +218,16 @@ class SortedTransferController extends Controller
                             'created_at' => Carbon::now(),
                             'updated_at' => Carbon::now()
                         ];
-    
+
                         $old_transfer = DB::table('transfer_details')->where('location_id', Auth::user()->location_id)->first();
 
                         if(empty($old_transfer)){
-                            
+
                             DB::table('transfer_details')->insert([
                                 array_merge($dataset, $other_value)
                             ]);
                         }else{
-                            
+
                             //dd($new_dataset);
                             $updated = TransferDetails::where('location_id', Auth::user()->location_id)->first();
                            $updated->update(['Clean_Clear' => ($updated->Clean_Clear + $request->Clean_Clear ?? 0)]);
@@ -236,7 +236,7 @@ class SortedTransferController extends Controller
                            $updated->update(['Trash' => ($updated->Trash + $request->Trash ?? 0)]);
                            $updated->update(['Caps' => ($updated->Caps + $request->Caps ?? 0)]);
                         }
-                    
+
                         $updated = SortDetails::where('location_id', Auth::user()->location_id)->first();
                         //dd($updated->Clean_Clear);
                         $updated->update(['Clean_Clear' => ($updated->Clean_Clear - $request->Clean_Clear ?? 0)]);
@@ -244,15 +244,15 @@ class SortedTransferController extends Controller
                         $updated->update(['Others' => ($updated->Others - $request->Others ?? 0)]);
                         $updated->update(['Trash' => ($updated->Trash - $request->Trash ?? 0)]);
                         $updated->update(['Caps' => ($updated->Caps - $request->Caps ?? 0)]);
-    
-                   
-                    
+
+
+
                     $notification_id = User::where('factory_id',$request->factory_id)
                         ->whereNotNull('device_id')
                         ->pluck('device_id');
                         //dd($notification_id);
                     if (!empty($notification_id)) {
-                        
+
                         $factory = Factory::where('id',Auth::user()->location_id)->first();
                         $response = Http::withHeaders([
                             'Authorization' => 'key=AAAAva2Kaz0:APA91bHSiOJFPwd-9-2quGhhiyCU263oFWWrnYKtmuF1jGmDSMBHWiFkGy3tiaP3bLhJNMy9ki0YY061y5riGULckZtBkN9WkDZGX5X9HN60a2NvwHFR8Yevnat_zHzomC5O7AkdYwT8',
@@ -266,34 +266,34 @@ class SortedTransferController extends Controller
                         ]);
                         $notification = $response->json('results');
                     }
-                   
-                   
+
+
                     return response()->json([
                         "status" => $this->successStatus,
-                        "message" => "Transfer created successfull",
+                        "message" => "Transfer created Successful",
                         "data" => $transfer,
                         "total" => $t->transfered,
                         "total_bailed" => $t->bailed,
                         "notification" => $notification
                     ],200);
-            
+
             } catch (Exception $e) {
                 return response()->json([
-                    'status' => $this->failedStatus,
+                    'status' => $this->FailedStatus,
                     'message'    => 'Error',
                     'errors' => $e->getMessage(),
                 ], 500);
             }
-        
+
 
     }
-    
+
     public function getSortedTransfer()
     {
         $getsortedtransfer = SortedTransfer::where('location_id',Auth::user()->location_id)->get();
         return  response()->json([
                 "status" => $this->successStatus,
-                "message" => "Successfull",
+                "message" => "Successful",
                 "data" => $getsortedtransfer
             ],200);
     }

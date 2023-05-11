@@ -11,11 +11,11 @@ class FactoryController extends Controller
 {
     //
     public $successStatus = true;
-    public $failedStatus = false;
+    public $FailedStatus = false;
 
     public function factory(Request $request)
     {
-        
+
 
         $factory = new Factory();
         $factory->name = $request->input('name');
@@ -28,7 +28,7 @@ class FactoryController extends Controller
 
         return  response()->json([
             "status" => $this->successStatus,
-            "message" => "Successfull",
+            "message" => "Successful",
             "data" => $factory
         ],200);
     }
@@ -38,7 +38,7 @@ class FactoryController extends Controller
         $factory = Factory::where('user_id', Auth::id())->get();
         return  response()->json([
             "status" => $this->successStatus,
-            "message" => "Successfull",
+            "message" => "Successful",
             "data" => $factory
         ],200);
     }

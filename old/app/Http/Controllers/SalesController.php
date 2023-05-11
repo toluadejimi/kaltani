@@ -27,13 +27,13 @@ class SalesController extends Controller
 {
     //
     public $successStatus = true;
-    public $failedStatus = false;
+    public $FailedStatus = false;
 
     public function getSales(Request $request)
     {
         $transfer_item = BailingItem::all();
         $location = Location::all();
-        
+
 
 
         return response()->json([
@@ -41,13 +41,13 @@ class SalesController extends Controller
             "location" => $location,
             "transfer_item" => $transfer_item,
         ],200);
-        
+
     }
-    
-    
+
+
     public function getSalesbrakedown(Request $request)
     {
-       
+
         $location_id = $request->location_id;
        // $bailed_details = BailedDetails::where('location_id', $location_id)->get();
         $bailed_details = DB::table('bailed_details')->where('location_id', $location_id)->first();
@@ -59,9 +59,9 @@ class SalesController extends Controller
              "bailing_items" => $bailing_items,
         ],200);
 
-        
 
-        
+
+
         // $bailed_details = BailedDetails::where('location_id',Auth::user()->location_id)->first();
         // $transfer_item = BailingItem::all();
         // $location = Location::all();
@@ -73,14 +73,14 @@ class SalesController extends Controller
             "location" => $location,
             "transfer_item" => $transfer_item,
         ],200);
-        
+
     }
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     public function sales(Request $request){
         try{
             $sales = new Sales();
@@ -124,21 +124,21 @@ class SalesController extends Controller
 
         return response()->json([
             "status" => $this->successStatus,
-            "message" => "Sales record created successfull",
+            "message" => "Sales record created Successful",
             "data" => $sales,
             "total" => $t->sales
         ],200);
         }catch (Exception $e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message'    => 'Error',
                 'errors' => $e->getMessage(),
             ], 401);
         }
-        
+
 
     }
-    
+
     public function saleBailed(Request $request)
     {
             try{
@@ -146,58 +146,58 @@ class SalesController extends Controller
                 $t = BailedDetails::where('location_id', $request->collection_id)->first();
                 if(empty($t)){
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'No Record Found',
                     ], 500);
-                    
+
                 }
                 //dd($t->bailed);
                     $tbailed = $t->Clean_Clear + $t->Green_Colour + $t->Others + $t->Trash;
                     if($result > $tbailed){
-                        
+
                         return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent Bailed',
                     ], 500);
                     }
                     $checkSort = BailedDetails::where('location_id', $request->collection_id)->first();
                     //dd($checkSort->Clean_Clear,($request->Clean_Clear["total_weight"]));
                  if (empty($checkSort)) {
-                    
+
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'No Collection Found',
                     ], 500);
                  }
                  if (($request->Clean_Clear["total_weight"] ?? 0) > $checkSort->Clean_Clear) {
 
-                    
+
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent Clean Clear',
                     ], 500);
 
                 }elseif (($request->Green_Colour["total_weight"] ?? 0) > $checkSort->Green_Colour) {
-                    
+
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent Green Colour',
                     ], 500);
                 }elseif (($request->Others["total_weight"] ?? 0) > $checkSort->Others) {
-                    
+
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent Others',
                     ], 500);
                 }elseif (($request->Trash["total_weight"] ?? 0) > $checkSort->Trash) {
-                    
+
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent Trash',
                     ], 500);
                 }
-            
-                
+
+
 
                     $saledetails = new SalesDetails();
                     $saledetails->Clean_Clear = $request->Clean_Clear["total_weight"] ?? 0;
@@ -207,12 +207,12 @@ class SalesController extends Controller
                     $saledetails->location_id = $request->collection_id;
                     $saledetails->customer_name = $request->customer_name;
                     $saledetails->price_per_ton = $request->price_per_ton ?? 0;
-                    
+
                     $saledetails->clean_clear_qty = $request-> Clean_Clear["quantity"]?? 0;
                     $saledetails->green_color_qty = $request->Green_Colour["quantity"]?? 0;
                     $saledetails->other_qty = $request->Others["quantity"] ?? 0;
                     $saledetails->trash_qty = $request->Trash["quantity"] ?? 0;
-                    
+
                     $saledetails->currency = $request->currency;
                     $saledetails->freight = $request->freight;
                     if ($request->currency == "NGN") {
@@ -223,20 +223,20 @@ class SalesController extends Controller
                     }
                     $saledetails->user_id = Auth::id();
                     $saledetails->save();
-    
-    
+
+
                     // $saledetails = ($saledetails->Clean_Clear + $saledetails->Others + $saledetails->Green_Colour + $saledetails->Trash);
                     // $total = Total::where('location_id',$request->collection_id)->first();
                     // $old_total_transfered = $total->transfered;
                     // $total->update(['bailed' => ($total->bailed - $saledetails)]);
-                    
+
                     $updated = BailedDetails::where('location_id', $request->collection_id)->first();
                     //dd($updated);
                     $updated->decrement('Clean_Clear', ($request->Clean_Clear["total_weight"] ?? 0));
                     $updated->decrement('Green_Colour', ($request->Green_Colour["total_weight"] ?? 0));
                     $updated->decrement('Others' ,($request->Others["total_weight"] ?? 0));
                     $updated->decrement('Trash', ($request->Trash["total_weight"] ?? 0));
-                    
+
                     $factory_id = $request->collection_id;
                     $sales_amount = $request->amount ?? 0;
                     if (FactoryTotal::where('location_id',$factory_id)->exists()) {
@@ -249,15 +249,15 @@ class SalesController extends Controller
                         $total->location_id = $request->collection_id;
                         $total->save();
                     }
-    
+
             return response()->json([
             "status" => $this->successStatus,
-            "message" => "Sales  successfull",
+            "message" => "Sales  Successful",
             "data" => $saledetails,
             "total" => $t->sales
         ],200);
             } catch (Exception $e) {
-                return response()->json(["error"=>$e]); 
+                return response()->json(["error"=>$e]);
             }
     }
 }

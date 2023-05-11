@@ -12,14 +12,14 @@ class RecycleController extends Controller
 {
     //
     public $successStatus = true;
-    public $failedStatus = false;
+    public $FailedStatus = false;
 
     public function getRecycle(Request $request)
     {
         $recycle = Recycle::where('user_id', Auth::id())->get();
         return [
             "status" => $this->successStatus,
-            "message" => "Successfull",
+            "message" => "Successful",
             "data" => $recycle
         ];
     }
@@ -33,13 +33,13 @@ class RecycleController extends Controller
             "location_id"    => Auth::user()->location_id,
             "factory_id"    => Auth::user()->location_id,
             "user_id" => Auth::id(),
-            
+
         ]);
 
         $recycled = $request->item_weight_output;
 
         $locationId = Auth::user()->location_id;
-            
+
         if (FactoryTotal::where('factory_id',$locationId)->exists()) {
             # code...
             $t = FactoryTotal::where('factory_id',$locationId)->first();

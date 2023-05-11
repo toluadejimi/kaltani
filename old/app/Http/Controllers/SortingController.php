@@ -21,29 +21,29 @@ use Carbon\Carbon;
 class SortingController extends Controller
 {
     public $successStatus = true;
-    public $failedStatus = false;
+    public $FailedStatus = false;
 
     use HistoryTrait;
 
     public function sorted(Request $request){
         try {
-            
+
             $result = ($request->Clean_Clear ?? 0 + $request->Others ?? 0 + $request->Green_Colour ?? 0 + $request->Trash ?? 0);
             $t = CollectedDetails::where('location_id', Auth::user()->location_id)->first();
             if(empty($t)){
                 return response()->json([
-                    'status' => $this->failedStatus,
+                    'status' => $this->FailedStatus,
                     'message'    => 'No Collection Record Found',
                 ],500 );
             }else{
 
                 if($result > $t->collected){
                     return response()->json([
-                        'status' => $this->failedStatus,
+                        'status' => $this->FailedStatus,
                         'message'    => 'Insufficent Collection',
                     ], 500);
                 }
-                
+
             }
 
                 $sort = new Sorting();
@@ -57,14 +57,14 @@ class SortingController extends Controller
                 $sort->user_id = Auth::id();
                 //dd($sort);
                 $sort->save();
-                
-                
+
+
                 $sorted = ($sort->Clean_Clear + $sort->Others + $sort->Green_Colour + $sort->Trash);
                 //dd($sorted);
                 $locationId = Auth::user()->location_id;
-            
+
             $t = CollectedDetails::where('location_id',$locationId)->first();
-           
+
             if (!empty($t) ) {
                 $t->decrement('collected', $sorted);
             }
@@ -76,7 +76,7 @@ class SortingController extends Controller
                 'Trash' => $request->Trash ?? 0
                 ];
                 //dd($tweight);
-                
+
                 $other_value_history = [
                     'location_id'=> Auth::user()->location_id,
                     'created_at' => Carbon::now(),
@@ -88,16 +88,16 @@ class SortingController extends Controller
                     'updated_at' => Carbon::now()
                 ];
 
-               
+
                 $old_sorting = DB::table('sort_details')->where('location_id', Auth::user()->location_id)->first();
 
                 if(empty($old_sorting)){
-                    
+
                     DB::table('sort_details')->insert([
                         array_merge($dataset, $other_value)
                     ]);
                 }else{
-                    
+
                     //dd($new_dataset);
                     $updated = SortDetails::where('location_id', Auth::user()->location_id)->first();
                                $updated->update(['Clean_Clear' => ($updated->Clean_Clear + $request->Clean_Clear ?? 0)]);
@@ -107,16 +107,16 @@ class SortingController extends Controller
                                $updated->update(['Caps' => ($updated->Caps + $request->Caps ?? 0)]);
                 }
 
-                
+
 
                 return  response()->json([
                     "status" => $this->successStatus,
-                    "message" => "Sorting created successfull",
+                    "message" => "Sorting created Successful",
                     "data" => $sort
                 ],200);
             } catch (Exception $e) {
                 return response()->json([
-                    'status' => $this->failedStatus,
+                    'status' => $this->FailedStatus,
                     'message'    => 'Error',
                     'errors' => $e->getMessage(),
                 ], 500);
@@ -134,7 +134,7 @@ class SortingController extends Controller
         if(empty($getSorted))
         {
             return response()->json([
-                "status" => $this->failedStatus,
+                "status" => $this->FailedStatus,
                 "message" => "No Record Found",
             ], 500);
 
@@ -142,22 +142,22 @@ class SortingController extends Controller
             if(!empty($collected)){
                 return response()->json([
                 "status" => $this->successStatus,
-                "message" => "Successfull",
+                "message" => "Successful",
                 "items" => $items,
                 "sorting_items" => $sorting_items,
                 "total_collected" => $collected->collected
             ], 200);
             }
-            
+
              return response()->json([
-                "status" => $this->failedStatus,
+                "status" => $this->FailedStatus,
                 "message" => "No material available for this center",
             ], 500);
-            
+
         }
     }
 
-    
+
 
 
 

@@ -47,7 +47,7 @@ class MainController extends Controller
 {
 
     public $successStatus = true;
-    public $failedStatus = false;
+    public $FailedStatus = false;
     //
     use HistoryTrait;
 
@@ -135,7 +135,7 @@ class MainController extends Controller
         );
         $validator = Validator::make($input, $rules);
         if ($validator->fails()) {
-            $arr = array("status" => $this->failedStatus, "message" => $validator->errors()->first());
+            $arr = array("status" => $this->FailedStatus, "message" => $validator->errors()->first());
         } else {
             try {
                 if ((Hash::check(request('old_password'), $users->password)) == false) {
@@ -152,7 +152,7 @@ class MainController extends Controller
                 } else {
                     $msg = $e->getMessage();
                 }
-                $arr = array("status" => $this->failedStatus, "message" => $msg);
+                $arr = array("status" => $this->FailedStatus, "message" => $msg);
             }
         }
         return back()->with('error', $e);
@@ -1792,7 +1792,7 @@ class MainController extends Controller
 
         } catch (Exception $e) {
             return response()->json([
-                'status' => $this->failedStatus,
+                'status' => $this->FailedStatus,
                 'message' => 'Error',
                 'errors' => $e->getMessage(),
             ], 401);

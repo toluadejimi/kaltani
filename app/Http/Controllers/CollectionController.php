@@ -55,7 +55,7 @@ class CollectionController extends Controller
 
         return response()->json([
             "status" => $this->SuccessStatus,
-            "message" => "Collection created successfull",
+            "message" => "Collection created Successful",
             "data" => $collect,
             "total" => $t->collected,
         ], 200);
@@ -70,7 +70,7 @@ class CollectionController extends Controller
 
             return response()->json([
                 "status" => $this->SuccessStatus,
-                "message" => "Successfull",
+                "message" => "Successful",
                 "data" => $collect,
             ], 200);
         } catch (Exception $e) {
@@ -92,7 +92,7 @@ class CollectionController extends Controller
 
             return response()->json([
                 "status" => $this->SuccessStatus,
-                "message" => "Successfull",
+                "message" => "Successful",
                 "waste" => $plasticwaste,
                 "rate" => $rate,
 
@@ -141,7 +141,11 @@ class CollectionController extends Controller
 
         try {
 
+<<<<<<< HEAD
             $result = StateLga::select('lga','state_id')
+=======
+            $result = StateLga::select('lga')
+>>>>>>> 1c8c536f (kkll)
             ->where('state', $state)
             ->get();
 
@@ -613,7 +617,7 @@ class CollectionController extends Controller
 
         return response()->json([
             "status" => $this->SuccessStatus,
-            "message" => "Drop Off Successfull",
+            "message" => "Drop Off Successful",
         ], 200);
 
     }

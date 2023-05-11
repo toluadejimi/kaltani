@@ -13,7 +13,7 @@ class LocationController extends Controller
 {
     //
     public $successStatus = true;
-    public $failedStatus = false;
+    public $FailedStatus = false;
 
     public function location(Request $request)
     {
@@ -33,7 +33,7 @@ class LocationController extends Controller
 
         return  response()->json([
             "status" => $this->successStatus,
-            "message" => "Successfull",
+            "message" => "Successful",
             "data" => $location
         ],200);
     }
@@ -44,7 +44,7 @@ class LocationController extends Controller
         $location = Location::where('id', $user->location_id)->get();
         return  response()->json([
             "status" => $this->successStatus,
-            "message" => "Successfull",
+            "message" => "Successful",
             "data" => $location
         ],200);
     }
