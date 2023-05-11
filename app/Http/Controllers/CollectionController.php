@@ -83,6 +83,8 @@ class CollectionController extends Controller
 
     }
 
+    
+
     public function get_plastic_waste(Request $request)
     {
         try {
