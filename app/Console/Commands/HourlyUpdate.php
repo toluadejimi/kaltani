@@ -52,8 +52,6 @@ class HourlyUpdate extends Command
 
         foreach ($user as $a)
 
-
-
         if($customer_gender  == 'Male' && $age < 45 ){
 
             $greeting = Greeting::where('title', '1hrMale' )

@@ -125,6 +125,14 @@ Route::group(['middleware' => ['adminAuth']], function()
    Route::get('/fund-agent', [MainController::class,'fund_agent']);
    Route::post('/fund-agent-now', [MainController::class,'fund_agent_now']);
 
+   Route::get('/fund-account', [MainController::class,'fund_account']);
+
+   Route::post('/fund-account-now', [MainController::class,'fund_account_now']);
+
+
+   
+
+
 
 
 

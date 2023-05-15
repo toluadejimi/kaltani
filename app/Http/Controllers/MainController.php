@@ -35,6 +35,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -498,6 +499,9 @@ class MainController extends Controller
         $weight = DropOff::where('id', $id)
             ->first()->weight;
 
+
+        $user_type =  User::where('id', $user_id)->first()->user_type;
+
         if ($weight == null) {
             return back()->with('error', 'Agent has not approve drop off');
         }
@@ -528,6 +532,7 @@ class MainController extends Controller
         $transaction->user_id = $user_id;
         $transaction->amount = $amount;
         $transaction->type = 'Credit';
+        $transaction->user_type = $user_type;
         $transaction->org_name = $org_name;
         $transaction->staff_id = $l_name . " " . $f_name;
         $transaction->save();
@@ -967,7 +972,7 @@ class MainController extends Controller
         $update = User::where('id', $user_id)
             ->update([
 
-                'user_type' => $agent,
+                'user_type' => "agent",
                 'role_id' => 3,
                 'location_id' => $get_agent_location_id,
 
@@ -1032,13 +1037,39 @@ class MainController extends Controller
     //Transaction
     public function transactions()
     {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://enkpayweb.enkwave.com/api/get-account',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: Bearer 3636364643733dgdgdg663637747474'
+        ),
+        ));
+
+
+        $var = curl_exec($curl);
+        curl_close($curl);
+
+        $var = json_decode($var);
+
+        $main_wallet = $var->data->main_wallet;
+
+
         $money_out_to_customer = Transaction::where('type', 'debit')->sum('amount');
 
         $transactions = Transaction::all();
 
         $users = User::all();
 
-        return view('transactions', compact('transactions', 'money_out_to_customer', 'users'));
+        return view('transactions', compact('transactions','main_wallet', 'money_out_to_customer', 'users'));
 
     }
 
@@ -1068,6 +1099,10 @@ class MainController extends Controller
         $weight = $request->weight;
 
 
+
+
+
+        $user_type = User::where('id', $user_id)->first()->user_type;
 
         $initial_weight = AgentRequest::where('user_id', $request->user_id)
             ->first()->total_weight;
@@ -1102,6 +1137,7 @@ class MainController extends Controller
 
         $transaction = new Transaction();
         $transaction->user_id = $user_id;
+        $transaction->user_type = $user_type;
         $transaction->staff_id = $staff_first . " " . $staff_last;
         $transaction->reference = Str::random(10);
         $transaction->amount = $amount;
@@ -2264,5 +2300,86 @@ class MainController extends Controller
         return view('contact-us');
 
     }
+
+
+    public function fund_account(request $request)
+    {
+
+        $amount = $request->amount;
+        $trans_id = $request->trans_id;
+        $status = $request->status;
+
+        if($status == 'failed'){
+
+            $accountfunds = Transaction::where('type', 'fund_account')
+            ->get();
+
+            return redirect('fund-account')->with('error', 'Trasnaction Failed');
+
+        }
+
+        if($status == 'success'){
+
+            $accountfunds = Transaction::where('type', 'fund_account')
+            ->get();
+
+            $transaction = new Transaction();
+            $transaction->trans_id = $trans_id;
+            $transaction->amount = $amount;
+            $transaction->user_id = Auth::id();
+            $transaction->type = 'fund_account';
+            $transaction->save();
+
+
+            return redirect('fund-account')->with('message', 'Trasnaction Successful');
+
+        }
+
+
+        if($status == null){
+
+            $accountfunds = Transaction::where('type', 'fund_account')
+            ->get();
+
+            return view('fund-account', compact('accountfunds'));
+
+        }
+
+
+       
+
+    }
+
+
+
+    public function fund_account_now(request $request)
+    {
+
+
+        $amount = $request->amount;
+        $key = env('EKEY');
+        $pay = "https://enkpayweb.enkwave.com/pay?amount=$amount&key=$key";
+
+        return Redirect::to($pay);
+
+
+    }
+
+
+    public function webhook(request $request)
+    {
+
+        $amount = $request->amount;
+        $key = env('EKEY');
+        $pay = "https://enkpayweb.enkwave.com/pay?amount=$amount&key=$key";
+
+        return Redirect::to($pay);
+
+
+    }
+
+
+
+
 
 }

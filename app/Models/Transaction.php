@@ -13,6 +13,7 @@ class Transaction extends Model
         'user_id',
         'amount',
         'type',
+        'user_type',
         'create_at',
         'updated_at'
     ];

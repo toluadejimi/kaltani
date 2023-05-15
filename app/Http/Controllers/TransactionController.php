@@ -241,6 +241,7 @@ class TransactionController extends Controller
         $key = env('FLW_SECRET_KEY');
 
         $user_id = Auth::user()->id;
+        $user_type = Auth::user()->user_type;
         $account_number = Auth::user()->account_number;
         $account_bank = Auth::user()->bank_code;
         $amount = $request->amount;
@@ -277,32 +278,27 @@ class TransactionController extends Controller
 
         );
 
-        $body = json_encode($databody);
-        $curl = curl_init();
 
-        $key = env('FLW_SECRET_KEY');
-        //"Authorization: $key",
-        curl_setopt($curl, CURLOPT_URL, 'https://api.flutterwave.com/v3/transfers');
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_ENCODING, '');
-        curl_setopt($curl, CURLOPT_MAXREDIRS, 10);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 0);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Accept: application/json',
-            "Authorization: $key",
-        )
-        );
+
+
+
+
+
+
+
+
+
+
+
+
+        
 
         $var = curl_exec($curl);
         curl_close($curl);
 
         $var = json_decode($var);
+
+        dd($var);
 
         $message = $var->message;
 
@@ -314,6 +310,7 @@ class TransactionController extends Controller
                $transaction->reference = $var->data->reference;
                $transaction->amount = $amount;
                $transaction->type = 'Debit';
+               $transaction->user_type = $user_type;
                $transaction->trans_id = $var->data->id;
                $transaction->save();
 
@@ -344,7 +341,7 @@ class TransactionController extends Controller
             return response()->json([
 
                 'status' => $this->SuccessStatus,
-                'message' => 'Your transafer is processing',
+                'message' => 'Your transfer is processing',
 
             ], 200);
         }
@@ -360,65 +357,6 @@ class TransactionController extends Controller
 
 
 
-
-        // if ($var->status == "success") {
-
-
-
-        //     $id = $var->data->id;
-
-        //     $body = json_encode($databody);
-        //     $curl = curl_init();
-
-        //     $key = env('FLW_SECRET_KEY');
-        //     //"Authorization: $key",
-        //     curl_setopt($curl, CURLOPT_URL, "https://api.flutterwave.com/v3/transfers/$id");
-        //     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        //     curl_setopt($curl, CURLOPT_ENCODING, '');
-        //     curl_setopt($curl, CURLOPT_MAXREDIRS, 10);
-        //     curl_setopt($curl, CURLOPT_TIMEOUT, 0);
-        //     curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        //     curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-        //     curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
-        //     curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
-        //     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        //     curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-        //         'Content-Type: application/json',
-        //         'Accept: application/json',
-        //         "Authorization: $key",
-        //     )
-        //     );
-
-        //     $var = curl_exec($curl);
-        //     curl_close($curl);
-
-        //     $var = json_decode($var);
-
-        //     $status = $var->status;
-        //     $message = $var->message;
-
-        //     if ($status == 'FAILED') {
-
-        //         $userwallet = Auth()->user();
-        //         $useramount = $userwallet->wallet;
-        //         $refundmoney = (int) $useramount + (int) $var->data->amount;
-
-        //         $update = User::where('id', $user_id)
-        //             ->update(['wallet' => $refundmoney]);
-        //     }
-
-        //     return response()->json([
-        //         "status" => $this->FailedStatus,
-        //         "message" => $message,
-        //     ], 500);
-
-        // }
-
-        // return response()->json([
-        //     'status' => $this->SuccessStatus,
-        //     'message' => 'Your transfer is processing...',
-
-        // ], 200);
 
     }
 

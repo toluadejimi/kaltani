@@ -15,70 +15,50 @@
         <div class="row">
 
             <div class="card-header">
-                <h4>Transactions</h4>
+                <h4>Fund Pool Account</h4>
             </div>
 
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                 <div class="card card-statistic-1">
-                    <div class="card-icon bg-danger">
-                        <i class="fas fa-solid fa-money-from-bracket"></i>
-                    </div>
-                    <div class="card-wrap">
-                        <div class="card-header">
-                            <h4>Total Money Out To Customer</h4>
-                        </div>
-                        <div class="card-body">
-                            NGN {{$money_out_to_customer}}
-                        </div>
+                    <div class="card-wrap ml-4">
+
+                        <form action="/fund-account-now" method="post">
+                            @csrf
+
+                            <div class="row">
+
+                                <div class="col-lg-12">
+                                <label>Amount to Fund</label>
+                                <input type="number"  name="amount"  class="form-control" required placeholder="Enter Amount">
+                                </div>
+    
+                                <div class="col-lg-12">
+                                    <button type="submit" class="btn btn-primary mt-4 mb-5"> Pay Now</i></button>
+                                </div>
+
+
+                            </div>
+                           
+
+
+
+
+
+                        </form>
+
                     </div>
                 </div>
+
             </div>
 
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                <div class="card card-statistic-1">
-                    <div class="card-icon bg-primary">
-                        <i class="fas fa-solid fa-money-from-bracket"></i>
-                    </div>
-                    <div class="card-wrap">
-                        <div class="card-header">
-                            <h4>Total Money Out To Agent</h4>
-                        </div>
-                        <div class="card-body">
-                            NGN {{$money_out_to_customer}}
-                        </div>
-                    </div>
-                </div>
+
             </div>
 
 
             <div class="col-lg-4 col-md-6 col-sm-6 col-12 ">
-                <div class="card card-statistic-1">
-                    <div class="card-icon bg-primary">
-                        <i class="fas fa-solid fa-money-from-bracket"></i>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card-wrap">
-                                <div class="card-header">
-                                    <h4>Money Available on Pool</h4>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="col-12">
-                            <div class="card-body">
-                                NGN {{number_format($main_wallet, 2)}}
-                            </div>
 
-                        </div>
-
-                        <div class="col-12">
-                            
-                            <a button href="/fund-account" class="btn btn-primary ml-5 mt-2 mb-5"> Fund Account</i></button></a>
-
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -98,7 +78,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($transactions as $item)
+                    @forelse ($accountfunds as $item)
                     <tr>
                         <td>{{$item->trans_id}}</td>
                         <td>{{$item->reference}}</td>
