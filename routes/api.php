@@ -144,7 +144,7 @@ Route::post('deviceId', [AuthCoontroller::class, 'deviceId']);
 //create customer
 
 Route::post('customer-register', [AuthCoontroller::class, 'customer_register']);
-Route::get('get-banks', [TransactionConagenttroller::class, 'get_banks']);
+Route::get('get-banks', [TransactionController::class, 'get_banks']);
 Route::get('all-state', [CollectionController::class, 'all_state']);
 Route::post('get-lga', [CollectionController::class, 'get_lga']);
 Route::post('fetch-account', [TransactionController::class, 'fetch_account']);
