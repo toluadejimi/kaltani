@@ -24,9 +24,7 @@
 
                         <form action="/fund-account-now" method="post">
                             @csrf
-
                             <div class="row">
-
                                 <div class="col-lg-12">
                                 <label>Amount to Fund</label>
                                 <input type="number"  name="amount"  class="form-control" required placeholder="Enter Amount">
@@ -35,8 +33,6 @@
                                 <div class="col-lg-12">
                                     <button type="submit" class="btn btn-primary mt-4 mb-5"> Pay Now</i></button>
                                 </div>
-
-
                             </div>
                            
 

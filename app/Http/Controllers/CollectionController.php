@@ -570,11 +570,14 @@ class CollectionController extends Controller
         ->sum('item_weight');
 
 
+        $int = (int)$total;
+
 
         return response()->json([
+            
             "status" => $this->SuccessStatus,
             "drop_off" => $drop_off,
-            "total_weight" => $total,
+            "total_weight" => $int,
 
         ], 200);
 
