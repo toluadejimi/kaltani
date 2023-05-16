@@ -153,7 +153,7 @@ class TransactionController extends Controller
         curl_close($curl);
 
         $var = json_decode($var);
-        
+
         return response()->json(['status' => $this->SuccessStatus, 'message' => $var], 200);
 
     }
@@ -161,37 +161,39 @@ class TransactionController extends Controller
     public function fetch_account(Request $request)
     {
 
-        $key = env('FLW_SECRET_KEY');
 
         $account_number = $request->input('account_number');
-        $account_bank = $request->input('account_bank');
+        $bank_code = $request->input('bank_code');
 
         $databody = array(
-            "account_number" => $account_number,
-            "account_bank" => $account_bank,
+
+            'accountNumber' => $account_number,
+            'institutionCode' => $bank_code,
+            'channel' => "Bank",
+    
         );
 
         $body = json_encode($databody);
         $curl = curl_init();
 
-        $key = env('FLW_SECRET_KEY');
-        //"Authorization: $key",
-        curl_setopt($curl, CURLOPT_URL, 'https://api.flutterwave.com/v3/accounts/resolve');
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_ENCODING, '');
-        curl_setopt($curl, CURLOPT_MAXREDIRS, 10);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 0);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Accept: application/json',
-            "Authorization: $key",
-        )
-        );
+        $body = json_encode($databody);
+        $curl = curl_init();
+    
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://enkpayweb.enkwave.com/api/resolve-bank',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $body,
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+            ),
+        ));
+    
 
         $var = curl_exec($curl);
         curl_close($curl);
@@ -200,6 +202,14 @@ class TransactionController extends Controller
         return response()->json(['status' => $this->SuccessStatus, 'message' => $var], 200);
 
     }
+
+
+
+
+ 
+
+    
+
 
     public function verify_pin(Request $request)
     {
@@ -280,7 +290,7 @@ class TransactionController extends Controller
 
 
 
-        
+
 
         $var = curl_exec($curl);
         curl_close($curl);
