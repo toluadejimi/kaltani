@@ -152,7 +152,7 @@ class TransactionController extends Controller
         $data = curl_exec($curl);
         curl_close($curl);
 
-        $var = json_decode();
+        $var = json_decode($data);
 
         return response()->json(['status' => $this->SuccessStatus, 'message' => $var], 200);
 
