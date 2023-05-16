@@ -293,8 +293,23 @@ class MainController extends Controller
 
     public function agents(Request $request)
     {
-        $users = User::where('role_id', '3')
-            ->get();
+        $users = AgentRequest::where('status', '1')
+        ->get();
+        $collection = Location::all();
+        $factory = Factory::all();
+        $roles = UserRole::all();
+
+        return view('agents', compact('users', 'collection', 'factory', 'roles'));
+    }
+
+
+    public function agents_view(Request $request)
+    {
+
+        $user_id = $request->user_id;
+
+        $users = User::where('user_type', 'agent')
+        ->get();
         $collection = Location::all();
         $factory = Factory::all();
         $roles = UserRole::all();

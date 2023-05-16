@@ -33,7 +33,6 @@
                             <th>Phone</th>
                             <th>Balance</th>
                             <th>Customer Name</th>
-                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -41,21 +40,20 @@
                         @forelse ($users as $item)
                         <tr>
                             <td>{{$item->org_name}}</td>
-                            <td>{{$item->adddress}}</td>
-                            <td>{{$item->statel}}</td>
+                            <td>{{$item->address}}</td>
+                            <td>{{$item->state}}</td>
                             <td>{{$item->city}}</td>
                             <td>{{$item->lga}}</td>
                             <td>{{$item->phone}}</td>
                             <td>NGN {{number_format($item->agent_wallet, 2)}}</td>
-                            <td>{{$item->status}}</td>
+                            <td>{{$item->customer_name}}</td>
 
                             <td>
                                 <form action="/userDelete/{{$item->id}}" method="post">
                                     @csrf
                                     @method('DELETE')
-                                    <a href="/user_edit/{{$item->user_id}" class="btn btn-info"><i class="fa-light fa-pen-to-square"></i></a>
+                                    <a href="/user_edit/{{$item->user_id}" class="btn btn-danger"><i class="fa-light fa-trash-can"></i></a>
                                     @csrf
-                                    <button type="submit" class="btn btn-danger"><i class="fa-light fa-trash-can"></i></button>
                                 </form>
                             </td>
                         </tr>
