@@ -165,19 +165,9 @@ class TransactionController extends Controller
         $account_number = $request->input('account_number');
         $bank_code = $request->input('bank_code');
 
-        $databody = array(
-
-            'accountNumber' => $account_number,
-            'institutionCode' => $bank_code,
-            'channel' => "Bank",
-    
-        );
-
-        $body = json_encode($databody);
         $curl = curl_init();
-    
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://enkpayweb.enkwave.com/api/resolve-bank',
+            CURLOPT_URL => "https://enkpayweb.enkwave.com/api/resolve-bank?account_number=$account_number&bank_code=$bank_code",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -185,13 +175,11 @@ class TransactionController extends Controller
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => $body,
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
             ),
         ));
     
-
         $var = curl_exec($curl);
         curl_close($curl);
 
