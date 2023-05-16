@@ -175,9 +175,6 @@ class TransactionController extends Controller
 
         $body = json_encode($databody);
         $curl = curl_init();
-
-        $body = json_encode($databody);
-        $curl = curl_init();
     
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://enkpayweb.enkwave.com/api/resolve-bank',
