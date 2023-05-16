@@ -83,6 +83,7 @@ class TransactionController extends Controller
         curl_close($curl);
         $var = json_decode($var);
 
+
         if($var->status == 'true'){
             return response()->json(['message' => $var], 200);
         }
@@ -147,6 +148,7 @@ class TransactionController extends Controller
         curl_close($curl);
         $var = json_decode($var);
 
+        dd($var->status);
 
         if($var->status == 'true'){
             return response()->json([
