@@ -81,9 +81,15 @@ class TransactionController extends Controller
     
         $var = curl_exec($curl);
         curl_close($curl);
-
         $var = json_decode($var);
-        return response()->json(['status' => $this->SuccessStatus, 'message' => $var], 200);
+
+        if($var->status == 'true'){
+            return response()->json(['message' => $var], 200);
+        }
+
+        return response()->json(['status' => $this->FailedStatus, 'message' => 'Please check the bank seleceted or account number and try again.'], 200);
+
+
 
     }
 
@@ -139,9 +145,17 @@ class TransactionController extends Controller
     
         $var = curl_exec($curl);
         curl_close($curl);
-
         $var = json_decode($var);
-        return response()->json(['status' => $this->SuccessStatus, 'message' => $var], 200);
+
+
+        if($var->status == 'true'){
+            return response()->json([
+                'message' => $var
+            ], 200);
+        }
+
+        return response()->json(['status' => $this->FailedStatus, 'message' => 'Please check the bank seleceted or account number and try again.'], 200);
+
 
     }
 
