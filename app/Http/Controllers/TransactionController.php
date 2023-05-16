@@ -151,7 +151,7 @@ class TransactionController extends Controller
 
         if($var->status == 'success'){
             return response()->json([
-                'message' => $var
+                'message' => $var->message
             ], 200);
         }
 
