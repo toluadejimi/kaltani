@@ -85,7 +85,10 @@ class TransactionController extends Controller
 
 
         if($var->status == 'success'){
-            return response()->json(['message' => $var], 200);
+            return response()->json([
+                'status' => $this->SuccessStatus,
+                'account_name' => $var->customer_name
+            ], 200);
         }
 
         return response()->json(['status' => $this->FailedStatus, 'message' => 'Please check the bank seleceted or account number and try again.'], 200);
@@ -151,11 +154,12 @@ class TransactionController extends Controller
 
         if($var->status == 'success'){
             return response()->json([
-                'message' => $var->message
+                'status' => $this->SuccessStatus,
+                'account_name' => $var->customer_name
             ], 200);
         }
 
-        return response()->json(['status' => $this->FailedStatus, 'message' => 'Please check the bank seleceted or account number and try again.'], 200);
+        return response()->json(['status' => $this->FailedStatus, 'message' => 'Please check the bank selected or account number and try again.'], 200);
 
 
     }
