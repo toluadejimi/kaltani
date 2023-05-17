@@ -574,7 +574,7 @@ class CollectionController extends Controller
 
 
         return response()->json([
-            
+
             "status" => $this->SuccessStatus,
             "drop_off" => $drop_off,
             "total_weight" => $int,
@@ -615,9 +615,24 @@ class CollectionController extends Controller
 
             ]);
 
+
+            $data = array(
+                'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
+                'subject' => "Agent Drop",
+                'toreceiver' => "daniel.akinwumi@kaltani.com",
+            );
+
+            Mail::send('admin-notification', $data, function ($message) use ($data) {
+                $message->from($data['fromsender']);
+                $message->to($data['toreceiver']);
+                $message->subject($data['subject']);
+
+            });
+
+
         return response()->json([
             "status" => $this->SuccessStatus,
-            "message" => "Drop Off Successful",
+            "message" => "Drop off successfully updated",
         ], 200);
 
     }

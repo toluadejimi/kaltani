@@ -91,7 +91,7 @@ class TransactionController extends Controller
             ], 200);
         }
 
-        return response()->json(['status' => $this->FailedStatus, 'message' => 'Please check the bank seleceted or account number and try again.'], 200);
+        return response()->json(['status' => $this->FailedStatus, 'message' => 'Please check the bank selected or account number and try again.'], 200);
 
 
 

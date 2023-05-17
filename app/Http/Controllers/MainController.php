@@ -526,7 +526,7 @@ class MainController extends Controller
         }
 
         if ($status == 1) {
-            return back()->with('error', 'Drop off has been already paid');
+            return back()->with('error', 'Drop off has been paid for');
         }
 
         $update_drop = DropOff::where('id', $id)
@@ -679,7 +679,7 @@ class MainController extends Controller
         }
 
         if ($status == 1) {
-            return back()->with('error', 'Drop off has been already paid');
+            return back()->with('error', 'Drop off has been paid for');
         }
 
         $update_drop = DropOff::where('id', $id)
@@ -2361,7 +2361,7 @@ class MainController extends Controller
         }
 
 
-       
+
 
     }
 
