@@ -591,7 +591,7 @@ class CollectionController extends Controller
         $amount = $request->amount;
 
         $status = DropOff::where('order_id', $order_id)
-            ->first()->status;
+        ->first()->status;
 
         if ($status == 1) {
             return response()->json([
