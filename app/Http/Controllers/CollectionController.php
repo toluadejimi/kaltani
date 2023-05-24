@@ -6,11 +6,14 @@ use App\Models\CollectedDetails;
 use App\Models\Collection;
 use App\Models\DropOff;
 use App\Models\Greeting;
+use App\Models\Item;
 use App\Models\Location;
 use App\Models\PlasticWaste;
 use App\Models\Rate;
+use App\Models\SortDetails;
 use App\Models\State;
 use App\Models\StateLga;
+use App\Models\Unsorted;
 use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
@@ -27,37 +30,97 @@ class CollectionController extends Controller
     public function collect(Request $request)
     {
 
-        $collect = new Collection();
-        $collect->item_id = $request->input('item');
-        $collect->item_weight = $request->input('item_weight') ?? 0;
-        $collect->price_per_kg = $request->input('price_per_kg') ?? 0;
-        $collect->transport = $request->input('transport') ?? 0;
-        $collect->loader = $request->input('loader') ?? 0;
-        $collect->others = $request->input('others') ?? 0;
-        $collect->location_id = Auth::user()->location_id;
-        $collect->amount = $request->input('amount') ?? 0;
-        $collect->user_id = Auth::id();
-        $collect->save();
+            $collect_type = $request->type;
+            $location_id = $request->location;
+            $item_id = $request->item;
+            $item_weight = $request->item_weight;
 
-        $collected = $request->input('item_weight') ?? 0;
-        $locationId = Auth::user()->location_id;
 
-        $t = CollectedDetails::where('location_id', Auth::user()->location_id)->first();
-        if (empty($t)) {
-            $sort = new CollectedDetails();
-            $sort->collected = $request->input('item_weight') ?? 0;
-            $sort->location_id = Auth::user()->location_id;
-            $sort->user_id = Auth::id();
-            $sort->save();
-        } else {
-            CollectedDetails::where('location_id', Auth::user()->location_id)->increment('collected', $collected);
+
+            if($collect_type == 'sorted') {
+
+                $collect = new Collection();
+                $collect->item_id = $request->input('item');
+                $collect->item_weight = $request->input('item_weight') ?? 0;
+                $collect->price_per_kg = $request->input('price_per_kg') ?? 0;
+                $collect->transport = $request->input('transport') ?? 0;
+                $collect->loader = $request->input('loader') ?? 0;
+                $collect->others = $request->input('others') ?? 0;
+                $collect->location_id = Auth::user()->location_id;
+                $collect->amount = $request->input('amount') ?? 0;
+                $collect->user_id = Auth::id();
+                $collect->save();
+
+                $get_item = Item::where('id', $item_id)->first()->item_name;
+                $chk_location = SortDetails::where('location_id', Auth::user()->location_id)->first()->location_id ?? null;
+
+                $item = SortDetails::select("$get_item")->where('location_id', $location_id)->first()->$get_item ?? null;
+
+               if($chk_location == null){
+                    $sort = new SortDetails();
+                    $sort->location_id = Auth::user()->location_id;
+                    $sort->user_id = Auth::id();
+                    $sort->save();
+
+                }
+
+                $item_sum = $item_weight + $item;
+                SortDetails::where('location_id', $location_id)->where('user_id', Auth::id())->update([ $get_item  =>  $item_sum]);
+                $total_sorted = SortDetails::where('location_id', $location_id)->first()->$get_item;
+
+                return response()->json([
+                    "status" => $this->SuccessStatus,
+                    "message" => "Collection created Successful",
+                    "data" => $collect,
+                    "total_sorted" => $total_sorted,
+                ], 200);
+
+            }
+
+
+
+
+        if($collect_type == 'unsorted' & $item_id == '1') {
+
+            $collect = new Unsorted();
+            $collect->item_id = $request->input('item');
+            $collect->item_weight = $request->input('item_weight') ?? 0;
+            $collect->price_per_kg = $request->input('price_per_kg') ?? 0;
+            $collect->transport = $request->input('transport') ?? 0;
+            $collect->loader = $request->input('loader') ?? 0;
+            $collect->others = $request->input('others') ?? 0;
+            $collect->location_id = Auth::user()->location_id;
+            $collect->amount = $request->input('amount') ?? 0;
+            $collect->user_id = Auth::id();
+            $collect->save();
+
+
+            $collected = $request->input('item_weight') ?? 0;
+
+            $t = CollectedDetails::where('location_id', Auth::user()->location_id)->first();
+            if (empty($t)) {
+                $sort = new CollectedDetails();
+                $sort->collected = $request->input('item_weight') ?? 0;
+                $sort->location_id = Auth::user()->location_id;
+                $sort->user_id = Auth::id();
+                $sort->save();
+            } else {
+                CollectedDetails::where('location_id', Auth::user()->location_id)->increment('collected', $collected);
+            }
+
+            return response()->json([
+                "status" => $this->SuccessStatus,
+                "message" => "Collection created Successful",
+                "data" => $collect,
+                "total" => $t->collected,
+            ], 200);
+
         }
 
+
         return response()->json([
-            "status" => $this->SuccessStatus,
-            "message" => "Collection created Successful",
-            "data" => $collect,
-            "total" => $t->collected,
+            "status" => $this->FailedStatus,
+            "message" => "Please check item selected",
         ], 200);
     }
 

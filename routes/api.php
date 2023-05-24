@@ -84,9 +84,13 @@ Route::get('getCollection', [CollectionController::class, 'getCollection']);
 //create and get sorting
 Route::post('sorting', [SortingController::class, 'sorted']);
 Route::get('getSorting', [SortingController::class, 'getSorted']);
+Route::get('getUnSorted', [SortingController::class, 'getUnSorted']);
+
 
 //create and get sorting
 Route::post('sortingtransfer', [SortedTransferController::class, 'sortedTransfer']);
+Route::post('unsortedtransfer', [SortedTransferController::class, 'unsortedTransfer']);
+
 Route::get('getsortingtransfer', [SortedTransferController::class, 'getSortedTransfer']);
 
 //create and get location
@@ -99,6 +103,8 @@ Route::get('getfactory', [LocationController::class, 'getfactory']);
 //create and get bailing
 Route::post('bailing', [BailingController::class, 'bailing']);
 Route::get('getBailing', [BailingController::class, 'getBailing']);
+Route::get('getUnsortedBailing', [BailingController::class, 'getUnsortedBailing']);
+
 
 
 
@@ -220,7 +226,7 @@ Route::group(['middleware' => ['auth:api','access']], function(){
     Route::post('agent-status', [AuthCoontroller::class, 'agent_status']);
 
     Route::post('get-user', [AuthCoontroller::class, 'get_user']);
-    
+
     Route::post('agent-waste-list', [CollectionController::class, 'agent_waste_list']);
     Route::post('agent-waste-list-update', [CollectionController::class, 'agent_waste_list_update']);
     Route::post('udpade-dropoff-weight', [CollectionController::class, 'update_dropoff_weight']);

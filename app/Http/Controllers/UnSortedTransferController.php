@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CollectedDetails;
-use App\Models\Transfer;
 use Illuminate\Http\Request;
 use App\Models\SortedTransfer;
 use App\Models\SortDetails;
@@ -16,7 +14,7 @@ class SortedTransferController extends Controller
     public $FailedStatus = false;
 
 
-    public function sortedTransfer(Request $request)
+    public function UnsortedTransfer(Request $request)
     {
         try {
             $result = ($request->Clean_Clear + $request->Others + $request->Green_Colour + $request->Trash + $request->Caps);
@@ -119,78 +117,6 @@ class SortedTransferController extends Controller
                 "status" => $this->successStatus,
                 "message" => "Successful",
                 "data" => $sortedTransfer
-            ],200);
-
-        } catch (Exception $e) {
-            return response()->json([
-                "status" => $this->FailedStatus,
-                "message" => $e,
-            ], 500);
-        }
-    }
-
-
-
-    public function unsortedTransfer(Request $request)
-    {
-        try {
-
-
-            $check_collected = CollectedDetails::where('location_id', Auth::user()->location_id)->first()->collected;
-            $check_loction = CollectedDetails::where('location_id', Auth::user()->location_id)->first()->location_id;
-
-
-            if($check_collected < $request->item_weight){
-
-                return response()->json([
-                    'status' => $this->FailedStatus,
-                    'message'    => 'Insufficent Unsorted Materials',
-                ], 500);
-
-            }
-
-            if($check_loction == Auth::user()->location_id){
-
-                return response()->json([
-                    'status' => $this->FailedStatus,
-                    'message'    => 'You can not transfer material to yourself',
-                ], 500);
-
-            }
-
-
-           CollectedDetails::where('location_id', Auth::user()->location_id)->decrement('collected', $request->item_weight);
-
-           $ck_location = CollectedDetails::where('location_id', $request->toLocation)->first()->location_id ?? null;
-
-           if($ck_location == null){
-            $location = new CollectedDetails();
-            $location->location_id = $request->toLocation;
-            $location->user_id = Auth::id();
-            $location->save();
-           }
-
-           CollectedDetails::where('location_id', $request->toLocation)->increment('collected', $request->item_weight);
-
-           $collect = new Transfer();
-           $collect->unsorted = $request->item_weight;
-           $collect->user_id = Auth::id();
-           $collect->collection_id = $request->toLocation;
-           $collect->location_id = Auth::user()->location_id;
-           $collect->save();
-
-
-           $data = CollectedDetails::where('location_id', Auth::user()->location_id)->first()->collected;
-
-           $weight_transfred = CollectedDetails::where('location_id', $request->toLocation)->first()->collected;
-
-
-
-            return response()->json([
-                "status" => $this->successStatus,
-                "message" => "Transfer created Successful",
-                "data" => $data,
-                "weight_transfred" => $weight_transfred,
             ],200);
 
         } catch (Exception $e) {
@@ -369,6 +295,7 @@ class SortedTransferController extends Controller
         $getsortedtransfer = SortedTransfer::where('location_id',Auth::user()->location_id)->get();
         return  response()->json([
                 "status" => $this->successStatus,
+                "message" => "Successful",
                 "data" => $getsortedtransfer
             ],200);
     }

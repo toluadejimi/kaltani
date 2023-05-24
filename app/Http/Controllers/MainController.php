@@ -1053,10 +1053,12 @@ class MainController extends Controller
     public function transactions()
     {
 
+        $key = env('EKEY');
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://enkpayweb.enkwave.com/api/get-account',
+        CURLOPT_URL => 'https://web.enkpay.com/api/get-account',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -1065,7 +1067,7 @@ class MainController extends Controller
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'POST',
         CURLOPT_HTTPHEADER => array(
-            'Authorization: Bearer 3636364643733dgdgdg663637747474'
+            "Authorization: Bearer $key"
         ),
         ));
 
@@ -2373,7 +2375,7 @@ class MainController extends Controller
 
         $amount = $request->amount;
         $key = env('EKEY');
-        $pay = "https://enkpayweb.enkwave.com/pay?amount=$amount&key=$key";
+        $pay = "https://web.enkpay.com/pay?amount=$amount&key=$key";
 
         return Redirect::to($pay);
 
@@ -2386,7 +2388,7 @@ class MainController extends Controller
 
         $amount = $request->amount;
         $key = env('EKEY');
-        $pay = "https://enkpayweb.enkwave.com/pay?amount=$amount&key=$key";
+        $pay = "https://web.enkpay.com/pay?amount=$amount&key=$key";
 
         return Redirect::to($pay);
 

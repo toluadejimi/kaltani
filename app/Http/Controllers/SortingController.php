@@ -29,7 +29,7 @@ class SortingController extends Controller
     public function sorted(Request $request){
         try {
 
-            $result = ($request->Clean_Clear ?? 0 + $request->Others ?? 0 + $request->Green_Colour ?? 0 + $request->Trash ?? 0);
+            $result = ($request->Clean_Clear ?? 0 + $request->hdpe ?? 0 + $request->Others ?? 0 + $request->Green_Colour ?? 0 + $request->Trash ?? 0 + $request->ldpe ?? 0 + $request->brown ?? 0 + $request->black ?? 0);
             $t = CollectedDetails::where('location_id', Auth::user()->location_id)->first();
             if(empty($t)){
                 return response()->json([
@@ -37,11 +37,11 @@ class SortingController extends Controller
                     'message'    => 'No Collection Record Found',
                 ],500 );
             }else{
-$totals = CollectedDetails::where('location_id',Auth::user()->location_id)->first();
+            $totals = CollectedDetails::where('location_id',Auth::user()->location_id)->first();
                 if($result > $totals->collected){
                     return response()->json([
                         'status' => $this->FailedStatus,
-                        'message'    => 'Insufficent Collection',
+                        'message'    => 'Insufficient Collection',
                     ], 500);
                 }
 
@@ -54,6 +54,10 @@ $totals = CollectedDetails::where('location_id',Auth::user()->location_id)->firs
                 $sort->Others = $request->Others ?? 0;
                 $sort->Trash = $request->Trash ?? 0;
                 $sort->Caps = $request->Caps ?? 0;
+                $sort->hdpe = $request->hdpe ?? 0;
+                $sort->ldpe = $request->ldpe ?? 0;
+                $sort->brown = $request->brown ?? 0;
+                $sort->black = $request->black ?? 0;
                 $sort->location_id = Auth::user()->location_id;
                 $sort->user_id = Auth::id();
                 //dd($sort);
@@ -62,7 +66,7 @@ $totals = CollectedDetails::where('location_id',Auth::user()->location_id)->firs
 
                 //$sorted = ($sort->Clean_Clear + $sort->Others + $sort->Green_Colour + $sort->Trash);
                 //dd($sorted);
-                $sorted = ($sort->Clean_Clear + $sort->Others + $sort->Green_Colour + $sort->Trash);
+                $sorted = ($sort->Clean_Clear + $sort->Others + $sort->Green_Colour + $sort->Trash + $sort->hdpe + $sort->ldpe + $sort->brown + $sort->black);
                 //dd($sorted);
 
                 $t = CollectedDetails::where('location_id',Auth::user()->location_id)->decrement('collected', $sorted);
@@ -74,7 +78,11 @@ $totals = CollectedDetails::where('location_id',Auth::user()->location_id)->firs
                 'Green_Colour' => $request->Green_Colour ?? 0,
                 'Others' => $request->Others ?? 0,
                 'Trash' => $request->Trash ?? 0,
-                'Caps' => $request->Caps ?? 0
+                'Caps' => $request->Caps ?? 0,
+                'hdpe' => $request->hdpe ?? 0,
+                'ldpe' => $request->ldpe ?? 0,
+                'brown' => $request->brown ?? 0,
+                'black' => $request->black ?? 0
                 ];
                 //dd($tweight);
 
@@ -108,6 +116,10 @@ $totals = CollectedDetails::where('location_id',Auth::user()->location_id)->firs
                    $updated->update(['Others' => ($updated->Others + $request->Others ?? 0)]);
                    $updated->update(['Trash'=> ($updated->Trash + $request->Trash ?? 0)]);
                    $updated->update(['Caps' => ($updated->Caps +$request->Caps ?? 0)]);
+                   $updated->update(['hdpe' => ($updated->hdpe + $request->hdpe ?? 0)]);
+                   $updated->update(['ldpe' => ($updated->ldpe + $request->ldpe ?? 0)]);
+                   $updated->update(['brown' => ($updated->brown + $request->brown ?? 0)]);
+                   $updated->update(['black'=> ($updated->black + $request->black ?? 0)]);
 
                 }
 
@@ -163,6 +175,40 @@ $totals = CollectedDetails::where('location_id',Auth::user()->location_id)->firs
     }
 
 
+
+    public function getUnSorted(Request $request)
+    {
+        //dd(Auth::user()->location_id);
+        $getSorted = CollectedDetails::where('location_id', Auth::user()->location_id)->get();
+        $sorting_items = BailingItem::select('id','item')->get();
+        $total = Collection::where('location_id',Auth::user()->location_id)->first();
+        $totals = CollectedDetails::where('location_id',Auth::user()->location_id)->first();
+        $items = Item::select('id','item_name')->get();
+        if(empty($getSorted))
+        {
+            return response()->json([
+                "status" => $this->FailedStatus,
+                "message" => "No Record Found",
+            ], 500);
+
+        }else{
+            if(isset($total)){
+                return response()->json([
+                "status" => $this->successStatus,
+                "message" => "Successful",
+                "items" => $items,
+                "sorting_items" => $sorting_items,
+                "total_collected" => $totals->collected
+            ], 200);
+            }
+
+             return response()->json([
+                "status" => $this->FailedStatus,
+                "message" => "No material available for this center",
+            ], 500);
+
+        }
+    }
 
 
 
