@@ -57,18 +57,16 @@ class TransferController extends Controller
         $transfer_item = BailingItem::all();
 
 
-      
+                $var = json_decode($sorted_details);
 
-
-
-                $result = [];
-
-                foreach ($sorted_details as $key => $value) {
-                    $result[] = [
-                        "key" => $key,
-                        "value" => $value[$key],
-                    ];
+                $output = [];
+                foreach ($var as $key => $value) {
+                    $output[] = array('key' => $key, 'value' => $value);
                 }
+
+
+
+
 
 
 
@@ -76,7 +74,7 @@ class TransferController extends Controller
             "status" => $this->successStatus,
             "bailed" => (string)$transfered ,
             "bailed_breakdown" => $bailed_details,
-            "sorted_breakdown" => $result,
+            "sorted_breakdown" => $output,
             "factory" => $factory,
             "collection_center" => $collection,
             "items" => $items,
