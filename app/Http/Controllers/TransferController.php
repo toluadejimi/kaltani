@@ -57,27 +57,22 @@ class TransferController extends Controller
         $transfer_item = BailingItem::all();
 
 
-        // unset($sorted_details['id']);
-        // unset($sorted_details['location_id']);
-        // unset($sorted_details['created_at']);
-        // unset($sorted_details['updated_at']);
+      
 
-        $result = [];
-        foreach ($sorted_details as $key => $value) {
-            $result[] = [
-                "Caps" => $value->Caps,
-                "Others" => $value->Others,
-                "Trash" => $value->Trash,
-                "Green_Colour" => $value->Green_Colour,
-                "Clean_Clear" => $value->Clean_Clear,
-                "hdpe" => $value->hdpe,
-                "ldpe" => $value->ldpe,
-                "brown" => $value->brown,
-                "black" => $value->black,
+                unset($sorted_details['id']);
+                unset($sorted_details['location_id']);
+                unset($sorted_details['created_at']);
+                unset($sorted_details['updated_at']);
 
+                $result = [];
 
-            ];
-        }
+                foreach ($sorted_details as $key => $value) {
+                    $result[] = [
+                        "key" => $key,
+                        "value" => $value
+                    ];
+                }
+
 
 
         return response()->json([
