@@ -43,7 +43,7 @@ class TransferController extends Controller
         }
         //dd($total);
         $bailed_details = BailedDetails::where('location_id',Auth::user()->location_id)->first();
-        $sorted_details = SortDetails::where('location_id',Auth::user()->location_id)->get();
+        $sorted_details = SortDetails::select('Caps', 'Others', 'Trash','Green_Colour','Clean_Clear','hdpe','ldpe','brown','black')->where('location_id',Auth::user()->location_id)->get();
         $factory = Location::all();
         $collection = Location::all();
         $items = Item::all();
@@ -56,11 +56,26 @@ class TransferController extends Controller
                                 ->get();
         $transfer_item = BailingItem::all();
 
+
+        // unset($sorted_details['id']);
+        // unset($sorted_details['location_id']);
+        // unset($sorted_details['created_at']);
+        // unset($sorted_details['updated_at']);
+
+        $result = [];
+        foreach ($sorted_details as $key => $value) {
+            $result[] = [
+                "key" => $key,
+                "value" => $value
+            ];
+        }
+
+
         return response()->json([
             "status" => $this->successStatus,
             "bailed" => (string)$transfered ,
             "bailed_breakdown" => $bailed_details,
-            "sorted_breakdown" => $sorted_details,
+            "sorted_breakdown" => $result,
             "factory" => $factory,
             "collection_center" => $collection,
             "items" => $items,
