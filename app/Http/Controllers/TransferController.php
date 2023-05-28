@@ -65,15 +65,15 @@ class TransferController extends Controller
         $result = [];
         foreach ($sorted_details as $key => $value) {
             $result[] = [
-                "Caps" => $key->Caps,
-                "Others" => $key->Others,
-                "Trash" => $key->Trash,
-                "Green_Colour" => $key->Green_Colour,
-                "Clean_Clear" => $key->Clean_Clear,
-                "hdpe" => $key->hdpe,
-                "ldpe" => $key->ldpe,
-                "brown" => $key->brown,
-                "black" => $key->black,
+                "Caps" => $value->Caps,
+                "Others" => $value->Others,
+                "Trash" => $value->Trash,
+                "Green_Colour" => $value->Green_Colour,
+                "Clean_Clear" => $value->Clean_Clear,
+                "hdpe" => $value->hdpe,
+                "ldpe" => $value->ldpe,
+                "brown" => $value->brown,
+                "black" => $value->black,
 
 
             ];
