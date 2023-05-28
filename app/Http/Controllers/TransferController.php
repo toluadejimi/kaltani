@@ -59,17 +59,14 @@ class TransferController extends Controller
 
       
 
-                unset($sorted_details['id']);
-                unset($sorted_details['location_id']);
-                unset($sorted_details['created_at']);
-                unset($sorted_details['updated_at']);
+
 
                 $result = [];
 
                 foreach ($sorted_details as $key => $value) {
                     $result[] = [
                         "key" => $key,
-                        "value" => $value
+                        "value" => $value[$key],
                     ];
                 }
 
