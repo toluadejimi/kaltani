@@ -88,8 +88,8 @@ Route::get('getUnSorted', [SortingController::class, 'getUnSorted']);
 
 
 //create and get sorting
-Route::post('sortingtransfer', [SortedTransferController::class, 'sortedTransfer']);
-Route::post('unsortedtransfer', [SortedTransferController::class, 'unsortedTransfer']);
+Route::post('transfer-sorted-loose', [SortedTransferController::class, 'sortedTransfer']);
+Route::post('transfer-unsorted-loose', [SortedTransferController::class, 'unsortedTransfer']);
 
 Route::get('getsortingtransfer', [SortedTransferController::class, 'getSortedTransfer']);
 
@@ -104,6 +104,14 @@ Route::get('getfactory', [LocationController::class, 'getfactory']);
 Route::post('bailing', [BailingController::class, 'bailing']);
 Route::get('getBailing', [BailingController::class, 'getBailing']);
 Route::get('getUnsortedBailing', [BailingController::class, 'getUnsortedBailing']);
+Route::post('transfer-sorted-bailed', [BailingController::class, 'transfer_sorted_bailed']);
+Route::post('transfer-unsorted-bailed', [BailingController::class, 'transfer_unsorted_bailed']);
+
+
+
+
+
+
 
 
 
@@ -118,6 +126,9 @@ Route::get('getFactory', [FactoryController::class, 'getFactory']);
 //create, get and update  transfer
 Route::post('transfer', [TransferController::class, 'transfer']);
 Route::get('getTransfer', [TransferController::class, 'getTransfer']);
+Route::get('getTransferHistory', [TransferController::class, 'getTransferHistory']);
+
+
 Route::post('updateTransfer', [TransferController::class, 'updateTransfer']);
 
 //get history

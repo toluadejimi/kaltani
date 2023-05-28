@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CollectedBailedDetails;
 use Illuminate\Http\Request;
 use App\Models\Transfer;
 use App\Models\History;
@@ -19,6 +20,7 @@ use Auth;
 use Carbon\Carbon;
 use DB;
 use App\Http\Traits\HistoryTrait;
+use App\Models\CollectedDetails;
 use Illuminate\Support\Facades\Http;
 use App\Models\TransferDetailsHistory;
 
@@ -32,63 +34,69 @@ class TransferController extends Controller
 
     public function getTransfer(Request $request)
     {
-        // $factory_id = Location::where('id',Auth::user()->location_id)->where('type','f')->first();
-        $transfer = Transfer::with('factory','location')->where('location_id', Auth::user()->location_id)->get();
-        $total = SortDetails::where('location_id',Auth::user()->location_id)->first();
-        if(empty($total)){
-            $transfered = 0;
-        }else{
 
-        $transfered = ($total->Clean_Clear ?? "0" + $total->Others ?? "0" + $total->Green_Colour ?? "0" + $total->Trash ?? "0" + $total->Caps ?? "0");
-        }
-        //dd($total);
-        $bailed_details = BailedDetails::where('location_id',Auth::user()->location_id)->first();
-        $sorted_details = SortDetails::select('Caps', 'Others', 'Trash','Green_Colour','Clean_Clear','hdpe','ldpe','brown','black')->where('location_id',Auth::user()->location_id)->first();
+        $unsorted_loose = CollectedDetails::where('location_id', Auth::user()->location_id)->first()->collected ?? null;
+        $unsorted_bailed = CollectedBailedDetails::where('location_id', Auth::user()->location_id)->first()->collected ?? null;
+        $get_loose_sorted_details = SortDetails::select('Caps', 'Others', 'Trash', 'Green_Colour', 'Clean_Clear', 'hdpe', 'ldpe', 'brown', 'black')->where('location_id', Auth::user()->location_id)->first() ?? null;
+        $get_bailed_sorted_details = BailedDetails::select('Caps', 'Others', 'Trash', 'Green_Colour', 'Clean_Clear', 'hdpe', 'ldpe', 'brown', 'black')->where('location_id', Auth::user()->location_id)->first() ?? null;
+
         $factory = Location::all();
         $collection = Location::all();
         $items = Item::all();
-        $dateS = Carbon::now()->startOfMonth()->subMonth(3);
-        $dateE = Carbon::now();
-        $transfer_history = Transfer::with('factory','location','user')
-                                ->where('location_id',Auth::user()->location_id)
-                                ->orWhere('factory_id',Auth::user()->location_id)
-                                ->whereBetween('created_at',[$dateS,$dateE])
-                                ->get();
         $transfer_item = BailingItem::all();
 
 
-                $var = json_decode($sorted_details);
-
-                $output = [];
-                foreach ($var as $key => $value) {
-                    $output[] = array('key' => $key, 'value' => $value);
-                }
+        $location = Location::where('type', 'c')
+        ->orwhere('type', 'f')->get();
 
 
 
+        // return response()->json([
+        //     "status" => $this->FailedStatus,
+        //     "message" => "No material available for transfer",
+        // ], 500);
 
 
+        if($get_loose_sorted_details != null){
+            $var = json_decode($get_loose_sorted_details);
+            $loose_sorted_brakedown = [];
+            foreach ($var as $key => $value) {
+                $loose_sorted_brakedown[] = array('key' => $key, 'value' => $value);
+            }
+        }
+
+
+        if($get_bailed_sorted_details != null){
+            $var = json_decode($get_bailed_sorted_details);
+            $bailed_sorted_brakedown = [];
+            foreach ($var as $key => $value) {
+                $bailed_sorted_brakedown[] = array('key' => $key, 'value' => $value);
+            }
+        }
 
 
         return response()->json([
             "status" => $this->successStatus,
-            "bailed" => (string)$transfered ,
-            "bailed_breakdown" => $bailed_details,
-            "sorted_breakdown" => $output,
-            "factory" => $factory,
-            "collection_center" => $collection,
+            "bailed_sorted_brakedown" => $bailed_sorted_brakedown ?? null,
+            "loose_sorted_brakedown" => $loose_sorted_brakedown ?? null,
+            "unsorted_bailed_total" => $unsorted_bailed,
+            "unsorted_loose_total" => $unsorted_loose,
             "items" => $items,
+            "location" => $location,
             "transfer_item" => $transfer_item,
-            "transfer_history"  => $transfer_history,
 
-        ],200);
+        ], 200);
 
 
-        return response()->json([
-                "status" => $this->FailedStatus,
-                "message" => "No material available for transfer",
-            ], 500);
+
     }
+
+
+
+
+
+
+
     public function getTransferHistory(Request $request)
     {
         $transfer = Transfer::with('factory','location')->where('location_id', Auth::user()->location_id)->get();
@@ -100,6 +108,14 @@ class TransferController extends Controller
 
         ],200);
     }
+
+
+
+
+
+
+
+
 
     public function transfer(Request $request){
 //dd($request->Clean_Clear["total_weight"]);
@@ -518,12 +534,53 @@ class TransferController extends Controller
     }
     public function history(Request $request)
     {
-        $history = History::all();
+
+        $get_history = Transfer::latest()->select('*')->where('from_location_id', Auth::user()->location_id)
+        ->orWhere('to_location_id',Auth::user()->location_id)->get() ?? null;
+
+
+        if($get_history != null){
+            $var = json_decode($get_history);
+            $history = [];
+            foreach ($var as $key => $value) {
+                $history[] = array(
+                    "from_location_id" => $value->from_location_id,
+                    "to_location_id" => $value->to_location_id,
+                    "rej_reason" => $value->rej_reason,
+                    "user_id" => $value->user_id,
+                    "status" => $value->status,
+                    "data" => array(
+                        "Caps" => $value->Caps,
+                        "Others" => $value->Others,
+                        "Trash" => $value->Trash,
+                        "Green_Colour" => $value->Green_Colour,
+                        "Clean_Clear" => $value->Clean_Clear,
+                        "hdpe" => $value->hdpe,
+                        "ldpe" => $value->ldpe,
+                        "brown" => $value->brown,
+                        "black" => $value->black
+                    )
+                );
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         return [
             "status" => $this->successStatus,
-            "data" => $history
+            "history" => $history
         ];
     }
+
 
 
 }

@@ -13,7 +13,14 @@ class BailedDetails extends Model
         'Clean_Clear',
         'Green_Colour',
         'Others',
-        'Trash'
+        'Trash',
+        'Caps',
+        'hdpe',
+        'ldpe',
+        'black',
+        'brown',
+        'ldpe',
+        'black'
     ];
     
     public function location()
