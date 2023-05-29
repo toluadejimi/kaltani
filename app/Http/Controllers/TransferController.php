@@ -535,8 +535,8 @@ class TransferController extends Controller
     public function history(Request $request)
     {
 
-        $get_history = Transfer::latest()->select('*')->where('from_location_id', Auth::user()->location_id)
-        ->orWhere('to_location_id',Auth::user()->location_id)->get() ?? null;
+        $get_history = Transfer::latest()->select('*')->where('from_location', Auth::user()->location_id)
+        ->orWhere('to_location',Auth::user()->location_id)->get() ?? null;
 
 
         if($get_history != null){
@@ -544,8 +544,8 @@ class TransferController extends Controller
             $history = [];
             foreach ($var as $key => $value) {
                 $history[] = array(
-                    "from_location_id" => $value->from_location_id,
-                    "to_location_id" => $value->to_location_id,
+                    "from_location" => $value->from_location,
+                    "to_location" => $value->to_location,
                     "rej_reason" => $value->rej_reason,
                     "user_id" => $value->user_id,
                     "status" => $value->status,
