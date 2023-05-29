@@ -549,6 +549,8 @@ class TransferController extends Controller
                     "rej_reason" => $value->rej_reason,
                     "user_id" => $value->user_id,
                     "status" => $value->status,
+                    "id" => $value->id,
+                    "created_at" => $value->created_at,
                     "data" => array(
                         "Caps" => $value->Caps,
                         "Others" => $value->Others,
