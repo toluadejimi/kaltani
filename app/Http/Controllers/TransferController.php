@@ -43,7 +43,7 @@ class TransferController extends Controller
         $factory = Location::all();
         $collection = Location::all();
         $items = Item::all();
-        $transfer_item = BailingItem::all();
+        $transfer_item = Item::all();
 
 
         $location = Location::where('type', 'c')
