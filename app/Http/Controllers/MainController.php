@@ -585,7 +585,7 @@ class MainController extends Controller
 
         //send email
         $data = array(
-            'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
+            'fromsender' => 'no-reply@kaltani.com', 'TRASH BASH',
             'subject' => "Wallet Updated",
             'bodyMessage' => "This email is to let you know your wallet has been credited with $amount",
             'toreceiver' => $receiveremail,
@@ -703,7 +703,7 @@ class MainController extends Controller
 
 
         // $data = array(
-        //     'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
+        //     'fromsender' => 'no-reply@kaltani.com', 'TRASH BASH',
         //     'subject' => "Drop Off Rejected",
         //     'toreceiver' => $senderemail,
         //     'fname' => $f_name,
@@ -736,7 +736,7 @@ class MainController extends Controller
           Mail::to($center_email)->send(new Reject($details));
 
         // $data = array(
-        //     'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
+        //     'fromsender' => 'no-reply@kaltani.com', 'TRASH BASH',
         //     'subject' => "Drop Off Rejected",
         //     'toreceiver' => $center_email,
         //     'reason' => $reason,
@@ -1034,7 +1034,7 @@ class MainController extends Controller
 
         //send email to sender
         $data = array(
-            'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
+            'fromsender' => 'no-reply@kaltani.com', 'TRASH BASH',
             'subject' => "Agent Approval",
             'toreceiver' => $user_email,
         );

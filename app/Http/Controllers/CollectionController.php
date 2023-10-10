@@ -325,7 +325,7 @@ class CollectionController extends Controller
             $drop->save();
 
             $user_firebaseToken = User::where('id', Auth::id())
-                ->first()->device_id;
+            ->first()->device_id;
 
             $SERVER_API_KEY = env('FCM_SERVER_KEY');
             $data = [
@@ -361,7 +361,8 @@ class CollectionController extends Controller
 
             //send to Agent
             $get_agent_firebaseToken = User::where('location_id', $collection_center_id)
-                ->first();
+            ->first() ?? null;
+
             $agent_firebaseToken = $get_agent_firebaseToken->device_id;
 
             $SERVER_API_KEY = env('FCM_SERVER_KEY');
@@ -411,7 +412,7 @@ class CollectionController extends Controller
 
             //send email to sender
             $data = array(
-                'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
+                'fromsender' => 'no-reply@kaltani.com', 'TRASH BASH',
                 'subject' => "New Drop Off",
                 'toreceiver' => $receiveremail,
                 'greeting' => $greeting,
@@ -432,7 +433,7 @@ class CollectionController extends Controller
 
             //send email to receiver
             $data = array(
-                'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
+                'fromsender' => 'no-reply@kaltani.com', 'TRASH BASH',
                 'subject' => "New Drop Off",
                 'toreceiver' => $receiveremail,
                 'order' => $order_id,
@@ -680,7 +681,7 @@ class CollectionController extends Controller
 
 
             $data = array(
-                'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
+                'fromsender' => 'no-reply@kaltani.com', 'TRASH BASH',
                 'subject' => "Agent Drop",
                 'toreceiver' => "daniel.akinwumi@kaltani.com",
             );

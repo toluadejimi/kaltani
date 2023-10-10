@@ -78,7 +78,7 @@ class TransactionController extends Controller
                 'Content-Type: application/json',
             ),
         ));
-    
+
         $var = curl_exec($curl);
         curl_close($curl);
         $var = json_decode($var);
@@ -146,7 +146,7 @@ class TransactionController extends Controller
                 'Content-Type: application/json',
             ),
         ));
-    
+
         $var = curl_exec($curl);
         curl_close($curl);
         $var = json_decode($var);
@@ -171,9 +171,9 @@ class TransactionController extends Controller
 
 
 
- 
 
-    
+
+
 
 
     public function verify_pin(Request $request)
@@ -290,7 +290,7 @@ class TransactionController extends Controller
 
                //send email
                $data = array(
-                   'fromsender' => 'noreply@notification.kaltanimis.com', 'TRASH BASH',
+                   'fromsender' => 'no-reply@kaltani.com', 'TRASH BASH',
                    'subject' => "Withdwral",
                    'toreceiver' => $receiveremail,
                );
