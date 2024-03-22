@@ -84,7 +84,7 @@ class TransactionController extends Controller
         $var = json_decode($var);
 
 
-        if($var->status == 'true'){
+        if($var->status == true){
             return response()->json([
                 'status' => $this->SuccessStatus,
                 'account_name' => $var->customer_name
