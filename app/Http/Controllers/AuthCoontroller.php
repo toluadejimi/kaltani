@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AccessToken;
-use App\Models\AccountRequest;
-use App\Models\AgentRequest;
-use App\Models\Greeting;
-use App\Models\Slider;
-use App\Models\User;
-use App\Models\UserRole;
+use Response;
 use Carbon\Carbon;
 use FFI\Exception;
+use App\Models\User;
+use App\Models\Slider;
+use App\Models\Greeting;
+use App\Models\UserRole;
+use App\Models\AccessToken;
+use App\Models\AgentRequest;
 use Illuminate\Http\Request;
 //use Tymon\JwtAuth\Facades\JwtAuth;
-use Illuminate\Http\Response;
+use App\Models\AccountRequest;
+use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use Laravel\Passport\Passport;
-use Mail;
 
 class AuthCoontroller extends Controller
 {
@@ -107,7 +107,7 @@ class AuthCoontroller extends Controller
 
             //send email
             $data = array(
-                'fromsender' => 'noreply@notification.kaltaniims.com', 'TRASH BASH',
+                'fromsender' => 'info@kaltani.com', 'TRASHBASH',
                 'subject' => "Verification Code",
                 'toreceiver' => $email,
                 'email_code' => $email_code,
@@ -600,7 +600,7 @@ class AuthCoontroller extends Controller
 
             //send email
             $data = array(
-                'fromsender' => 'no-reply@kaltani.com', 'TRASH BASH',
+                'fromsender' => 'info@kaltani.com', 'TRASHBASH',
                 'subject' => "Account Creation",
                 'toreceiver' => $email,
                 'greeting' => $greeting,
@@ -690,7 +690,7 @@ class AuthCoontroller extends Controller
 
             return response()->json([
                 'status' => $this->successStatus,
-                'message' => 'Your request to become an agent has been successful. A member of Trash Bash team will get back to you shortly',
+                'message' => 'Your request to become an agent has been successful. A member of TRASHBASH team will get back to you shortly',
                 'data' => $input,
             ], 200);
 
@@ -775,7 +775,7 @@ class AuthCoontroller extends Controller
 
                 //send email
                 $data = array(
-                    'fromsender' => 'no-reply@kaltani.com', 'TRASH BASH',
+                    'fromsender' => 'info@kaltani.com', 'TRASHBASH',
                     'subject' => "Reset Password",
                     'toreceiver' => $email,
                     'first_name' => $first_name,
@@ -830,7 +830,7 @@ class AuthCoontroller extends Controller
 
             //send email
             $data = array(
-                'fromsender' => 'no-reply@kaltani.com', 'TRASH BASH',
+                'fromsender' => 'info@kaltani.com', 'TRASHBASH',
                 'subject' => "Reset Pin",
                 'toreceiver' => $email,
                 'first_name' => $first_name,

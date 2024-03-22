@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Total;
+use App\Models\SortDetails;
 use Illuminate\Http\Request;
 use App\Models\SortedTransfer;
-use App\Models\SortDetails;
-use App\Models\Total;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class SortedTransferController extends Controller
 {
