@@ -66,7 +66,7 @@ class TransactionController extends Controller
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://enkpayweb.enkwave.com/api/resolve-bank?account_number=$account_number&bank_code=$bank_code",
+            CURLOPT_URL => "https://web.enkpay.com/api/resolve-bank?account_number=$account_number&bank_code=$bank_code",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
