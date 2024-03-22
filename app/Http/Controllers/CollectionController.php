@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CollectedDetails;
-use App\Models\Collection;
-use App\Models\DropOff;
-use App\Models\Greeting;
-use App\Models\Item;
-use App\Models\Location;
-use App\Models\PlasticWaste;
-use App\Models\Rate;
-use App\Models\SortDetails;
-use App\Models\State;
-use App\Models\StateLga;
-use App\Models\Unsorted;
-use App\Models\User;
-use Auth;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Mail;
 use Exception;
+use App\Models\Item;
+use App\Models\Rate;
+use App\Models\User;
+use App\Models\State;
+use App\Models\DropOff;
+use App\Models\Greeting;
+use App\Models\Location;
+use App\Models\StateLga;
+use App\Models\Unsorted;
+use App\Models\Collection;
+use App\Models\SortDetails;
+use App\Models\PlasticWaste;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Models\CollectedDetails;
+use Illuminate\Support\Facades\Auth;
 
 class CollectionController extends Controller
 {
@@ -204,11 +204,8 @@ class CollectionController extends Controller
         $state = $request->all();
 
         try {
-
-
             $result = StateLga::where('state', $state)
             ->get();
-
             return response()->json([
                 "status" => $this->SuccessStatus,
                 "message" => "Successful",

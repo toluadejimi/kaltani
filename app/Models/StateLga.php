@@ -14,6 +14,16 @@ class StateLga extends Model
         'lga'
     ];
     
+
+
+    protected $casts = [
+        'country_id' => 'string',
+        'state_id' => 'string',
+    ];
+
+
+
+
     // public function location()
     // {
     //     return $this->belongsTo(Location::class);
