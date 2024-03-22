@@ -17,8 +17,10 @@ class StateLga extends Model
 
 
     protected $casts = [
-        'country_id' => 'string',
-        'state_id' => 'string',
+        'country_id' => 'integer',
+        'state_id' => 'integer',
+        'id' => 'integer',
+
     ];
 
 
