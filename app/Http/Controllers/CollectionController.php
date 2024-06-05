@@ -409,7 +409,7 @@ class CollectionController extends Controller
 
             //send email to sender
             $data = array(
-                'fromsender' => 'no-reply@kaltani.com', 'TRASH BASH',
+                'fromsender' => 'info@kaltani.com', 'TRASH BASH',
                 'subject' => "New Drop Off",
                 'toreceiver' => $receiveremail,
                 'greeting' => $greeting,
@@ -430,7 +430,7 @@ class CollectionController extends Controller
 
             //send email to receiver
             $data = array(
-                'fromsender' => 'no-reply@kaltani.com', 'TRASH BASH',
+                'fromsender' => 'info@kaltani.com', 'TRASH BASH',
                 'subject' => "New Drop Off",
                 'toreceiver' => $receiveremail,
                 'order' => $order_id,
@@ -678,7 +678,7 @@ class CollectionController extends Controller
 
 
             $data = array(
-                'fromsender' => 'no-reply@kaltani.com', 'TRASH BASH',
+                'fromsender' => 'info@kaltani.com', 'TRASH BASH',
                 'subject' => "Agent Drop",
                 'toreceiver' => "daniel.akinwumi@kaltani.com",
             );
