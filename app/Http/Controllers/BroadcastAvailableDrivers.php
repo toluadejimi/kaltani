@@ -12,6 +12,31 @@ use App\Http\Middleware\Authenticate;
 class BroadcastAvailableDrivers extends Controller
 {
 
+    public function UpdateLocation(Request $request)
+    {
+
+        $lat = $request->input('lat');
+        $lng = $request->input('lng');
+
+        if (!$lat || !$lng) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Missing latitude or longitude'
+            ], 400);
+        }
+
+        $users = User::where('id', Auth::id())->update([
+            'longitude' => $lng,
+            'latitude' => $lat
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Location updated successfully'
+        ], 200);
+
+    }
+
     public function broadcastAvailableDrivers(Request $request)
     {
 
