@@ -8,8 +8,8 @@ window.Echo = new Echo({
     key: 'local',
     wsHost: 'kaltanimis.com',
     wsPort: 6001,
-    forceTLS: false,
-    encrypted: false,
+    forceTLS: true,
+    encrypted: true,
     disableStats: true,
-    enabledTransports: ['ws'],
+    enabledTransports: ['ws', 'wss'],
 });
