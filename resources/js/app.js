@@ -11,5 +11,6 @@ window.Echo = new Echo({
     forceTLS: true,
     encrypted: true,
     disableStats: true,
+    cluster: 'local',
     enabledTransports: ['ws', 'wss'],
 });
