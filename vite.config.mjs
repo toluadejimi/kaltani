@@ -20,11 +20,14 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+
     server: {
         host: 'kaltanimis.com',  // your dev hostname
         port: 5173,
         strictPort: true,
         cors: true,
+        https: true,
+
     },
 });
 
