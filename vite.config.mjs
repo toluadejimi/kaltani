@@ -21,6 +21,11 @@ export default defineConfig({
         }),
     ],
 
+    https: {
+        key: fs.readFileSync('/etc/letsencrypt/live/kaltanimis.com/privkey.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/kaltanimis.com/fullchain.pem'),
+    },
+
     server: {
         host: 'kaltanimis.com',  // your dev hostname
         port: 5173,
