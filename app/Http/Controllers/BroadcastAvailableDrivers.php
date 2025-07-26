@@ -12,9 +12,8 @@ use App\Http\Middleware\Authenticate;
 class BroadcastAvailableDrivers extends Controller
 {
 
-    public function broadcastAvailableDrivers(request $request)
+    public function broadcastAvailableDrivers(Request $request)
     {
-
         $lat = $request->input('lat');
         $lng = $request->input('lng');
 
@@ -25,26 +24,31 @@ class BroadcastAvailableDrivers extends Controller
             ], 400);
         }
 
-        $radius = 0.5;
-        $users = User::where('online', 1)->selectRaw("
-                *, (
-                    6371 * acos(
-                        cos(radians(?)) * cos(radians(latitude)) *
-                        cos(radians(longitude) - radians(?)) +
-                        sin(radians(?)) * sin(radians(latitude))
-                    )
-                ) AS distance
-            ", [$lat, $lng, $lat])
+        $radius = 0.5; // 500 meters
+
+        $users = User::where('online', 1)
+            ->select(
+                'first_name',
+                'last_name',
+                'latitude',
+                'longitude',
+                'phone'
+            )
+            ->selectRaw("
+            (6371 * acos(
+                cos(radians(?)) * cos(radians(latitude)) *
+                cos(radians(longitude) - radians(?)) +
+                sin(radians(?)) * sin(radians(latitude))
+            )) AS distance
+        ", [$lat, $lng, $lat])
             ->having('distance', '<=', $radius)
             ->orderBy('distance')
-            ->get('first_name', 'last_name', 'latitude', 'longitude','phone');
+            ->get();
 
         return response()->json([
             'status' => true,
             'data' => $users
         ]);
-
-
     }
 
 
