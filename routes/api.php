@@ -192,7 +192,7 @@ Route::group(['middleware' => ['auth:api','access']], function(){
 
 
     //Update Logtitude
-    Route::post('update-driver-info', [BroadcastAvailableDrivers::class, 'broadcastAvailableDrivers']);
+    Route::post('get-drivers', [BroadcastAvailableDrivers::class, 'broadcastAvailableDrivers']);
 
 
 
