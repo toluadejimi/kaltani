@@ -6,6 +6,8 @@ use App\Events\AvailableDrivers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\Authenticate;
+
 
 class BroadcastAvailableDrivers extends Controller
 {
