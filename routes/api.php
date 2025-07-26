@@ -191,6 +191,11 @@ Route::group(['middleware' => ['auth:api','access']], function(){
     Route::get('customer-drop-off-list', [CollectionController::class, 'drop_off_list']);
 
 
+    //Update Logtitude
+    Route::post('update-driver-info', [BroadcastAvailableDrivers::class, 'broadcastAvailableDrivers']);
+
+
+
     //customer drop off
     Route::get('get-plastic-waste', [CollectionController::class, 'get_plastic_waste']);
     Route::post('update-dropoff', [CollectionController::class, 'update_drop_off']);
@@ -199,8 +204,6 @@ Route::group(['middleware' => ['auth:api','access']], function(){
     Route::post('get-location-by-city', [CollectionController::class, 'location_by_city']);
     Route::post('get-location-by-lga', [CollectionController::class, 'location_by_lga']);
 
-    //Update Logtitude
-    Route::post('update-driver-info', [BroadcastAvailableDrivers::class, 'broadcastAvailableDrivers']);
 
 
 
