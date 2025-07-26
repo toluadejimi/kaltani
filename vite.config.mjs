@@ -11,13 +11,10 @@ export default defineConfig({
     ],
 
     server: {
-        host: 'kaltanimis.com',
+        host: '203.161.41.46',
         port: 5173,
         strictPort: true,
         cors: true,
-        https: {
-            key: fs.readFileSync('/etc/letsencrypt/live/kaltanimis.com/privkey.pem'),
-            cert: fs.readFileSync('/etc/letsencrypt/live/kaltanimis.com/fullchain.pem'),
-        },
+        https: false,
     },
 });
