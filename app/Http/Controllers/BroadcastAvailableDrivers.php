@@ -14,6 +14,8 @@ class BroadcastAvailableDrivers extends Controller
 
     public function broadcastAvailableDrivers(Request $request)
     {
+
+
         $lat = $request->input('lat');
         $lng = $request->input('lng');
 
@@ -24,16 +26,8 @@ class BroadcastAvailableDrivers extends Controller
             ], 400);
         }
 
-        $radius = 0.5; // 500 meters
-
         $users = User::where('online', 1)
-            ->select(
-                'first_name',
-                'last_name',
-                'latitude',
-                'longitude',
-                'phone'
-            )
+            ->select('first_name', 'last_name', 'latitude', 'longitude', 'phone')
             ->selectRaw("
             (6371 * acos(
                 cos(radians(?)) * cos(radians(latitude)) *
@@ -41,7 +35,6 @@ class BroadcastAvailableDrivers extends Controller
                 sin(radians(?)) * sin(radians(latitude))
             )) AS distance
         ", [$lat, $lng, $lat])
-            ->having('distance', '<=', $radius)
             ->orderBy('distance')
             ->get();
 
@@ -49,6 +42,7 @@ class BroadcastAvailableDrivers extends Controller
             'status' => true,
             'data' => $users
         ]);
+
     }
 
 
