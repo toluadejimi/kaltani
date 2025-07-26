@@ -15,19 +15,38 @@ class BroadcastAvailableDrivers extends Controller
     public function broadcastAvailableDrivers(request $request)
     {
 
+        $lat = $request->input('lat');
+        $lng = $request->input('lng');
 
-        User::where('id', Auth::id())->update(['longitude' => $request->log, 'latitude' => $request->lat]);
-
-        $drivers = User::where('status', 1)->get(['id', 'first_name', 'last_name', 'latitude', 'longitude', 'phone']);
-        if($drivers){
+        if (!$lat || !$lng) {
             return response()->json([
-                'status' => true,
-                'data' => $drivers
-            ]);
-
+                'status' => false,
+                'message' => 'Missing latitude or longitude'
+            ], 400);
         }
+
+        $radius = 0.5;
+        $users = User::where('online', 1)->selectRaw("
+                *, (
+                    6371 * acos(
+                        cos(radians(?)) * cos(radians(latitude)) *
+                        cos(radians(longitude) - radians(?)) +
+                        sin(radians(?)) * sin(radians(latitude))
+                    )
+                ) AS distance
+            ", [$lat, $lng, $lat])
+            ->having('distance', '<=', $radius)
+            ->orderBy('distance')
+            ->get('first_name', 'last_name', 'latitude', 'longitude','phone');
+
+        return response()->json([
+            'status' => true,
+            'data' => $users
+        ]);
 
 
     }
+
+
 
 }
