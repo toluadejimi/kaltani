@@ -1,39 +1,16 @@
-// import { defineConfig } from 'vite';
-// import laravel from 'laravel-vite-plugin';
-
-// export default defineConfig({
-//     plugins: [
-//         laravel([
-//             'resources/css/app.css',
-//             'resources/js/app.js',
-//         ]),
-//     ],
-// });
-
 import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
+import vue from '@vitejs/plugin-vue';
+import fs from 'fs';
+import path from 'path';
 
 export default defineConfig({
-    plugins: [
-        laravel({
-            input: ['resources/js/app.js'],
-            refresh: true,
-        }),
-    ],
-
-    https: {
-        key: fs.readFileSync('/etc/letsencrypt/live/kaltanimis.com/privkey.pem'),
-        cert: fs.readFileSync('/etc/letsencrypt/live/kaltanimis.com/fullchain.pem'),
-    },
-
     server: {
-        host: 'kaltanimis.com',  // your dev hostname
+        https: {
+            key: fs.readFileSync('/etc/letsencrypt/live/kaltanimis.com/privkey.pem'),
+            cert: fs.readFileSync('/etc/letsencrypt/live/kaltanimis.com/fullchain.pem'),
+        },
+        host: '0.0.0.0',
         port: 5173,
-        strictPort: true,
-        cors: true,
-        https: true,
-
     },
+    plugins: [vue()],
 });
-
-
