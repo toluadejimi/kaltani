@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\MessageSent;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ManageController;
@@ -14,6 +15,20 @@ use App\Http\Controllers\ManageController;
 |
 */
 //Clear Cache facade value:
+
+
+Route::get('/test-broadcast', function () {
+    event(new MessageSent('hello world'));
+    return 'Event broadcasted!';
+});
+
+
+Route::get('/realtime', function () {
+    return view('realtime');
+});
+
+
+
 Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('cache:clear');
     return '<h1>Cache facade value cleared</h1>';
@@ -130,7 +145,7 @@ Route::group(['middleware' => ['adminAuth']], function()
    Route::post('/fund-account-now', [MainController::class,'fund_account_now']);
 
 
-   
+
 
 
 
