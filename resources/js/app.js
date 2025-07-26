@@ -6,9 +6,10 @@ window.Pusher = Pusher;
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: 'local',
-    cluster: 'mt1',
     wsHost: 'kaltanimis.com',
     wsPort: 6001,
     forceTLS: false,
+    encrypted: false,
     disableStats: true,
+    enabledTransports: ['ws'],
 });
