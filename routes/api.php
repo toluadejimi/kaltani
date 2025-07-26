@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BroadcastAvailableDrivers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthCoontroller;
@@ -185,16 +186,8 @@ Route::post('customer-login', [AuthCoontroller::class, 'customer_login']);
 Route::group(['middleware' => ['auth:api','access']], function(){
 
     Route::post('drop-off', [CollectionController::class, 'drop_off']);
-
     Route::post('delete-drop-off', [CollectionController::class, 'delete_drop_off']);
-
-
-
-
     Route::post('sms-code', [AuthCoontroller::class, 'sms_email_code']);
-
-
-
     Route::get('customer-drop-off-list', [CollectionController::class, 'drop_off_list']);
 
 
@@ -205,6 +198,11 @@ Route::group(['middleware' => ['auth:api','access']], function(){
     Route::post('get-location-by-state', [CollectionController::class, 'location_by_state']);
     Route::post('get-location-by-city', [CollectionController::class, 'location_by_city']);
     Route::post('get-location-by-lga', [CollectionController::class, 'location_by_lga']);
+
+    //Update Logtitude
+    Route::post('update-driver-info', [BroadcastAvailableDrivers::class, 'broadcastAvailableDrivers']);
+
+
 
 
 
