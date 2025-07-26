@@ -14,7 +14,7 @@ class BroadcastAvailableDrivers extends Controller
     {
 
 
-        User::where('id', auth()->user()->id)->update(['longitude' => $request->log, 'latitude' => $request->lat]);
+        User::where('id', Auth::id())->update(['longitude' => $request->log, 'latitude' => $request->lat]);
 
         $drivers = User::where('status', 1)->get(['id', 'first_name', 'last_name', 'latitude', 'longitude', 'status']);
         if($drivers){
