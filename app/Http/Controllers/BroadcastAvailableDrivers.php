@@ -12,7 +12,48 @@ use App\Http\Middleware\Authenticate;
 class BroadcastAvailableDrivers extends Controller
 {
 
-    public function UpdateLocation(Request $request)
+    public function UpdateDriverStatus(Request $request)
+    {
+
+        if($request->availability === 1){
+            User::where('id', Auth::id())->update(['online' => 1]);
+            return response()->json([
+                'status' => true,
+                'message' => "Driver is now online"
+            ]);
+
+        }else{
+
+            User::where('id', Auth::id())->update(['online' => 0]);
+            return response()->json([
+                'status' => true,
+                'message' => "Driver is now offile"
+            ]);
+
+        }
+
+
+    }
+
+
+        public function DriverStatus(Request $request)
+    {
+        $status = User::where('id', Auth::id())->first()->online;
+        if($status === 0){
+            $availability = false;
+        }else{
+            $availability = true;
+        }
+
+        return response()->json([
+            'status' => true,
+            'availability' => $availability
+        ]);
+
+
+    }
+
+        public function UpdateLocation(Request $request)
     {
 
         $lat = $request->input('lat');
