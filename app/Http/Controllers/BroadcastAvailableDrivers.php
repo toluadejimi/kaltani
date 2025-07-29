@@ -27,7 +27,7 @@ class BroadcastAvailableDrivers extends Controller
             User::where('id', Auth::id())->update(['online' => 0]);
             return response()->json([
                 'status' => true,
-                'message' => "Driver is now offile"
+                'message' => "Driver is now offline"
             ]);
 
         }
