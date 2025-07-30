@@ -38,15 +38,20 @@ class WasteBillController extends Controller
 
 
             $bill = WasteBill::where('user_id', $user->id)->get();
-            $user['fullname'] = $user->first_name . ' ' . $user->last_name;
-            $user['customer_id'] = $user->customer_id;
-            $user['address'] = $user->address;
-            $user['status'] = $user->status;
+            $usr['fullname'] = $user->first_name . ' ' . $user->last_name;
+            $usr['customer_id'] = $user->customer_id;
+            $usr['address'] = $user->address;
+
+            if($user->status == 0){
+                $usr['status'] = "Inactive";
+            }else{
+                $usr['status'] = "Active";
+            }
 
             return response()->json([
                 'status' => true,
                 'bill_data' => $bill,
-                'customer_info' => $user
+                'customer_info' => $usr
 
             ]);
         }
