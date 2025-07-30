@@ -17,9 +17,10 @@ class AddMonthlyBills extends Command
 
         $bill_amount = Setting::where('id', 1)->first()->bill_amount;
         $customers = User::all();
-        $ref = "BILL".random_int(0000000000, 9999999999);
         foreach ($customers as $customer) {
-                WasteBill::create([
+            $ref = "BILL".random_int(0000000000, 9999999999);
+
+            WasteBill::create([
                 'user_id' => $customer->id,
                 'amount' => $bill_amount,
                 'ref' => $ref,

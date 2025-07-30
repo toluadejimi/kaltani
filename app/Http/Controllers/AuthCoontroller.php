@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Ramsey\Uuid\Uuid;
 use Response;
 use Carbon\Carbon;
 use FFI\Exception;
@@ -48,6 +49,11 @@ class AuthCoontroller extends Controller
             $token = auth()->user()->createToken('API Token')->accessToken;
 
             $slider = Slider::all();
+
+            if (Auth::user()->uuid == null) {
+                $uuid = Uuid::uuid4()->toString();
+                User::where('id', Auth::id())->update(['uuid' => $uuid]);
+            }
 
             return response()->json([
                 "status" => $this->successStatus,

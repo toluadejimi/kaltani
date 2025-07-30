@@ -146,7 +146,11 @@
         <tr>
             <td style="vertical-align: top; border: none;">
                 <p>
-                    <strong>Status:</strong> <span class="status-unpaid">PAID</span><br>
+                    @if($invoice['status'] === "PAID")
+                        <strong>Status:</strong> <span class="status-paid">PAID</span><br>
+                    @else
+                        <strong>Status:</strong> <span class="status-unpaid">UNPAID</span><br>
+                    @endif
                     <strong>Next Due Date:</strong> {{$invoice['due_date']}}<br>
                     <strong>Payment Method:</strong> Bank Transfer
                 </p>
