@@ -33,21 +33,30 @@ class WasteBillController extends Controller
             'uuid' => 'required'
         ]);
 
-        $user = User::where('uuid', $request->uuid)->first();
-        $bill = WasteBill::where('user_id', $user->id)->get();
+        $user = User::where('uuid', $request->uuid)->first() ?? null;
+        if($user){
 
 
-        $user['fullname'] = $user->first_name . ' ' . $user->last_name;
-        $user['customer_id'] = $user->customer_id;
-        $user['address'] = $user->address;
-        $user['status'] = $user->status;
+            $bill = WasteBill::where('user_id', $user->id)->get();
+            $user['fullname'] = $user->first_name . ' ' . $user->last_name;
+            $user['customer_id'] = $user->customer_id;
+            $user['address'] = $user->address;
+            $user['status'] = $user->status;
+
+            return response()->json([
+                'status' => true,
+                'bill_data' => $bill,
+                'customer_info' => $user
+
+            ]);
+        }
 
         return response()->json([
-            'status' => true,
-            'bill_data' => $bill,
-            'customer_info' => $user
+            'status' => false,
+            'message' => "Customer not found",
 
-        ]);
+        ], 422);
+
 
     }
 
