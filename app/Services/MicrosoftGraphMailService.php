@@ -70,7 +70,7 @@ class MicrosoftGraphMailService
                 'subject' => $subject,
                 'body' => [
                     'contentType' => 'Text',
-                    'content' => 'Please find your Trash Bash invoice attached.',
+                    'content' => "Dear Customer,\n\nThank you for being a valued part of the Trash Bash community.\n\nPlease find your invoice attached for your recent transaction. Kindly review the details at your convenience. If you have any questions or need further assistance, feel free to reach out.\n\nWe appreciate your continued support.\n\nBest regards,\nThe Trash Bash Team",
                 ],
                 'toRecipients' => [
                     [
@@ -82,6 +82,7 @@ class MicrosoftGraphMailService
                 'attachments' => [$attachment],
             ]
         ];
+
 
         $senderEmail = 'info@kaltani.com';
         $response = Http::withToken($this->token)
