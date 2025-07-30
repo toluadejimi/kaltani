@@ -172,9 +172,53 @@ class WasteBillController extends Controller
 
             }
 
+            $amount_to_charge = $get_user->wallet - $request->amount;
+            $api_key = Setting::where('id', 1)->first()->enkpay_key;
+            $databody = array(
+                'amount' => $amount_to_charge,
+                'ref' => $request->ref,
+                'email' => Auth::user()->email,
+                'key' => $api_key,
+            );
+
+            $post_data = json_encode($databody);
+            $email = Auth::user()->email;
+            $url = "https://web.sprintpay.online/paynow?amount=$request->amount&key=$api_key&ref=$request->ref&email=$email&platform=kaltani";
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_POSTFIELDS => $post_data,
+            ));
+
+            $var2 = curl_exec($curl);
+            curl_close($curl);
+            $var = json_decode($var2);
+
+            Transaction::create([
+                'user_id' => Auth::id(),
+                'amount' => $amount_to_charge,
+                'trans_id' => $request->ref,
+                'account_no' => $var->account_no,
+                'type' => "Monthly Bill Payment",
+            ]);
+
+
+            return response()->json([
+                'status' => true,
+                'data' => $var,
+            ]);
+
 
 
         }
+
 
         $api_key = Setting::where('id', 1)->first()->enkpay_key;
         $databody = array(
@@ -182,14 +226,10 @@ class WasteBillController extends Controller
             'ref' => $request->ref,
             'email' => Auth::user()->email,
             'key' => $api_key,
-
         );
 
         $post_data = json_encode($databody);
-
         $email = Auth::user()->email;
-
-
         $url = "https://web.sprintpay.online/paynow?amount=$request->amount&key=$api_key&ref=$request->ref&email=$email&platform=kaltani";
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -221,6 +261,7 @@ class WasteBillController extends Controller
             'status' => true,
             'data' => $var,
         ]);
+
 
     }
 
