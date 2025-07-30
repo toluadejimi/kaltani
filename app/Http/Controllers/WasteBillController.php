@@ -177,17 +177,15 @@ class WasteBillController extends Controller
                 'payment_method' => 'Bank Transfer',
             ];
 
+            $pdf = Pdf::loadView('invoices.invoice', ['invoice' => $invoiceData]);
 
             $fileName = 'invoice_' . $user->customer_id . '_' . time() . '.pdf';
-            $pdf = Pdf::loadView('invoices.invoice', ['invoice' => $invoiceData]);
-            $pdfContent = $pdf->output();
-            Storage::disk('public')->put('invoices/' . $fileName, $pdfContent);
-            $pdfUrl = asset('storage/invoices/' . $fileName);
-
-            return response()->json([
-                'status' => true,
-                'invoice_url' => $pdfUrl
-            ]);
+            return $pdf->download($fileName);
+//
+//            return response()->json([
+//                'status' => true,
+//                'invoice_url' => $pdfUrl
+//            ]);
 
 
         }
