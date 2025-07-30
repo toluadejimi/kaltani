@@ -20,6 +20,10 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
+        body {
+            font-family: 'DejaVu Sans', sans-serif;
+        }
+
         .header {
             text-align: center;
             margin-bottom: 20px;
@@ -116,8 +120,8 @@
         <thead>
         <tr>
             <th>Description</th>
-            <th>Unit Price (₦)</th>
-            <th>Total (₦)</th>
+            <th>Unit Price (&#8358;)</th>
+            <th>Total (&#8358;)</th>
         </tr>
         </thead>
         <tbody>
@@ -128,25 +132,29 @@
         </tr>
         <tr>
             <td colspan="2" class="totals">Subtotal</td>
-            <td>₦{{number_format($invoice['total'])}}</td>
+            <td>&#8358;{{number_format($invoice['total'])}}</td>
         </tr>
         <tr class="total-row">
             <td colspan="2" class="totals">Total Amount Paid</td>
-            <td>₦{{number_format($invoice['total'])}}</td>
+            <td>&#8358;{{number_format($invoice['total'])}}</td>
         </tr>
         </tbody>
     </table>
 
-    <p><strong>Status:</strong> <span class="status-unpaid">PAID</span><br>
-        <strong>Next Due Date:</strong> {{$invoice['due_date']}} <br>
-        <strong>Payment Method:</strong> Bank Transfer</p>
+
+    <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-top: 20px;">
+        <div>
+            <p><strong>Status:</strong> <span class="status-unpaid">PAID</span><br>
+                <strong>Next Due Date:</strong> {{$invoice['due_date']}} <br>
+                <strong>Payment Method:</strong> Bank Transfer</p>
+        </div>
+        <div>
+            <img src="data:image/png;base64,{{$invoice['qr_code']}}" width="90" alt="QR Code">
+        </div>
+    </div>
 
     <div class="footer">
         Thank you for partnering with Trash Bash to keep Abia State clean!
-    </div>
-
-    <div class="qr-code">
-        <img src="data:image/png;base64,{{$invoice['qr_code']}}" width="80" alt="QR Code">
     </div>
 </div>
 
