@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BroadcastAvailableDrivers;
+use App\Http\Controllers\WasteBillController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthCoontroller;
@@ -40,8 +41,9 @@ use App\Http\Controllers\TransactionController;
 
 Route::post('verify-bank-account', [TransactionController::class, 'verify_bank_account']);
    // customer settings
-   Route::get('get-slider', [SettingController::class, 'get_slider']);
+Route::get('get-slider', [SettingController::class, 'get_slider']);
 
+Route::any('e-fund', [WasteBillController::class, 'ProcessPaymentBill']);
 
 
 
@@ -184,6 +186,17 @@ Route::post('customer-login', [AuthCoontroller::class, 'customer_login']);
 //customer operations
 
 Route::group(['middleware' => ['auth:api','access']], function(){
+
+    //Waste Bills
+    Route::get('get-waste-bills', [WasteBillController::class, 'GetBill']);
+    Route::post('pay-bill', [WasteBillController::class, 'PayWasteBill']);
+
+
+
+
+
+
+
 
     Route::post('drop-off', [CollectionController::class, 'drop_off']);
     Route::post('delete-drop-off', [CollectionController::class, 'delete_drop_off']);

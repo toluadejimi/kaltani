@@ -23,7 +23,9 @@ class Kernel extends ConsoleKernel
    protected $commands = [
 
        Commands\HourlyUpdate::class,
-       Commands\DailyUpdate::class
+       Commands\DailyUpdate::class,
+       Commands\AddMonthlyBills::class,
+
 
    ];
 

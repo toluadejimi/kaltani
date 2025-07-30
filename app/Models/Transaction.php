@@ -15,9 +15,12 @@ class Transaction extends Model
         'type',
         'user_type',
         'create_at',
-        'updated_at'
+        'updated_at',
+        'account_no',
+        'trans_id'
+
     ];
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);
