@@ -103,10 +103,10 @@
 
 <div class="invoice-container">
     <div class="header">
-        <div class="logo">TB TRASH BASH</div>
+        <div class="logo">TRASH BASH</div>
         <div class="company-info">
             Trash Bash Waste Management Services<br>
-            Lekki, Lagos • +234-800-TRASHBASH
+            Lekki, Lagos.<br> +234-800-TRASHBASH
         </div>
     </div>
 
@@ -142,14 +142,14 @@
     </table>
 
 
-    <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-top: 20px;">
+    <div style="display: flex; align-items: flex-start; justify-content: space-around; margin-top: 20px;">
         <div>
             <p><strong>Status:</strong> <span class="status-unpaid">PAID</span><br>
                 <strong>Next Due Date:</strong> {{$invoice['due_date']}} <br>
                 <strong>Payment Method:</strong> Bank Transfer</p>
         </div>
         <div>
-            <img src="data:image/png;base64,{{$invoice['qr_code']}}" width="90" alt="QR Code">
+            <img style="align-items: flex-end;" src="data:image/png;base64,{{$invoice['qr_code']}}" width="90" alt="QR Code">
         </div>
     </div>
 
