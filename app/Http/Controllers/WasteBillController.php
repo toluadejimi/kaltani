@@ -7,8 +7,10 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Models\WasteBill;
 use App\Services\MicrosoftGraphMailService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class WasteBillController extends Controller
@@ -30,7 +32,7 @@ class WasteBillController extends Controller
 
 
         $trx = Transaction::where('account_no', $request->account_no)->where('status', 0)->first();
-        if($trx){
+        if ($trx) {
 
             WasteBill::where('ref', $trx->trans_id)->update(['status' => 1]);
             $trx->update(['status' => 1]);
@@ -38,7 +40,7 @@ class WasteBillController extends Controller
 
             $due_date = WasteBill::where('ref', $trx->trans_id)->first()->due_date;
 
-            $data = url('').'/verify-invoice/'.$trx->trans_id;
+            $data = url('') . '/verify-invoice/' . $trx->trans_id;
 
             $qrCode = base64_encode(
                 QrCode::format('png')->size(120)->generate($data)
@@ -110,7 +112,7 @@ class WasteBillController extends Controller
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_POSTFIELDS =>$post_data,
+            CURLOPT_POSTFIELDS => $post_data,
         ));
 
         $var2 = curl_exec($curl);
@@ -132,4 +134,74 @@ class WasteBillController extends Controller
         ]);
 
     }
+
+
+    public function GetWasteBill(Request $request)
+    {
+
+
+        $bill = WasteBill::where('ref', $request->ref)->first() ?? null;
+
+        if ($bill) {
+
+            $user = User::where('id', $bill->user_id)->first();
+
+            $due_date = WasteBill::where('ref', $request->ref)->first()->due_date;
+
+            $trx = Transaction::where('trans_id', $request->ref)->first();
+
+            $data = url('') . '/verify-invoice/' . $request->ref;
+
+            $qrCode = base64_encode(
+                QrCode::format('png')->size(120)->generate($data)
+            );
+
+
+            if ($trx->status === 0) {
+                $status = "UNPAID";
+            } else {
+                $status = "PAID";
+            }
+
+            $invoiceData = [
+                'customer_id' => $user->customer_id,
+                'name' => $user->first_name . ' ' . $user->last_name,
+                'phone' => $user->phone,
+                'description' => 'Monthly Waste Collection',
+                'unit_price' => $trx->amount,
+                'total' => $trx->amount,
+                'subtotal' => $trx->amount,
+                'total_due' => $trx->amount,
+                'status' => $status,
+                'due_date' => $due_date,
+                'qr_code' => $qrCode,
+                'payment_method' => 'Bank Transfer',
+            ];
+
+
+            $fileName = 'invoice_' . $user->customer_id . '_' . time() . '.pdf';
+
+            $pdf = Pdf::loadView('invoices.invoice', ['invoice' => $invoiceData]);
+            $pdfContent = $pdf->output();
+            Storage::disk('public')->put('invoices/' . $fileName, $pdfContent);
+            $pdfUrl = asset('storage/invoices/' . $fileName);
+
+            return response()->json([
+                'status' => true,
+                'invoice_url' => $pdfUrl
+            ]);
+
+
+        }
+
+
+        return response()->json([
+            'status' => false,
+            'message' => "Bill Not found"
+        ], 422);
+
+
+    }
+
+
 }

@@ -158,7 +158,6 @@
     </table>
 
 
-
     <div class="footer">
         Thank you for partnering with Trash Bash to keep Abia State clean!
     </div>
