@@ -30,7 +30,6 @@ class WasteBillController extends Controller
     public function ProcessPaymentBill(Request $request, MicrosoftGraphMailService $mailer)
     {
 
-
         $trx = Transaction::where('account_no', $request->account_no)->where('status', 0)->first();
         if ($trx) {
 
@@ -136,7 +135,7 @@ class WasteBillController extends Controller
     }
 
 
-    public function GetWasteBill(Request $request)
+    public function GetWasteBillPdf(Request $request)
     {
 
 

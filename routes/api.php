@@ -45,6 +45,9 @@ Route::get('get-slider', [SettingController::class, 'get_slider']);
 
 Route::any('e-fund', [WasteBillController::class, 'ProcessPaymentBill']);
 
+Route::post('get-bill-pdf', [WasteBillController::class, 'GetWasteBillPdf']);
+
+
 
 
 
