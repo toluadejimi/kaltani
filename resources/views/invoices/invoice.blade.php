@@ -142,16 +142,19 @@
     </table>
 
 
-    <div style="display: flex; align-items: flex-start; justify-content: space-around; margin-top: 20px;">
-        <div>
-            <p><strong>Status:</strong> <span class="status-unpaid">PAID</span><br>
+    <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-top: 20px;">
+        <div style="flex: 1;">
+            <p>
+                <strong>Status:</strong> <span class="status-unpaid">PAID</span><br>
                 <strong>Next Due Date:</strong> {{$invoice['due_date']}} <br>
-                <strong>Payment Method:</strong> Bank Transfer</p>
+                <strong>Payment Method:</strong> Bank Transfer
+            </p>
         </div>
-        <div>
-            <img style="align-items: flex-end;" src="data:image/png;base64,{{$invoice['qr_code']}}" width="90" alt="QR Code">
+        <div style="flex-shrink: 0; padding-left: 20px;">
+            <img src="data:image/png;base64,{{$invoice['qr_code']}}" width="90" alt="QR Code">
         </div>
     </div>
+
 
     <div class="footer">
         Thank you for partnering with Trash Bash to keep Abia State clean!
