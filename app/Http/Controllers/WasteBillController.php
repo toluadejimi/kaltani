@@ -179,7 +179,6 @@ class WasteBillController extends Controller
 
 
             $fileName = 'invoice_' . $user->customer_id . '_' . time() . '.pdf';
-
             $pdf = Pdf::loadView('invoices.invoice', ['invoice' => $invoiceData]);
             $pdfContent = $pdf->output();
             Storage::disk('public')->put('invoices/' . $fileName, $pdfContent);
