@@ -142,18 +142,21 @@
     </table>
 
 
-    <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-top: 20px;">
-        <div style="flex: 1;">
-            <p>
-                <strong>Status:</strong> <span class="status-unpaid">PAID</span><br>
-                <strong>Next Due Date:</strong> {{$invoice['due_date']}} <br>
-                <strong>Payment Method:</strong> Bank Transfer
-            </p>
-        </div>
-        <div style="flex-shrink: 0; padding-left: 20px;">
-            <img src="data:image/png;base64,{{$invoice['qr_code']}}" width="90" alt="QR Code">
-        </div>
-    </div>
+    <table style="width: 100%; margin-top: 20px; border-collapse: collapse; border: none;">
+        <tr>
+            <td style="vertical-align: top; border: none;">
+                <p>
+                    <strong>Status:</strong> <span class="status-unpaid">PAID</span><br>
+                    <strong>Next Due Date:</strong> {{$invoice['due_date']}}<br>
+                    <strong>Payment Method:</strong> Bank Transfer
+                </p>
+            </td>
+            <td style="text-align: right; vertical-align: top; width: 100px; border: none;">
+                <img src="data:image/png;base64,{{$invoice['qr_code']}}" width="90" alt="QR Code">
+            </td>
+        </tr>
+    </table>
+
 
 
     <div class="footer">
