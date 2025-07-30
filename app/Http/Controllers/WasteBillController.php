@@ -122,8 +122,59 @@ class WasteBillController extends Controller
     }
 
 
-    public function PayWasteBill(Request $request)
+    public function PayWasteBill(Request $request, MicrosoftGraphMailService $mailer)
     {
+
+
+        if($request->wallet == true){
+
+            $get_user = User::where('id', Auth::id())->first();
+            if($get_user->wallet >= $request->amount){
+
+                $due_date = WasteBill::where('ref', $request->ref)->first()->due_date;
+                $trx = Transaction::where('trans_id', $request->ref)->first();
+                $data = url('') . '/verify-invoice/' . $request->ref;
+                $trx->update(['status' => 1]);
+
+
+                $qrCode = base64_encode(
+                    QrCode::format('png')->size(120)->generate($data)
+                );
+
+
+
+                $status = "PAID";
+
+                $invoiceData = [
+                    'customer_id' => $get_user->customer_id,
+                    'name' => $get_user->first_name . ' ' . $get_user->last_name,
+                    'phone' => $get_user->phone,
+                    'description' => 'Monthly Waste Collection',
+                    'unit_price' => $trx->amount,
+                    'total' => $trx->amount,
+                    'subtotal' => $trx->amount,
+                    'total_due' => $trx->amount,
+                    'status' => $status,
+                    'due_date' => $due_date,
+                    'qr_code' => $qrCode,
+                    'payment_method' => 'Bank Transfer',
+                ];
+
+                $mailer->sendEmail($get_user->email, 'Trash Bash Invoice', $invoiceData);
+
+
+                return response()->json([
+                    'status' => true,
+                    'message' => "Payment Successful",
+
+                ]);
+
+
+            }
+
+
+
+        }
 
         $api_key = Setting::where('id', 1)->first()->enkpay_key;
         $databody = array(

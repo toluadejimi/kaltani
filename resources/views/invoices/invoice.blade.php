@@ -79,8 +79,13 @@
             font-weight: bold;
         }
 
-        .status-unpaid {
+        .status-paid {
             color: #038221;
+            font-weight: bold;
+        }
+
+        .status-unpaid {
+            color: #bf0616;
             font-weight: bold;
         }
 
