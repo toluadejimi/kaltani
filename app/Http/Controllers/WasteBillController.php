@@ -473,11 +473,11 @@ class WasteBillController extends Controller
     public
     function GetCustomerOrder(request $request)
     {
-        $orders = BulkDrop::where('user_id', Auth::id())->first();
+        $orders = BulkDrop::where('user_id', Auth::id())->get();
 
         return response()->json([
                 'status' => true,
-                'message' => $orders,
+                'data' => $orders,
             ]);
 
 
