@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Setting;
 use App\Models\Transaction;
 use App\Models\User;
@@ -18,7 +19,7 @@ class WasteBillController extends Controller
     public function GetBill()
     {
 
-        $bills = WasteBill::where('id', Auth::id())->get();
+        $bills = WasteBill::where('user_id', Auth::id())->get();
         return response()->json([
             'status' => true,
             'data' => $bills
@@ -329,6 +330,23 @@ class WasteBillController extends Controller
 
 
     }
+
+
+
+    public function DriverProperties(request $request)
+    {
+
+        $driver = User::where('id', Auth::id())->first();
+        $routes = $driver->routes;
+        $items = Product::where('status', 1)->get();
+
+
+
+
+
+    }
+
+
 
 
 }
