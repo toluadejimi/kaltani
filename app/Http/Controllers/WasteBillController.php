@@ -340,8 +340,6 @@ class WasteBillController extends Controller
     public function DriverProperties(request $request)
     {
 
-
-
         $driver = User::where('id', Auth::id())->first();
         $routes = $driver->routes;
         $items = Product::where('status', 1)->get()->makeHidden(['created_at', 'updated_at', 'status']);
@@ -360,8 +358,6 @@ class WasteBillController extends Controller
 
         }
 
-
-
         $list = BulkDrop::where('status', 0)->get();
 
         $fixedJson = str_replace(['{', '}', '"'], ['[', ']', '"'], $routes);
@@ -378,19 +374,22 @@ class WasteBillController extends Controller
 
 
 
-
-
-
-
-
-
-
-
     }
 
 
+    public function GetBulkList(request $request)
+    {
 
-    public function CollectWasteDriver(request $request)
+        $list = BulkDrop::where('status', 0)->get();
+
+        return response()->json([
+            'status' => true,
+            'bulk_list' => $list,
+        ]);
+
+    }
+
+        public function CollectWasteDriver(request $request)
     {
 
         $request->validate([

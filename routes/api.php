@@ -89,6 +89,7 @@ Route::get('getCollection', [CollectionController::class, 'getCollection']);
 
 
 Route::get('driver-properties', [WasteBillController::class, 'DriverProperties']);
+Route::get('get-bulk-list', [WasteBillController::class, 'GetBulkList']);
 
 
 
