@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BulkDrop;
 use App\Models\Product;
 use App\Models\Setting;
 use App\Models\Transaction;
@@ -9,8 +10,11 @@ use App\Models\User;
 use App\Models\WasteBill;
 use App\Services\MicrosoftGraphMailService;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -336,9 +340,47 @@ class WasteBillController extends Controller
     public function DriverProperties(request $request)
     {
 
+
+
         $driver = User::where('id', Auth::id())->first();
         $routes = $driver->routes;
-        $items = Product::where('status', 1)->get();
+        $items = Product::where('status', 1)->get()->makeHidden(['created_at', 'updated_at', 'status']);
+
+        $columns = Schema::getColumnListing('waste_collection');
+        $itemColumns = array_diff($columns, ['id', 'user_id', 'created_at', 'updated_at']);
+
+        if (empty($itemColumns)) {
+            $collected = 0;
+        }else{
+            $selectRaw = collect($itemColumns)->map(function ($col) {
+                return "SUM(`$col`) as {$col}_total";
+            })->implode(', ');
+
+            $collected = DB::table('waste_collection')->selectRaw($selectRaw)->first();
+
+        }
+
+
+
+        $list = BulkDrop::where('status', 0)->get();
+
+        $fixedJson = str_replace(['{', '}', '"'], ['[', ']', '"'], $routes);
+        $fixedJson = preg_replace('/([a-zA-Z0-9_]+)(?=\s*,|\s*\])/', '"$1"', $fixedJson);
+        $routesArray = json_decode($fixedJson, true);
+
+        return response()->json([
+            'status' => true,
+            'route' => $routesArray,
+            'items' => $items,
+            'collected' => $collected,
+            'bulk_list' => $list,
+        ]);
+
+
+
+
+
+
 
 
 
@@ -348,5 +390,52 @@ class WasteBillController extends Controller
 
 
 
+    public function CollectWasteDriver(request $request)
+    {
+
+        $request->validate([
+            'items'   => 'required|array',
+            'items.*' => 'numeric|min:0',
+        ]);
+
+
+
+
+        $userId = User::where('phone', $request->phone)->first()->id;
+        $items = $request->items;
+
+        foreach ($items as $column => $value) {
+            if (!Schema::hasColumn('waste_collection', $column)) {
+                Schema::table('waste_collection', function (Blueprint $table) use ($column) {
+                    $table->float($column)->default(0)->nullable();
+                });
+            }
+        }
+
+        $row = DB::table('waste_collection')->where('user_id', $userId)->first();
+
+        if ($row) {
+            foreach ($items as $column => $value) {
+                DB::table('waste_collection')
+                    ->where('user_id', $userId)
+                    ->update([
+                        $column => DB::raw("COALESCE($column, 0) + {$value}")
+                    ]);
+            }
+        } else {
+            // Create new row
+            $insertData = ['user_id' => $userId];
+            foreach ($items as $column => $value) {
+                $insertData[$column] = $value;
+            }
+            DB::table('waste_collection')->insert($insertData);
+        }
+
+        return response()->json(['status' => 'success']);
+
+
+
+
+    }
 
 }

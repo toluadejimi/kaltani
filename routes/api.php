@@ -88,6 +88,10 @@ Route::post('collection', [CollectionController::class, 'collect']);
 Route::get('getCollection', [CollectionController::class, 'getCollection']);
 
 
+Route::get('driver-properties', [WasteBillController::class, 'DriverProperties']);
+
+
+
 //create and get sorting
 Route::post('sorting', [SortingController::class, 'sorted']);
 Route::get('getSorting', [SortingController::class, 'getSorted']);
