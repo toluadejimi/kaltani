@@ -47,6 +47,7 @@ Route::any('e-fund', [WasteBillController::class, 'ProcessPaymentBill']);
 
 Route::post('get-bill-pdf', [WasteBillController::class, 'GetWasteBillPdf']);
 Route::post('scan-code', [WasteBillController::class, 'ScanCode']);
+Route::get('get-customer-name', [WasteBillController::class, 'GetCustomerName']);
 
 
 
@@ -92,7 +93,6 @@ Route::get('driver-properties', [WasteBillController::class, 'DriverProperties']
 Route::get('get-bulk-list', [WasteBillController::class, 'GetBulkList']);
 Route::get('validate-customer', [WasteBillController::class, 'CustomerValidation']);
 Route::get('driver-collect-waste', [WasteBillController::class, 'CollectBulkWaste']);
-Route::get('get-customer-name', [WasteBillController::class, 'GetCustomerName']);
 
 
 

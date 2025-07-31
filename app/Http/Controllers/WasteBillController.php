@@ -477,11 +477,18 @@ class WasteBillController extends Controller
         ]);
 
         $user = User::where('id', $request->userId)->first();
-        $name = $user->first_name." ".$user->last_name;
+        if($user){
+            $name = $user->first_name." ".$user->last_name;
+
+            return response()->json([
+                'status' => true,
+                'name' => $name,
+            ]);
+        }
 
         return response()->json([
-            'status' => true,
-            'name' => $name,
+            'status' => false,
+            'message' => "No user found",
         ]);
 
     }
