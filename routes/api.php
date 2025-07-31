@@ -90,6 +90,9 @@ Route::get('getCollection', [CollectionController::class, 'getCollection']);
 
 Route::get('driver-properties', [WasteBillController::class, 'DriverProperties']);
 Route::get('get-bulk-list', [WasteBillController::class, 'GetBulkList']);
+Route::get('validate-customer', [WasteBillController::class, 'CustomerValidation']);
+Route::get('driver-collect-waste', [WasteBillController::class, 'CollectBulkWaste']);
+Route::get('get-customer-name', [WasteBillController::class, 'GetCustomerName']);
 
 
 
@@ -121,6 +124,7 @@ Route::post('transfer-unsorted-bailed', [BailingController::class, 'transfer_uns
 
 
 
+    Route::post('customer-bulk-drop', [WasteBillController::class, 'CustomerBulkDrop']);
 
 
 

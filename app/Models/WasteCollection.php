@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class WasteCollection extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'item',
+        'kg',
+        'user_id',
+        'driver_id',
+        'image'
+
+    ];
 }

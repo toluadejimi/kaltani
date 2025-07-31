@@ -39,7 +39,7 @@ class WasteBillController extends Controller
         ]);
 
         $user = User::where('uuid', $request->uuid)->first() ?? null;
-        if($user){
+        if ($user) {
 
 
             $bill = WasteBill::where('user_id', $user->id)->get();
@@ -47,9 +47,9 @@ class WasteBillController extends Controller
             $usr['customer_id'] = $user->customer_id;
             $usr['address'] = $user->address;
 
-            if($user->status == 0){
+            if ($user->status == 0) {
                 $usr['status'] = "Inactive";
-            }else{
+            } else {
                 $usr['status'] = "Active";
             }
 
@@ -131,10 +131,10 @@ class WasteBillController extends Controller
     {
 
 
-        if($request->wallet == true){
+        if ($request->wallet == true) {
 
             $get_user = User::where('id', Auth::id())->first();
-            if($get_user->wallet >= $request->amount){
+            if ($get_user->wallet >= $request->amount) {
 
                 $due_date = WasteBill::where('ref', $request->ref)->first()->due_date;
                 $trx = Transaction::where('trans_id', $request->ref)->first();
@@ -145,7 +145,6 @@ class WasteBillController extends Controller
                 $qrCode = base64_encode(
                     QrCode::format('png')->size(120)->generate($data)
                 );
-
 
 
                 $status = "PAID";
@@ -219,7 +218,6 @@ class WasteBillController extends Controller
                 'status' => true,
                 'data' => $var,
             ]);
-
 
 
         }
@@ -336,7 +334,6 @@ class WasteBillController extends Controller
     }
 
 
-
     public function DriverProperties(request $request)
     {
 
@@ -349,7 +346,7 @@ class WasteBillController extends Controller
 
         if (empty($itemColumns)) {
             $collected = 0;
-        }else{
+        } else {
             $selectRaw = collect($itemColumns)->map(function ($col) {
                 return "SUM(`$col`) as {$col}_total";
             })->implode(', ');
@@ -373,7 +370,6 @@ class WasteBillController extends Controller
         ]);
 
 
-
     }
 
 
@@ -389,51 +385,111 @@ class WasteBillController extends Controller
 
     }
 
-        public function CollectWasteDriver(request $request)
+
+    public function CustomerValidation(request $request)
+    {
+        $customer = User::where('phone', $request->phone)->first();
+        if ($customer) {
+            return response()->json([
+                'status' => true,
+                'name' => $customer->first_name . " " . $customer->last_name,
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => "User not found"
+        ]);
+
+    }
+
+    public function CustomerBulkDrop(request $request)
     {
 
         $request->validate([
-            'items'   => 'required|array',
-            'items.*' => 'numeric|min:0',
+            'long' => 'required|numeric',
+            'lat' => 'required|numeric',
+            'items' => 'required|array',
+            'items.*.item' => 'required|string',
+            'items.*.kg' => 'required|numeric|min:0',
+            'items.*.image' => 'required|url',
         ]);
 
 
-
-
-        $userId = User::where('phone', $request->phone)->first()->id;
+        $userId = Auth::id();
         $items = $request->items;
 
-        foreach ($items as $column => $value) {
-            if (!Schema::hasColumn('waste_collection', $column)) {
-                Schema::table('waste_collection', function (Blueprint $table) use ($column) {
+
+        BulkDrop::insert([
+            'user_id' => $userId,
+            'long' => $request->long,
+            'lat' => $request->lat,
+            'items' => json_encode($items),
+            'address' => Auth::user()->address,
+        ]);
+
+
+        $flatItems = [];
+        foreach ($items as $entry) {
+            $column = strtolower($entry['item']);
+            $kg = $entry['kg'];
+            $flatItems[$column] = $kg;
+
+            if (!Schema::hasColumn('waste_collections', $column)) {
+                Schema::table('waste_collections', function (Blueprint $table) use ($column) {
                     $table->float($column)->default(0)->nullable();
                 });
             }
         }
 
-        $row = DB::table('waste_collection')->where('user_id', $userId)->first();
+        $row = DB::table('waste_collections')->where('user_id', $userId)->first();
 
         if ($row) {
-            foreach ($items as $column => $value) {
-                DB::table('waste_collection')
+            foreach ($flatItems as $column => $value) {
+                DB::table('waste_collections')
                     ->where('user_id', $userId)
                     ->update([
                         $column => DB::raw("COALESCE($column, 0) + {$value}")
                     ]);
             }
         } else {
-            // Create new row
             $insertData = ['user_id' => $userId];
-            foreach ($items as $column => $value) {
+            foreach ($flatItems as $column => $value) {
                 $insertData[$column] = $value;
             }
-            DB::table('waste_collection')->insert($insertData);
+            DB::table('waste_collections')->insert($insertData);
         }
 
-        return response()->json(['status' => 'success']);
+        return response()->json([
+            'status' => true,
+            'message' => "Drop off successful",
+        ]);
+
+
+    }
+
+
+    public function GetCustomerName(request $request)
+    {
+
+        $request->validate([
+            'userId' => 'required',
+        ]);
+
+        $user = User::where('id', $request->userId)->first();
+        $name = $user->first_name." ".$user->last_name;
+
+        return response()->json([
+            'status' => true,
+            'name' => $name,
+        ]);
+
+    }
 
 
 
+    public function UpdateBulkDrop(request $request)
+    {
 
     }
 
