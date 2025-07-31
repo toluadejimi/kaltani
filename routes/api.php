@@ -48,6 +48,8 @@ Route::any('e-fund', [WasteBillController::class, 'ProcessPaymentBill']);
 Route::post('get-bill-pdf', [WasteBillController::class, 'GetWasteBillPdf']);
 Route::post('scan-code', [WasteBillController::class, 'ScanCode']);
 Route::post('get-customer-name', [WasteBillController::class, 'GetCustomerName']);
+Route::get('get-customer-order', [WasteBillController::class, 'GetCustomerOrder']);
+Route::post('get-list-product', [WasteBillController::class, 'GetList']);
 
 
 

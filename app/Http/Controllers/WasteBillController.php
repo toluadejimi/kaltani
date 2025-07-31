@@ -469,6 +469,32 @@ class WasteBillController extends Controller
     }
 
 
+
+    public
+    function GetCustomerOrder(request $request)
+    {
+        $orders = BulkDrop::where('user_id', Auth::id())->first();
+
+        return response()->json([
+                'status' => true,
+                'message' => $orders,
+            ]);
+
+
+    }
+
+    public function GetList(request $request)
+    {
+
+        $product = Product::all()->makeHidden(['created_at', 'updated_at']);
+        return response()->json([
+                'status' => true,
+                'message' => $product,
+        ]);
+
+    }
+
+
     public function GetCustomerName(request $request)
     {
 
