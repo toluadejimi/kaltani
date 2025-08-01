@@ -408,7 +408,18 @@ class WasteBillController extends Controller
     public function CustomerBulkDrop(request $request, MicrosoftGraphMailService $mailer)
     {
 
-      dd($request->all(), $request->file('file'));
+
+        if ($request->has('item')) {
+            $raw = $request->input('item');
+            if (is_array($raw) && isset($raw[0]) && is_string($raw[0])) {
+                $decoded = json_decode($raw[0], true);
+                $request->merge(['items' => $decoded]);
+            }
+        }
+        if (is_string($request->input('items'))) {
+            $decoded = json_decode($request->input('items'), true);
+            $request->merge(['items' => $decoded]);
+        }
 
 
         $request->validate([
@@ -429,6 +440,14 @@ class WasteBillController extends Controller
         $savedFileUrls = [];
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
+
+                if (!$file->isValid()) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "File at index $index failed: " . $file->getErrorMessage(),
+                    ], 422);
+                }
+
                 $filename = Str::uuid() . '_' . $file->getClientOriginalName();
                 $path = $file->storeAs('bulk_drop_files/' . $userId, $filename, 'public');
                 $url = Storage::disk('public')->url($path);
