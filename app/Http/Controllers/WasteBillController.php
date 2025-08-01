@@ -412,7 +412,6 @@ class WasteBillController extends Controller
             'items' => 'required|array',
             'items.*.item' => 'required|string',
             'items.*.kg' => 'required|numeric|min:0',
-            'items.*.image' => 'required|url',
         ]);
 
 
