@@ -85,22 +85,29 @@ class BroadcastAvailableDrivers extends Controller
         $lat = $request->input('lat');
         $lng = $request->input('lng');
 
-        if (!$lat || !$lng) {
+        if (!isset($lat, $lng) || !is_numeric($lat) || !is_numeric($lng)) {
             return response()->json([
                 'status' => false,
-                'message' => 'Missing latitude or longitude'
+                'message' => 'Missing or invalid latitude or longitude'
             ], 400);
         }
 
+        $lat = (float) $lat;
+        $lng = (float) $lng;
+
+        $radiusKm = 50;
+
         $users = User::where('online', 1)
             ->select('first_name', 'last_name', 'latitude', 'longitude', 'phone')
-            ->selectRaw("
-            (6371 * acos(
-                cos(radians(?)) * cos(radians(latitude)) *
-                cos(radians(longitude) - radians(?)) +
-                sin(radians(?)) * sin(radians(latitude))
-            )) AS distance
-        ", [$lat, $lng, $lat])
+            ->selectRaw(
+                "(6371 * acos(
+            cos(radians(?)) * cos(radians(CAST(latitude AS DECIMAL(10,6)))) *
+            cos(radians(CAST(longitude AS DECIMAL(10,6))) - radians(?)) +
+            sin(radians(?)) * sin(radians(CAST(latitude AS DECIMAL(10,6))))
+        )) AS distance",
+                [$lat, $lng, $lat]
+            )
+            ->havingRaw('distance <= ?', [$radiusKm])
             ->orderBy('distance')
             ->get();
 
@@ -108,6 +115,7 @@ class BroadcastAvailableDrivers extends Controller
             'status' => true,
             'data' => $users
         ]);
+
 
     }
 
