@@ -422,21 +422,7 @@ class WasteBillController extends Controller
             $request->merge(['items' => $decoded]);
         }
 
-        $request->validate([
-            'long' => 'required|numeric',
-            'lat' => 'required|numeric',
-            'items' => 'required|array',
-            'items.*.item' => 'required|string',
-            'items.*.kg' => 'required|numeric|min:0',
-            'files' => 'sometimes|array',
-            'files.*' => 'file|mimes:jpg,jpeg,png,pdf,docx|max:5120',
-        ]);
 
-        $userId = Auth::id();
-        $items = $request->input('items');
-        $ref = "DRP" . random_int(0, 99999999);
-
-        // Handle file uploads and convert to public URLs
         $savedFileUrls = [];
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $index => $file) {
@@ -453,6 +439,38 @@ class WasteBillController extends Controller
                 $savedFileUrls[] = $url;
             }
         }
+
+        $request->validate([
+            'long' => 'required|numeric',
+            'lat' => 'required|numeric',
+            'items' => 'required|array',
+            'items.*.item' => 'required|string',
+            'items.*.kg' => 'required|numeric|min:0',
+            'files' => 'sometimes|array',
+            'files.*' => 'file|mimes:jpg,jpeg,png,pdf,docx|max:5120',
+        ]);
+
+        $userId = Auth::id();
+        $items = $request->input('items');
+        $ref = "DRP" . random_int(0, 99999999);
+
+        // Handle file uploads and convert to public URLs
+//        $savedFileUrls = [];
+//        if ($request->hasFile('files')) {
+//            foreach ($request->file('files') as $index => $file) {
+//                if (!$file->isValid()) {
+//                    return response()->json([
+//                        'status' => false,
+//                        'message' => "File at index {$index} failed: " . $file->getErrorMessage(),
+//                    ], 422);
+//                }
+//
+//                $filename = Str::uuid() . '_' . $file->getClientOriginalName();
+//                $path = $file->storeAs("bulk_drop_files/{$userId}", $filename, 'public');
+//                $url = Storage::disk('public')->url($path);
+//                $savedFileUrls[] = $url;
+//            }
+//        }
 
         BulkDrop::insert([
             'user_id' => $userId,
