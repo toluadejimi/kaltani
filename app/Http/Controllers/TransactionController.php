@@ -66,7 +66,7 @@ class TransactionController extends Controller
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://web.enkpay.com/api/resolve-bank?account_number=$account_number&bank_code=$bank_code",
+            CURLOPT_URL => "https://web.sprintpay.online/api/resolve-bank?account_number=$account_number&bank_code=$bank_code",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -83,7 +83,7 @@ class TransactionController extends Controller
         curl_close($curl);
         $var = json_decode($var);
 
-       
+
 
 
         if($var->status == true){
@@ -105,7 +105,7 @@ class TransactionController extends Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://web.enkpay.com/api/get-banks',
+        CURLOPT_URL => 'https://web.sprintpay.online/api/get-banks',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -134,7 +134,7 @@ class TransactionController extends Controller
         $bank_code = $request->input('bank_code');
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://web.enkpay.com/api/resolve-bank?account_number=$account_number&bank_code=$bank_code",
+            CURLOPT_URL => "https://web.sprintpay.online/api/resolve-bank?account_number=$account_number&bank_code=$bank_code",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

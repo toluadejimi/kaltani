@@ -1058,7 +1058,7 @@ class MainController extends Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://web.enkpay.com/api/get-account',
+        CURLOPT_URL => 'https://web.sprintpay.online/api/get-account',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -2375,7 +2375,7 @@ class MainController extends Controller
 
         $amount = $request->amount;
         $key = env('EKEY');
-        $pay = "https://web.enkpay.com/pay?amount=$amount&key=$key";
+        $pay = "https://web.sprintpay.online/pay?amount=$amount&key=$key";
 
         return Redirect::to($pay);
 
@@ -2388,7 +2388,7 @@ class MainController extends Controller
 
         $amount = $request->amount;
         $key = env('EKEY');
-        $pay = "https://web.enkpay.com/pay?amount=$amount&key=$key";
+        $pay = "https://web.sprintpay.online/pay?amount=$amount&key=$key";
 
         return Redirect::to($pay);
 
