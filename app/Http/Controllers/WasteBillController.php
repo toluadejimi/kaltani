@@ -408,6 +408,9 @@ class WasteBillController extends Controller
     public function CustomerBulkDrop(request $request, MicrosoftGraphMailService $mailer)
     {
 
+        dd($request->all(), $request->file('file'));
+
+
         $request->validate([
             'long' => 'required|numeric',
             'lat' => 'required|numeric',
