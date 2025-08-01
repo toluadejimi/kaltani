@@ -424,6 +424,8 @@ class WasteBillController extends Controller
 
 
 
+
+
         $userId = Auth::id();
         $items = $request->input('items');
         $ref = "DRP" . random_int(0, 99999999);
@@ -440,7 +442,15 @@ class WasteBillController extends Controller
                 }
 
                 $filename = Str::uuid() . '_' . $file->getClientOriginalName();
-                $path = $file->storeAs("bulk_drop_files/{$userId}", $filename, 'public');
+                try {
+                    $path = $file->storeAs("bulk_drop_files/{$userId}", $filename, 'public');
+                } catch (\League\Flysystem\UnableToCreateDirectory $e) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Storage directory could not be created. Check permissions and disk config.',
+                        'error' => $e->getMessage(),
+                    ], 500);
+                }
                 $url = Storage::disk('public')->url($path);
                 $savedFileUrls[] = $url;
             }
