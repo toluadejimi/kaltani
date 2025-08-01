@@ -405,10 +405,10 @@ class WasteBillController extends Controller
 
     }
 
-    public function CustomerBulkDrop(request $request, MicrosoftGraphMailService $mailer)
+
+    public function CustomerBulkDrop(Request $request, MicrosoftGraphMailService $mailer)
     {
-
-
+        // Normalize if client sent items as JSON string or under wrong key
         if ($request->has('item')) {
             $raw = $request->input('item');
             if (is_array($raw) && isset($raw[0]) && is_string($raw[0])) {
@@ -416,40 +416,39 @@ class WasteBillController extends Controller
                 $request->merge(['items' => $decoded]);
             }
         }
+
         if (is_string($request->input('items'))) {
             $decoded = json_decode($request->input('items'), true);
             $request->merge(['items' => $decoded]);
         }
 
-
         $request->validate([
             'long' => 'required|numeric',
             'lat' => 'required|numeric',
-            'item' => 'required|array',
-            'item.*.item' => 'required|string',
-            'item.*.kg' => 'required|numeric|min:0',
-            'file' => 'sometimes|array',
-            'file.*' => 'file|mimes:jpg,jpeg,png,pdf,docx|max:5120',
+            'items' => 'required|array',
+            'items.*.item' => 'required|string',
+            'items.*.kg' => 'required|numeric|min:0',
+            'files' => 'sometimes|array',
+            'files.*' => 'file|mimes:jpg,jpeg,png,pdf,docx|max:5120',
         ]);
 
-
         $userId = Auth::id();
-        $items = $request->items;
-        $ref = "DRP".random_int(00000000, 99999999);
+        $items = $request->input('items');
+        $ref = "DRP" . random_int(0, 99999999);
 
+        // Handle file uploads and convert to public URLs
         $savedFileUrls = [];
         if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
-
+            foreach ($request->file('files') as $index => $file) {
                 if (!$file->isValid()) {
                     return response()->json([
                         'status' => false,
-                        'message' => "File at index $index failed: " . $file->getErrorMessage(),
+                        'message' => "File at index {$index} failed: " . $file->getErrorMessage(),
                     ], 422);
                 }
 
                 $filename = Str::uuid() . '_' . $file->getClientOriginalName();
-                $path = $file->storeAs('bulk_drop_files/' . $userId, $filename, 'public');
+                $path = $file->storeAs("bulk_drop_files/{$userId}", $filename, 'public');
                 $url = Storage::disk('public')->url($path);
                 $savedFileUrls[] = $url;
             }
@@ -457,15 +456,17 @@ class WasteBillController extends Controller
 
         BulkDrop::insert([
             'user_id' => $userId,
-            'long' => $request->long,
-            'lat' => $request->lat,
+            'long' => $request->input('long'),
+            'lat' => $request->input('lat'),
             'items' => json_encode($items),
             'address' => Auth::user()->address,
             'ref' => $ref,
             'images' => json_encode($savedFileUrls),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
-
+        // Flatten and update waste_collections
         $flatItems = [];
         foreach ($items as $entry) {
             $column = strtolower($entry['item']);
@@ -480,7 +481,6 @@ class WasteBillController extends Controller
         }
 
         $row = DB::table('waste_collections')->where('user_id', $userId)->first();
-
         if ($row) {
             foreach ($flatItems as $column => $value) {
                 DB::table('waste_collections')
@@ -497,37 +497,31 @@ class WasteBillController extends Controller
             DB::table('waste_collections')->insert($insertData);
         }
 
-
-        if(Auth::user()->gender = 'Male'){
-            $greeting = Greeting::where('gender', 'Male' )->first()->title;
-        }else {
-            $greeting = Greeting::where('gender', 'Female')->first()->title;
+        // Greeting logic fixed (comparison, not assignment)
+        if (Auth::user()->gender === 'Male') {
+            $greeting = Greeting::where('gender', 'Male')->first()?->title ?? '';
+        } else {
+            $greeting = Greeting::where('gender', 'Female')->first()?->title ?? '';
         }
-
 
         $first_name = Auth::user()->first_name;
         $email = Auth::user()->email;
 
         $Data = [
-            'fromsender' => 'info@kaltani.com', 'TRASHBASH',
+            'fromsender' => 'info@kaltani.com',
             'first_name' => $first_name,
             'greeting' => $greeting,
             'order_id' => $ref,
-
         ];
 
         $subject = "New Drop Off";
         $view = 'dropoff';
         $mailer->SendEmailView($email, $subject, $view, $Data);
 
-
-
         return response()->json([
             'status' => true,
             'message' => "Drop off successful",
         ]);
-
-
     }
 
 
