@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BulkDrop;
+use App\Models\Greeting;
 use App\Models\Product;
 use App\Models\Setting;
 use App\Models\Transaction;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class WasteBillController extends Controller
@@ -403,7 +405,7 @@ class WasteBillController extends Controller
 
     }
 
-    public function CustomerBulkDrop(request $request)
+    public function CustomerBulkDrop(request $request, MicrosoftGraphMailService $mailer)
     {
 
         $request->validate([
@@ -412,12 +414,24 @@ class WasteBillController extends Controller
             'items' => 'required|array',
             'items.*.item' => 'required|string',
             'items.*.kg' => 'required|numeric|min:0',
+            'files' => 'sometimes|array',
+            'files.*' => 'file|mimes:jpg,jpeg,png,pdf,docx|max:5120',
         ]);
 
 
         $userId = Auth::id();
         $items = $request->items;
+        $ref = "DRP".random_int(00000000, 99999999);
 
+        $savedFileUrls = [];
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $filename = Str::uuid() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('bulk_drop_files/' . $userId, $filename, 'public');
+                $url = Storage::disk('public')->url($path);
+                $savedFileUrls[] = $url;
+            }
+        }
 
         BulkDrop::insert([
             'user_id' => $userId,
@@ -425,6 +439,8 @@ class WasteBillController extends Controller
             'lat' => $request->lat,
             'items' => json_encode($items),
             'address' => Auth::user()->address,
+            'ref' => $ref,
+            'images' => json_encode($savedFileUrls),
         ]);
 
 
@@ -458,6 +474,31 @@ class WasteBillController extends Controller
             }
             DB::table('waste_collections')->insert($insertData);
         }
+
+
+        if(Auth::user()->gender = 'Male'){
+            $greeting = Greeting::where('gender', 'Male' )->first()->title;
+        }else {
+            $greeting = Greeting::where('gender', 'Female')->first()->title;
+        }
+
+
+        $first_name = Auth::user()->first_name;
+        $email = Auth::user()->email;
+
+        $Data = [
+            'fromsender' => 'info@kaltani.com', 'TRASHBASH',
+            'first_name' => $first_name,
+            'greeting' => $greeting,
+            'order_id' => $ref,
+
+        ];
+
+        $subject = "New Drop Off";
+        $view = 'dropoff';
+        $mailer->SendEmailView($email, $subject, $view, $Data);
+
+
 
         return response()->json([
             'status' => true,

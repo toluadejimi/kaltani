@@ -72,12 +72,16 @@ class HourlyUpdate extends Command
 
         );
 
+
+
         Mail::send('1hrdropoffemail', ["data1" => $data], function ($message) use ($data) {
             $message->from($data['fromsender']);
             $message->to($data['toreceiver']);
             $message->subject($data['subject']);
 
         });
+
+
 
         $this->info('Email sent successfully');
     }

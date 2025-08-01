@@ -530,7 +530,7 @@ class AuthCoontroller extends Controller
         return \Response::json($arr);
     }
 
-    public function customer_register(Request $request)
+    public function customer_register(Request $request, MicrosoftGraphMailService $mailer)
     {
         try {
 
@@ -604,19 +604,17 @@ class AuthCoontroller extends Controller
 
             }
 
-            //send email
-            $data = array(
-                'fromsender' => 'info@kaltani.com', 'TRASHBASH',
-                'subject' => "Account Creation",
-                'toreceiver' => $email,
-                'greeting' => $greeting,
-            );
 
-            Mail::send('welcome', ["data1" => $data], function ($message) use ($data) {
-                $message->from($data['fromsender']);
-                $message->to($data['toreceiver']);
-                $message->subject($data['subject']);
-            });
+            $Data = [
+                'fromsender' => 'info@kaltani.com', 'TRASHBASH',
+                'greeting' => $greeting,
+            ];
+
+            $subject = "Account Creation";
+            $view = 'welcome';
+
+            $mailer->SendEmailView($email, $subject, $view, $Data);
+
 
             return response()->json([
                 'status' => $this->successStatus,
@@ -764,7 +762,7 @@ class AuthCoontroller extends Controller
 
     }
 
-    public function forgot_password(Request $request)
+    public function forgot_password(Request $request, MicrosoftGraphMailService $mailer)
     {
 
         try {
@@ -779,20 +777,17 @@ class AuthCoontroller extends Controller
 
             if ($check == $email) {
 
-                //send email
-                $data = array(
+                $Data = [
                     'fromsender' => 'info@kaltani.com', 'TRASHBASH',
-                    'subject' => "Reset Password",
-                    'toreceiver' => $email,
                     'first_name' => $first_name,
                     'link' => url('') . "/forgot_password/?email=$email",
-                );
+                ];
 
-                Mail::send('emaillink', ["data1" => $data], function ($message) use ($data) {
-                    $message->from($data['fromsender']);
-                    $message->to($data['toreceiver']);
-                    $message->subject($data['subject']);
-                });
+                $subject = "Reset Password";
+                $view = 'emaillink';
+
+                $mailer->SendEmailView($email, $subject, $view, $Data);
+
 
                 return response()->json([
                     'status' => $this->successStatus,
@@ -819,7 +814,7 @@ class AuthCoontroller extends Controller
 
     }
 
-    public function forgot_pin(Request $request)
+    public function forgot_pin(Request $request, MicrosoftGraphMailService $mailer)
     {
 
         try{
@@ -834,20 +829,18 @@ class AuthCoontroller extends Controller
 
         if ($check == $email) {
 
-            //send email
-            $data = array(
+
+            $Data = [
                 'fromsender' => 'info@kaltani.com', 'TRASHBASH',
-                'subject' => "Reset Pin",
-                'toreceiver' => $email,
                 'first_name' => $first_name,
                 'link' => url('') . "/forgot_pin/?email=$email",
-            );
+            ];
 
-            Mail::send('pinlink', ["data1" => $data], function ($message) use ($data) {
-                $message->from($data['fromsender']);
-                $message->to($data['toreceiver']);
-                $message->subject($data['subject']);
-            });
+            $subject = "Reset Pin";
+            $view = 'pinlink';
+
+            $mailer->SendEmailView($email, $subject, $view, $Data);
+
 
             return response()->json([
                 'status' => $this->successStatus,

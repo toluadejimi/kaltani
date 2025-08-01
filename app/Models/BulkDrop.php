@@ -15,7 +15,9 @@ class BulkDrop extends Model
         'long',
         'lat' ,
         'items' ,
-        'address'
+        'address',
+        'ref',
+        'images'
     ];
 
     protected $casts = [
