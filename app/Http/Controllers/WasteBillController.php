@@ -423,6 +423,12 @@ class WasteBillController extends Controller
         }
 
 
+
+        $userId = Auth::id();
+        $items = $request->input('items');
+        $ref = "DRP" . random_int(0, 99999999);
+
+
         $savedFileUrls = [];
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $index => $file) {
@@ -450,9 +456,7 @@ class WasteBillController extends Controller
             'files.*' => 'file|mimes:jpg,jpeg,png,pdf,docx|max:5120',
         ]);
 
-        $userId = Auth::id();
-        $items = $request->input('items');
-        $ref = "DRP" . random_int(0, 99999999);
+
 
         // Handle file uploads and convert to public URLs
 //        $savedFileUrls = [];
