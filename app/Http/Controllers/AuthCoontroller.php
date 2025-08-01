@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\MicrosoftGraphMailService;
 use Ramsey\Uuid\Uuid;
 use Response;
 use Carbon\Carbon;
@@ -73,7 +74,7 @@ class AuthCoontroller extends Controller
         }
     }
 
-    public function resend_code(Request $request)
+    public function resend_code(Request $request, MicrosoftGraphMailService $mailer)
     {
         try {
             $email_code = random_int(100000, 999999);
@@ -111,20 +112,19 @@ class AuthCoontroller extends Controller
             $greeting = Greeting::where('gender', 'both')
                 ->first()->title;
 
-            //send email
-            $data = array(
+
+            $Data = [
                 'fromsender' => 'info@kaltani.com', 'TRASHBASH',
-                'subject' => "Verification Code",
                 'toreceiver' => $email,
                 'email_code' => $email_code,
                 'greeting' => $greeting,
-            );
+            ];
 
-            Mail::send('verify-code', ["data1" => $data], function ($message) use ($data) {
-                $message->from($data['fromsender']);
-                $message->to($data['toreceiver']);
-                $message->subject($data['subject']);
-            });
+            $subject = "Verification Code";
+            $view = 'verify-code';
+
+            $mailer->SendEmailView($email, $subject, $view, $Data);
+
 
             return response()->json([
                 'status' => $this->successStatus,

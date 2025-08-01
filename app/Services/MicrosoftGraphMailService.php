@@ -94,4 +94,40 @@ class MicrosoftGraphMailService
 
         return true;
     }
+
+    public function SendEmailView($toEmail, $subject, $view, array $Data)
+    {
+
+
+        $htmlBody = view($view, $Data)->render();
+
+        $payload = [
+            'message' => [
+                'subject' => $subject,
+                'body' => [
+                    'contentType' => 'HTML',
+                    'content' => $htmlBody,
+                ],
+                'toRecipients' => [
+                    [
+                        'emailAddress' => [
+                            'address' => $toEmail,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $senderEmail = 'info@kaltani.com';
+        $response = Http::withToken($this->token)
+            ->post("https://graph.microsoft.com/v1.0/users/{$senderEmail}/sendMail", $payload);
+
+        if (!$response->successful()) {
+            throw new \Exception("Failed to send email: " . $response->body());
+        }
+
+        return true;
+    }
+
+
 }
