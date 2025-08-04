@@ -109,7 +109,6 @@ class WasteBillController extends Controller
 
             $mailer->sendEmail($user->email, 'Trash Bash Invoice', $invoiceData);
 
-
             return response()->json([
                 'status' => true,
                 'message' => "Payment Successful",
@@ -408,7 +407,6 @@ class WasteBillController extends Controller
 
     public function CustomerBulkDrop(Request $request, MicrosoftGraphMailService $mailer)
     {
-        // Normalize if client sent items as JSON string or under wrong key
         if ($request->has('item')) {
             $raw = $request->input('item');
             if (is_array($raw) && isset($raw[0]) && is_string($raw[0])) {
@@ -421,8 +419,6 @@ class WasteBillController extends Controller
             $decoded = json_decode($request->input('items'), true);
             $request->merge(['items' => $decoded]);
         }
-
-
 
 
 
@@ -468,23 +464,7 @@ class WasteBillController extends Controller
 
 
 
-        // Handle file uploads and convert to public URLs
-//        $savedFileUrls = [];
-//        if ($request->hasFile('files')) {
-//            foreach ($request->file('files') as $index => $file) {
-//                if (!$file->isValid()) {
-//                    return response()->json([
-//                        'status' => false,
-//                        'message' => "File at index {$index} failed: " . $file->getErrorMessage(),
-//                    ], 422);
-//                }
-//
-//                $filename = Str::uuid() . '_' . $file->getClientOriginalName();
-//                $path = $file->storeAs("bulk_drop_files/{$userId}", $filename, 'public');
-//                $url = Storage::disk('public')->url($path);
-//                $savedFileUrls[] = $url;
-//            }
-//        }
+
 
         BulkDrop::insert([
             'user_id' => $userId,
@@ -609,9 +589,161 @@ class WasteBillController extends Controller
 
 
 
-    public function UpdateBulkDrop(request $request)
-    {
 
+    public function UpdateBulkDrop(Request $request)
+    {
+        if ($request->has('item')) {
+            $raw = $request->input('item');
+            if (is_array($raw) && isset($raw[0]) && is_string($raw[0])) {
+                $decoded = json_decode($raw[0], true);
+                $request->merge(['items' => $decoded]);
+            }
+        }
+
+        if (is_string($request->input('items'))) {
+            $decoded = json_decode($request->input('items'), true);
+            $request->merge(['items' => $decoded]);
+        }
+
+        $request->validate([
+            'long' => 'required|numeric',
+            'lat' => 'required|numeric',
+            'items' => 'required|array',
+            'items.*.item' => 'required|string',
+            'items.*.kg' => 'required|numeric|min:0',
+            'files' => 'sometimes|array',
+            'files.*' => 'file|mimes:jpg,jpeg,png,pdf,docx|max:5120',
+            'id' => 'sometimes|exists:bulk_drops,id',
+        ]);
+
+        $items = $request->input('items');
+        $ref = "DRP" . random_int(0, 99999999);
+
+        $savedFileUrls = [];
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $index => $file) {
+                if (!$file->isValid()) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "File at index {$index} failed: " . $file->getErrorMessage(),
+                    ], 422);
+                }
+
+                $filename = Str::uuid() . '_' . $file->getClientOriginalName();
+                try {
+                    $path = $file->storeAs("bulk_drop_files/{$userId}", $filename, 'public');
+                } catch (\League\Flysystem\UnableToCreateDirectory $e) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Storage directory could not be created. Check permissions and disk config.',
+                        'error' => $e->getMessage(),
+                    ], 500);
+                }
+                $url = Storage::disk('public')->url($path);
+                $savedFileUrls[] = $url;
+            }
+        }
+
+        DB::beginTransaction();
+        try {
+            $bulkDropData = [
+                'user_id' => $userId,
+                'items' => json_encode($items),
+                'address' => Auth::user()->address,
+                'updated_at' => now(),
+            ];
+
+            if (!empty($savedFileUrls)) {
+                $bulkDropData['images'] = json_encode($savedFileUrls);
+            }
+
+            if ($request->filled('id')) {
+                $bulkDrop = BulkDrop::where('id', $request->input('id'))
+                    ->where('user_id', $userId)
+                    ->firstOrFail();
+
+                // If ref was null in $bulkDropData, preserve existing ref
+                if (isset($bulkDropData['ref']) && $bulkDropData['ref'] === null) {
+                    unset($bulkDropData['ref']);
+                }
+
+                $bulkDrop->update($bulkDropData);
+                $refToUse = $bulkDrop->ref;
+            } else {
+                // Insert new
+                $bulkDropData['ref'] = $ref;
+                $bulkDropData['created_at'] = now();
+                $bulkDrop = BulkDrop::create($bulkDropData);
+                $refToUse = $ref;
+            }
+
+            // Flatten and update waste_collections
+            $flatItems = [];
+            foreach ($items as $entry) {
+                $column = strtolower($entry['item']);
+                $kg = $entry['kg'];
+                $flatItems[$column] = $kg;
+
+                if (!Schema::hasColumn('waste_collections', $column)) {
+                    Schema::table('waste_collections', function (Blueprint $table) use ($column) {
+                        $table->float($column)->default(0)->nullable();
+                    });
+                }
+            }
+
+            $existing = DB::table('waste_collections')->where('user_id', $userId)->first();
+            if ($existing) {
+                foreach ($flatItems as $column => $value) {
+                    DB::table('waste_collections')
+                        ->where('user_id', $userId)
+                        ->update([
+                            $column => DB::raw("COALESCE($column, 0) + {$value}")
+                        ]);
+                }
+            } else {
+                $insertData = ['user_id' => $userId];
+                foreach ($flatItems as $column => $value) {
+                    $insertData[$column] = $value;
+                }
+                DB::table('waste_collections')->insert($insertData);
+            }
+
+            // Greeting logic
+            if (Auth::user()->gender === 'Male') {
+                $greeting = Greeting::where('gender', 'Male')->first()?->title ?? '';
+            } else {
+                $greeting = Greeting::where('gender', 'Female')->first()?->title ?? '';
+            }
+
+            $first_name = Auth::user()->first_name;
+            $email = Auth::user()->email;
+
+            $Data = [
+                'fromsender' => 'info@kaltani.com',
+                'first_name' => $first_name,
+                'greeting' => $greeting,
+                'order_id' => $refToUse,
+            ];
+
+            $subject = "New Drop Off";
+            $view = 'dropoff';
+            $mailer->SendEmailView($email, $subject, $view, $Data);
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => "Update successful",
+                'ref' => $refToUse,
+                'bulk_drop_id' => $bulkDrop->id,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to save bulk drop: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
 }

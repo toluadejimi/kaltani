@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BroadcastAvailableDrivers;
+use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\WasteBillController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -49,6 +50,7 @@ Route::post('get-bill-pdf', [WasteBillController::class, 'GetWasteBillPdf']);
 Route::post('scan-code', [WasteBillController::class, 'ScanCode']);
 Route::post('get-customer-name', [WasteBillController::class, 'GetCustomerName']);
 Route::get('get-list-product', [WasteBillController::class, 'GetList']);
+Route::get('get-property', [PropertyController::class, 'GetProperty']);
 
 
 
@@ -125,8 +127,11 @@ Route::post('transfer-unsorted-bailed', [BailingController::class, 'transfer_uns
 
 
 
-    Route::post('customer-bulk-drop', [WasteBillController::class, 'CustomerBulkDrop']);
+Route::post('customer-bulk-drop', [WasteBillController::class, 'CustomerBulkDrop']);
 
+
+//Residence
+Route::get('save-customer-property', [PropertyController::class, 'SaveProperty']);
 
 
 

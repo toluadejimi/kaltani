@@ -186,6 +186,10 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 
   <div style="line-height: 140%; text-align: center; word-wrap: break-word;">
     <p style="font-size: 14px; line-height: 140%;">Welcome to Trash Bash, Let's save the earth together. Recycle with us now.</p>
+      <h5 style="margin: 0px; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: arial,helvetica,sans-serif; font-size: 21px;">
+         Your Waste ID: {{ $data1['waste_id'] }}
+      </h5>
+
   </div>
 
       </td>

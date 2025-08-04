@@ -100,7 +100,6 @@ class MicrosoftGraphMailService
 
 
         $htmlBody = view($view, ['data1' => $Data])->render();
-
         $payload = [
             'message' => [
                 'subject' => $subject,

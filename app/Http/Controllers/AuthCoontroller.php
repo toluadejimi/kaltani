@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserProperty;
 use App\Services\MicrosoftGraphMailService;
+use App\Services\TermiiService;
+use Illuminate\Support\Facades\Log;
 use Ramsey\Uuid\Uuid;
 use Response;
 use Carbon\Carbon;
@@ -56,6 +59,8 @@ class AuthCoontroller extends Controller
                 User::where('id', Auth::id())->update(['uuid' => $uuid]);
             }
 
+            $data = UserProperty::where('user_id', Auth::id())->get();
+
             return response()->json([
                 "status" => $this->successStatus,
                 'message' => "login Successfully",
@@ -63,6 +68,7 @@ class AuthCoontroller extends Controller
                 'role' => auth()->user()->role->name,
                 'token' => $token,
                 'slider' => $slider,
+                'user_property' => $data,
             ], 200);
 
         } catch (\Exception$e) {
@@ -569,6 +575,8 @@ class AuthCoontroller extends Controller
             $get_role_id = UserRole::where('name', 'customer')
                 ->first();
 
+            $customer_id = "KAL".date('ymdhis');
+
             $update = User::where('email', $email)->update([
                 'first_name' => $first_name,
                 'last_name' => $last_name,
@@ -588,6 +596,7 @@ class AuthCoontroller extends Controller
                 'is_email_verified' => 1,
                 'pin' => bcrypt($pin),
                 'user_type' => 'customer',
+                'customer_id' => $customer_id,
                 'password' => bcrypt($password),
 
             ]);
@@ -608,12 +617,27 @@ class AuthCoontroller extends Controller
             $Data = [
                 'fromsender' => 'info@kaltani.com', 'TRASHBASH',
                 'greeting' => $greeting,
+                'waste_id' => $customer_id,
             ];
 
             $subject = "Account Creation";
             $view = 'welcome';
 
             $mailer->SendEmailView($email, $subject, $view, $Data);
+
+            $message = "Your Waste ID is $customer_id. Thank you for partnering with us in keeping Abia State clean - Powered by KALTANI";
+            $smsService = new TermiiService();
+            $phone_no = preg_replace('/^\[?0\]?/', '', $request->phone);
+            $phone_n = "+234" . $phone_no;
+            $response = $smsService->sendSms($phone_n, $message);
+
+            if (!isset($response['code']) || $response['code'] !== 'ok') {
+
+               $message =  "Termi Error=====>". $response;
+                LOG::error($message);
+
+            }
+
 
 
             return response()->json([
