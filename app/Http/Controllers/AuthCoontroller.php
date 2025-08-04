@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Location;
 use App\Models\UserProperty;
 use App\Services\MicrosoftGraphMailService;
 use App\Services\TermiiService;
@@ -59,16 +60,21 @@ class AuthCoontroller extends Controller
                 User::where('id', Auth::id())->update(['uuid' => $uuid]);
             }
 
-            $data = UserProperty::where('user_id', Auth::id())->get();
+            $user_property = UserProperty::where('user_id', Auth::id())->get();
+            $location = Location::where('user_id', Auth::id())->first();
+
+            $user = Auth::user();
+            $user['location'] = $location;
+            $user['user_property'] = $user_property;
+
 
             return response()->json([
                 "status" => $this->successStatus,
                 'message' => "login Successfully",
-                'user' => auth()->user()->load(['location']),
+                'user' => $user,
                 'role' => auth()->user()->role->name,
                 'token' => $token,
                 'slider' => $slider,
-                'user_property' => $data,
             ], 200);
 
         } catch (\Exception$e) {
