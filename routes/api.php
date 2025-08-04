@@ -46,7 +46,7 @@ Route::get('get-slider', [SettingController::class, 'get_slider']);
 
 Route::any('e-fund', [WasteBillController::class, 'ProcessPaymentBill']);
 
-Route::post('get-bill-pdf', [WasteBillController::class, 'GetWasteBillPdf']);
+Route::any('get-bill-pdf', [WasteBillController::class, 'GetWasteBillPdf']);
 Route::post('scan-code', [WasteBillController::class, 'ScanCode']);
 Route::post('get-customer-name', [WasteBillController::class, 'GetCustomerName']);
 Route::get('get-list-product', [WasteBillController::class, 'GetList']);

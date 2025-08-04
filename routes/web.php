@@ -1,9 +1,12 @@
 <?php
 
 use App\Events\MessageSent;
+use App\Http\Controllers\WasteBillController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ManageController;
+use Rap2hpoutre\LaravelLogViewer\LogViewerController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +19,9 @@ use App\Http\Controllers\ManageController;
 */
 //Clear Cache facade value:
 
+Route::get('logs', [LogViewerController::class, 'index']);
+
+Route::any('pay-bill', [WasteBillController::class, 'PayWasteBillWeb']);
 
 Route::get('/test-broadcast', function () {
     event(new MessageSent('hello world'));

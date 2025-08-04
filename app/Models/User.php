@@ -92,9 +92,15 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(DropOff::class,'user_id');
     }
-    
+
     public function collect()
     {
         return $this->hasOne(Collection::class,'user_id');
+    }
+
+
+    public function userProperties()
+    {
+        return $this->hasMany(UserProperty::class, 'user_id');
     }
 }

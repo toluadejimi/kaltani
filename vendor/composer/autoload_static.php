@@ -728,6 +728,13 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
     );
 
     public static $prefixesPsr0 = array (
+        'R' => 
+        array (
+            'Rap2hpoutre\\LaravelLogViewer\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/rap2hpoutre/laravel-log-viewer/src',
+            ),
+        ),
         'M' => 
         array (
             'Mockery' => 
@@ -756,6 +763,7 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
         'App\\Http\\Controllers\\LocationController' => __DIR__ . '/../..' . '/app/Http/Controllers/LocationController.php',
         'App\\Http\\Controllers\\MainController' => __DIR__ . '/../..' . '/app/Http/Controllers/MainController.php',
         'App\\Http\\Controllers\\ManageController' => __DIR__ . '/../..' . '/app/Http/Controllers/ManageController.php',
+        'App\\Http\\Controllers\\PropertyController' => __DIR__ . '/../..' . '/app/Http/Controllers/PropertyController.php',
         'App\\Http\\Controllers\\RecycleController' => __DIR__ . '/../..' . '/app/Http/Controllers/RecycleController.php',
         'App\\Http\\Controllers\\SalesController' => __DIR__ . '/../..' . '/app/Http/Controllers/SalesController.php',
         'App\\Http\\Controllers\\SettingController' => __DIR__ . '/../..' . '/app/Http/Controllers/SettingController.php',
@@ -776,6 +784,7 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Traits\\HistoryTrait' => __DIR__ . '/../..' . '/app/Http/Traits/HistoryTrait.php',
+        'App\\Jobs\\CreateWasteBillJob' => __DIR__ . '/../..' . '/app/Jobs/CreateWasteBillJob.php',
         'App\\Mail\\Reject' => __DIR__ . '/../..' . '/app/Mail/Reject.php',
         'App\\Models\\AccessToken' => __DIR__ . '/../..' . '/app/Models/AccessToken.php',
         'App\\Models\\AccountRequest' => __DIR__ . '/../..' . '/app/Models/AccountRequest.php',
@@ -786,6 +795,7 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
         'App\\Models\\BailedTotal' => __DIR__ . '/../..' . '/app/Models/BailedTotal.php',
         'App\\Models\\Bailing' => __DIR__ . '/../..' . '/app/Models/Bailing.php',
         'App\\Models\\BailingItem' => __DIR__ . '/../..' . '/app/Models/BailingItem.php',
+        'App\\Models\\BulkDrop' => __DIR__ . '/../..' . '/app/Models/BulkDrop.php',
         'App\\Models\\CollectedBailedDetails' => __DIR__ . '/../..' . '/app/Models/CollectedBailedDetails.php',
         'App\\Models\\CollectedDetails' => __DIR__ . '/../..' . '/app/Models/CollectedDetails.php',
         'App\\Models\\Collection' => __DIR__ . '/../..' . '/app/Models/Collection.php',
@@ -799,6 +809,8 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
         'App\\Models\\Item' => __DIR__ . '/../..' . '/app/Models/Item.php',
         'App\\Models\\Location' => __DIR__ . '/../..' . '/app/Models/Location.php',
         'App\\Models\\PlasticWaste' => __DIR__ . '/../..' . '/app/Models/PlasticWaste.php',
+        'App\\Models\\Product' => __DIR__ . '/../..' . '/app/Models/Product.php',
+        'App\\Models\\Property' => __DIR__ . '/../..' . '/app/Models/Property.php',
         'App\\Models\\Rate' => __DIR__ . '/../..' . '/app/Models/Rate.php',
         'App\\Models\\Recycle' => __DIR__ . '/../..' . '/app/Models/Recycle.php',
         'App\\Models\\RecyclesDetails' => __DIR__ . '/../..' . '/app/Models/RecyclesDetails.php',
@@ -822,14 +834,19 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
         'App\\Models\\Unsorted' => __DIR__ . '/../..' . '/app/Models/Unsorted.php',
         'App\\Models\\UnsortedBailing' => __DIR__ . '/../..' . '/app/Models/UnsortedBailing.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\UserProperty' => __DIR__ . '/../..' . '/app/Models/UserProperty.php',
         'App\\Models\\UserRole' => __DIR__ . '/../..' . '/app/Models/UserRole.php',
         'App\\Models\\WasteBill' => __DIR__ . '/../..' . '/app/Models/WasteBill.php',
+        'App\\Models\\WasteCollection' => __DIR__ . '/../..' . '/app/Models/WasteCollection.php',
+        'App\\Notifications\\Channels\\CustomSmsChannel' => __DIR__ . '/../..' . '/app/Notifications/Channels/CustomSmsChannel.php',
+        'App\\Notifications\\WasteBillCreated' => __DIR__ . '/../..' . '/app/Notifications/WasteBillCreated.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\Services\\MicrosoftGraphMailService' => __DIR__ . '/../..' . '/app/Services/MicrosoftGraphMailService.php',
+        'App\\Services\\TermiiService' => __DIR__ . '/../..' . '/app/Services/TermiiService.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'BaconQrCode\\Common\\BitArray' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/BitArray.php',
         'BaconQrCode\\Common\\BitMatrix' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/BitMatrix.php',
@@ -5335,6 +5352,12 @@ class ComposerStaticInita1463076f43d1351281a50011cd6c291
         'Ramsey\\Uuid\\UuidInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/UuidInterface.php',
         'Ramsey\\Uuid\\Validator\\GenericValidator' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/GenericValidator.php',
         'Ramsey\\Uuid\\Validator\\ValidatorInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/ValidatorInterface.php',
+        'Rap2hpoutre\\LaravelLogViewer\\BaseController' => __DIR__ . '/..' . '/rap2hpoutre/laravel-log-viewer/src/controllers/LogViewerController.php',
+        'Rap2hpoutre\\LaravelLogViewer\\LaravelLogViewer' => __DIR__ . '/..' . '/rap2hpoutre/laravel-log-viewer/src/Rap2hpoutre/LaravelLogViewer/LaravelLogViewer.php',
+        'Rap2hpoutre\\LaravelLogViewer\\LaravelLogViewerServiceProvider' => __DIR__ . '/..' . '/rap2hpoutre/laravel-log-viewer/src/Rap2hpoutre/LaravelLogViewer/LaravelLogViewerServiceProvider.php',
+        'Rap2hpoutre\\LaravelLogViewer\\Level' => __DIR__ . '/..' . '/rap2hpoutre/laravel-log-viewer/src/Rap2hpoutre/LaravelLogViewer/Level.php',
+        'Rap2hpoutre\\LaravelLogViewer\\LogViewerController' => __DIR__ . '/..' . '/rap2hpoutre/laravel-log-viewer/src/controllers/LogViewerController.php',
+        'Rap2hpoutre\\LaravelLogViewer\\Pattern' => __DIR__ . '/..' . '/rap2hpoutre/laravel-log-viewer/src/Rap2hpoutre/LaravelLogViewer/Pattern.php',
         'Ratchet\\AbstractConnectionDecorator' => __DIR__ . '/..' . '/cboden/ratchet/src/Ratchet/AbstractConnectionDecorator.php',
         'Ratchet\\App' => __DIR__ . '/..' . '/cboden/ratchet/src/Ratchet/App.php',
         'Ratchet\\ComponentInterface' => __DIR__ . '/..' . '/cboden/ratchet/src/Ratchet/ComponentInterface.php',

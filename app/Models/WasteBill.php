@@ -14,5 +14,17 @@ class WasteBill extends Model
         'due_date',
         'amount',
         'ref',
+        'user_property_id'
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function userProperty()
+    {
+        return $this->belongsTo(UserProperty::class, 'property_id');
+    }
 }

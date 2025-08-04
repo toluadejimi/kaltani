@@ -118,12 +118,47 @@ class WasteBillController extends Controller
 
         }
 
+        $trx_ref = Transaction::where('trans_id', $request->order_id)->where('status', 0)->first();
+        if ($trx_ref) {
 
-        $bills = WasteBill::where('id', Auth::id())->get();
-        return response()->json([
-            'status' => true,
-            'data' => $bills
-        ]);
+            WasteBill::where('ref', $trx_ref->trans_id)->update(['status' => 1]);
+            $trx->update(['status' => 1]);
+            $user = User::where('id', $trx_ref->user_id)->first();
+
+            $due_date = WasteBill::where('ref', $trx_ref->trans_id)->first()->due_date;
+
+            $data = url('') . '/verify-invoice/' . $trx_ref->trans_id;
+
+            $qrCode = base64_encode(
+                QrCode::format('png')->size(120)->generate($data)
+            );
+
+
+            $invoiceData = [
+                'customer_id' => $user->customer_id,
+                'name' => $user->first_name . ' ' . $user->last_name,
+                'phone' => $user->phone,
+                'description' => 'Monthly Waste Collection',
+                'unit_price' => $trx_ref->amount,
+                'total' => $trx_ref->amount,
+                'subtotal' => $trx_ref->amount,
+                'total_due' => $trx_ref->amount,
+                'status' => 'PAID',
+                'due_date' => $due_date,
+                'qr_code' => $qrCode,
+                'payment_method' => 'Bank Transfer',
+            ];
+
+            $mailer->sendEmail($user->email, 'Trash Bash Invoice', $invoiceData);
+
+            return view('payment-completed', compact('trx_ref'));
+
+
+
+        }
+
+
+
 
     }
 
@@ -266,6 +301,28 @@ class WasteBillController extends Controller
             'data' => $var,
         ]);
 
+
+    }
+    public function PayWasteBillWeb(Request $request, MicrosoftGraphMailService $mailer)
+    {
+
+
+        Transaction::create([
+            'user_id' => $request->user_id,
+            'amount' => $request->amount,
+            'trans_id' => $request->ref,
+            'account_no' => " ",
+            'type' => "Monthly Bill Payment",
+        ]);
+
+
+        $api_key = Setting::where('id', 1)->first()->enkpay_key;
+        $email = $request->email;
+        $url = "https://web.sprintpay.online/pay?amount=$request->amount&key=$api_key&ref=$request->ref&email=$email";
+
+
+
+        return redirect()->away($url);
 
     }
 
