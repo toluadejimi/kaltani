@@ -131,7 +131,10 @@ Route::post('customer-bulk-drop', [WasteBillController::class, 'CustomerBulkDrop
 
 
 //Residence
-Route::get('save-customer-property', [PropertyController::class, 'SaveProperty']);
+Route::post('save-customer-property', [PropertyController::class, 'SaveProperty']);
+Route::post('edit-customer-property', [PropertyController::class, 'EditProperty']);
+Route::post('delete-customer-property', [PropertyController::class, 'DeleteProperty']);
+
 
 
 
