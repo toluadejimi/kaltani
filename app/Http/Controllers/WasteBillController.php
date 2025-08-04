@@ -157,6 +157,9 @@ class WasteBillController extends Controller
 
         }
 
+        return view('payment-declined', compact('trx_ref'));
+
+
 
 
 
@@ -378,6 +381,66 @@ class WasteBillController extends Controller
 //                'status' => true,
 //                'invoice_url' => $pdfUrl
 //            ]);
+
+
+        }
+
+
+        return response()->json([
+            'status' => false,
+            'message' => "Bill Not found"
+        ], 422);
+
+
+    }
+
+
+    public function PdfDownload(Request $request)
+    {
+
+
+        $bill = WasteBill::where('ref', $request->ref)->first() ?? null;
+
+        if ($bill) {
+
+            $user = User::where('id', $bill->user_id)->first();
+
+            $due_date = WasteBill::where('ref', $request->ref)->first()->due_date;
+
+            $trx = Transaction::where('trans_id', $request->ref)->first();
+
+            $data = url('') . '/verify-invoice/' . $request->ref;
+
+            $qrCode = base64_encode(
+                QrCode::format('png')->size(120)->generate($data)
+            );
+
+
+            if ($trx->status === 0) {
+                $status = "UNPAID";
+            } else {
+                $status = "PAID";
+            }
+
+            $invoiceData = [
+                'customer_id' => $user->customer_id,
+                'name' => $user->first_name . ' ' . $user->last_name,
+                'phone' => $user->phone,
+                'description' => 'Monthly Waste Collection',
+                'unit_price' => $trx->amount,
+                'total' => $trx->amount,
+                'subtotal' => $trx->amount,
+                'total_due' => $trx->amount,
+                'status' => $status,
+                'due_date' => $due_date,
+                'qr_code' => $qrCode,
+                'payment_method' => 'Bank Transfer',
+            ];
+
+            $pdf = Pdf::loadView('invoices.invoice', ['invoice' => $invoiceData]);
+
+            $fileName = 'invoice_' . $user->customer_id . '_' . time() . '.pdf';
+            return $pdf->download($fileName);
 
 
         }

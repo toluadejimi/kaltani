@@ -22,6 +22,8 @@ use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 Route::get('logs', [LogViewerController::class, 'index']);
 
 Route::any('pay-bill', [WasteBillController::class, 'PayWasteBillWeb']);
+Route::any('payment-process', [WasteBillController::class, 'ProcessPaymentBill']);
+Route::get('download-pdf', [WasteBillController::class, 'PdfDownload']);
 
 Route::get('/test-broadcast', function () {
     event(new MessageSent('hello world'));

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Payment Successful</title>
+    <title>Payment Declined</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <style>
         body {
@@ -29,7 +29,7 @@
             font-size:64px;
             margin-bottom:8px;
             display:inline-block;
-            background: #22c55e;
+            background: #ef4444;
             color:#fff;
             width:96px;
             height:96px;
@@ -55,11 +55,11 @@
             margin:6px;
             font-size:15px;
         }
-        .primary {
-            background:#1a73e8;
+        .retry {
+            background:#405cf5;
             color:#fff;
         }
-        .secondary {
+        .help {
             background:#f1f4f8;
             color:#1f2d3a;
             border:1px solid #d8e2f1;
@@ -69,22 +69,18 @@
             color:#6b7a93;
             margin-top:16px;
         }
-        .receipt {
-            background:#020a16;
-            color:#fff;
-        }
     </style>
 </head>
 <body>
-<div class="card" aria-label="Payment successful">
-    <div class="icon" aria-hidden="true">✓</div>
-    <h1>Payment Completed</h1>
-    <p>Thank you, <br> Your payment of <strong>₦{{ number_format($trx_ref->amount, 2) }}</strong>  has been successfully received.</p>
+<div class="card" aria-label="Payment declined">
+    <div class="icon" aria-hidden="true">✕</div>
+    <h1>Payment Declined</h1>
+    <p>We're sorry, your payment could not be processed, Please try again or </p>
 
-    <a href="/download-pdf?ref={{$trx_ref->trans_id}}" class="btn primary" target="_blank" rel="noopener">Download Receipt</a>
+    <a href="mailto:support@trashbash.com" class="btn help">Contact Support</a>
 
     <div class="small">
-        If you have any questions, email us at <a href="mailto:support@trashbash.com">support@trashbash.com</a> or call +234 704 109 3833.
+        Common causes: insufficient funds, incorrect card details, or network issues. If the problem persists, reply to this message or call +234 704 109 3833.
     </div>
 </div>
 </body>
