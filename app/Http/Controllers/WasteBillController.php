@@ -161,7 +161,7 @@ class WasteBillController extends Controller
 
             $mailer->sendEmail($user->email, 'Trash Bash Invoice', $invoiceData);
 
-            if ($request->ajax()) {
+            if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'status' => true,
                     'message' => "Payment Successful",
