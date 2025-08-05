@@ -9,7 +9,20 @@ use Illuminate\Support\Facades\Auth;
 
 class PropertyController extends Controller
 {
-    public function GetProperty()
+    public function GetCustomerProperty()
+    {
+
+        $data = UserProperty::where('user_id', Auth::id())->get();
+        return response()->json([
+            'status' => true,
+            'data' => $data
+        ]);
+
+
+    }
+
+
+    function GetProperty()
     {
         $data = Property::where('status', 1)->get();
         return response()->json([
@@ -20,7 +33,9 @@ class PropertyController extends Controller
     }
 
 
-    public function SaveProperty(request $request){
+    public
+    function SaveProperty(request $request)
+    {
 
         $property = new UserProperty();
         $property->property_id = $request->property_id;
@@ -39,7 +54,9 @@ class PropertyController extends Controller
     }
 
 
-    public function DeleteProperty(request $request){
+    public
+    function DeleteProperty(request $request)
+    {
 
         UserProperty::where('id', $request->id)->delete();
 
@@ -51,22 +68,24 @@ class PropertyController extends Controller
     }
 
 
-    public function EditProperty(request $request){
+    public
+    function EditProperty(request $request)
+    {
 
-      $update =   UserProperty::where('id', $request->id)->where('user_id', Auth::id())->update([
+        $update = UserProperty::where('id', $request->id)->where('user_id', Auth::id())->update([
             'long' => $request->long,
             'lat' => $request->lat,
             'address' => $request->address,
         ]);
 
-      if($update){
+        if ($update) {
 
-          return response()->json([
-              'status' => true,
-              'data' => "Property has been updated Successfully"
-          ]);
+            return response()->json([
+                'status' => true,
+                'data' => "Property has been updated Successfully"
+            ]);
 
-      }
+        }
 
         return response()->json([
             'status' => false,
@@ -74,12 +93,12 @@ class PropertyController extends Controller
         ], 422);
 
 
-
-
     }
 
 
-    public function GetPropertyByUserID(request $request){
+    public
+    function GetPropertyByUserID(request $request)
+    {
 
         $data = UserProperty::where('user_id', Auth::id())->first();
         return response()->json([

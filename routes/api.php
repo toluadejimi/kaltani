@@ -56,6 +56,7 @@ Route::get('get-property', [PropertyController::class, 'GetProperty']);
 
 
 
+
 Route::middleware('auth:sanctum', 'access')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -218,6 +219,8 @@ Route::group(['middleware' => ['auth:api','access']], function(){
 
     //Get orders
     Route::get('get-customer-order', [WasteBillController::class, 'GetCustomerOrder']);
+    Route::get('get-customer-property', [PropertyController::class, 'GetCustomerProperty']);
+
 
 
 
