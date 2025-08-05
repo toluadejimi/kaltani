@@ -77,7 +77,7 @@ class WasteBillController extends Controller
     public function ProcessPaymentBill(Request $request, MicrosoftGraphMailService $mailer)
     {
 
-        $message = json_decode($request->all());
+        $message = json_encode($request->all());
         LOG::info($message);
 
 
