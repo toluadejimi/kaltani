@@ -23,6 +23,7 @@ Route::get('logs', [LogViewerController::class, 'index']);
 
 Route::any('pay-bill', [WasteBillController::class, 'PayWasteBillWeb']);
 Route::any('payment-process', [WasteBillController::class, 'ProcessPaymentBill']);
+Route::any('payment-processing', [WasteBillController::class, 'ProcessingPaymentBill']);
 Route::get('download-pdf', [WasteBillController::class, 'PdfDownload']);
 
 Route::get('/test-broadcast', function () {

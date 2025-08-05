@@ -74,6 +74,22 @@ class WasteBillController extends Controller
     }
 
 
+    public function ProcessingPaymentBill(Request $request, MicrosoftGraphMailService $mailer)
+    {
+        $trx_ref = Transaction::where('trans_id', $request->trans_id)->where('status', 1)->first();
+        if ($trx_ref) {
+
+            return view('payment-completed', compact('trx_ref'));
+
+        }
+
+
+        return view('payment-declined', compact('trx_ref'));
+
+
+
+    }
+
     public function ProcessPaymentBill(Request $request, MicrosoftGraphMailService $mailer)
     {
 
@@ -123,7 +139,7 @@ class WasteBillController extends Controller
                 'status' => true,
                 'message' => "Payment Successful",
 
-            ]);
+            ], 200);
 
 
         }
@@ -143,7 +159,6 @@ class WasteBillController extends Controller
                 QrCode::format('png')->size(120)->generate($data)
             );
 
-
             $invoiceData = [
                 'customer_id' => $user->customer_id,
                 'name' => $user->first_name . ' ' . $user->last_name,
@@ -162,8 +177,11 @@ class WasteBillController extends Controller
             $mailer->sendEmail($user->email, 'Trash Bash Invoice', $invoiceData);
 
 
-            return view('payment-completed', compact('trx_ref'));
 
+            return response()->json([
+                'status' => true,
+                'message' => "Payment Successful",
+            ], 200);
 
 
         }
