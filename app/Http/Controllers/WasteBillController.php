@@ -132,7 +132,7 @@ class WasteBillController extends Controller
         if ($trx_ref) {
 
             WasteBill::where('ref', $trx_ref->trans_id)->update(['status' => 1]);
-            $trx->update(['status' => 1]);
+            $trx_ref->update(['status' => 1]);
             $user = User::where('id', $trx_ref->user_id)->first();
 
             $due_date = WasteBill::where('ref', $trx_ref->trans_id)->first()->due_date;
