@@ -631,18 +631,18 @@ class AuthCoontroller extends Controller
 
             $mailer->SendEmailView($email, $subject, $view, $Data);
 
-            $message = "Your Waste ID is $customer_id. Thank you for partnering with us in keeping Abia State clean - Powered by KALTANI";
-            $smsService = new TermiiService();
-            $phone_no = preg_replace('/^\[?0\]?/', '', $request->phone);
-            $phone_n = "+234" . $phone_no;
-            $response = $smsService->sendSms($phone_n, $message);
-
-            if (!isset($response['code']) || $response['code'] !== 'ok') {
-
-               $message =  "Termi Error=====>". $response;
-                LOG::error($message);
-
-            }
+//            $message = "Your Waste ID is $customer_id. Thank you for partnering with us in keeping Abia State clean - Powered by KALTANI";
+//            $smsService = new TermiiService();
+//            $phone_no = preg_replace('/^\[?0\]?/', '', $request->phone);
+//            $phone_n = "+234" . $phone_no;
+//            $response = $smsService->sendSms($phone_n, $message);
+//
+//            if (!isset($response['code']) || $response['code'] !== 'ok') {
+//
+//               $message =  "Termi Error=====>". $response;
+//                LOG::error($message);
+//
+//            }
 
 
 
