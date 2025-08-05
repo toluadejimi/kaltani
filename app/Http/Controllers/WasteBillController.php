@@ -15,6 +15,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -75,6 +76,15 @@ class WasteBillController extends Controller
 
     public function ProcessPaymentBill(Request $request, MicrosoftGraphMailService $mailer)
     {
+
+        $message = json_decode($request->all());
+        LOG::info($message);
+
+
+        try{
+
+
+
 
         $trx = Transaction::where('account_no', $request->account_no)->where('status', 0)->first();
         if ($trx) {
@@ -155,6 +165,12 @@ class WasteBillController extends Controller
 
 
 
+        }
+
+
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            Log::error("Credit bill error " . $e->getMessage());
         }
 
         return view('payment-declined', compact('trx_ref'));
