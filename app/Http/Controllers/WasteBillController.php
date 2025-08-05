@@ -100,8 +100,6 @@ class WasteBillController extends Controller
         try{
 
 
-
-
         $trx = Transaction::where('account_no', $request->account_no)->where('status', 0)->first();
         if ($trx) {
 
@@ -185,6 +183,60 @@ class WasteBillController extends Controller
 
 
         }
+
+
+        $get_user_id = User::where('email', $request->email)->first() ?? null;
+        if ($get_user_id) {
+
+            $ck_trx = Transaction::where([
+                'user_id' => $get_user_id->id,
+                'status' => 0,
+                'amount' => $request->amount,
+            ])->first();
+            if ($ck_trx) {
+
+                $ck_trx->update(['status' => 1]);
+                WasteBill::where('ref', $ck_trx->trans_id)->update(['status' => 1]);
+                $user = User::where('id', $ck_trx->user_id)->first();
+
+                $due_date = WasteBill::where('ref', $ck_trx->trans_id)->first()->due_date;
+
+                $data = url('') . '/verify-invoice/' . $ck_trx->trans_id;
+
+                $qrCode = base64_encode(
+                    QrCode::format('png')->size(120)->generate($data)
+                );
+
+                $invoiceData = [
+                    'customer_id' => $user->customer_id,
+                    'name' => $user->first_name . ' ' . $user->last_name,
+                    'phone' => $user->phone,
+                    'description' => 'Monthly Waste Collection',
+                    'unit_price' => $ck_trx->amount,
+                    'total' => $ck_trx->amount,
+                    'subtotal' => $ck_trx->amount,
+                    'total_due' => $ck_trx->amount,
+                    'status' => 'PAID',
+                    'due_date' => $due_date,
+                    'qr_code' => $qrCode,
+                    'payment_method' => 'Bank Transfer',
+                ];
+
+                $mailer->sendEmail($user->email, 'Trash Bash Invoice', $invoiceData);
+
+
+
+                return response()->json([
+                    'status' => true,
+                    'message' => "Payment Successful",
+                ], 200);
+
+
+            }
+
+        }
+
+
 
 
 
