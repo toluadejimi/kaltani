@@ -224,8 +224,6 @@ Route::group(['middleware' => ['auth:api','access']], function(){
 
 
 
-
-
     Route::post('drop-off', [CollectionController::class, 'drop_off']);
     Route::post('delete-drop-off', [CollectionController::class, 'delete_drop_off']);
     Route::post('sms-code', [AuthCoontroller::class, 'sms_email_code']);
