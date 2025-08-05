@@ -161,13 +161,16 @@ class WasteBillController extends Controller
 
             $mailer->sendEmail($user->email, 'Trash Bash Invoice', $invoiceData);
 
-            return response()->json([
-                'status' => true,
-                'trx_ref' => $trx_ref,
-                'html' => view('payment-completed', compact('trx_ref'))->render()
-            ]);
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => "Payment Successful",
+                    'redirect_url' => route('payment-completed', $trx_ref)
+                ]);
+            }
 
-            //return view('payment-completed', compact('trx_ref'));
+            return redirect()->route('payment-completed', $trx_ref);
+
 
 
 
