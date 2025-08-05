@@ -79,13 +79,39 @@
 <div class="card" aria-label="Payment successful">
     <div class="icon" aria-hidden="true">✓</div>
     <h1>Payment Completed</h1>
-    <p>Thank you, <br> Your payment of <strong>₦{{ number_format($trx_ref->amount, 2) }}</strong>  has been successfully received.</p>
+    <p>
+        Thank you, <br>
+        Your payment of <strong>₦{{ number_format($trx_ref->amount, 2) }}</strong>
+        has been successfully received.
+    </p>
 
-    <a href="/download-pdf?ref={{$trx_ref->trans_id}}" class="btn primary" target="_blank" rel="noopener">Download Receipt</a>
+    <a href="/download-pdf?ref={{ $trx_ref->trans_id }}" class="btn primary" target="_blank" rel="noopener">
+        Download Receipt
+    </a>
 
     <div class="small">
-        If you have any questions, email us at <a href="mailto:support@trashbash.com">support@trashbash.com</a> or call +234 704 109 3833.
+        If you have any questions, email us at
+        <a href="mailto:support@trashbash.com">support@trashbash.com</a>
+        or call +234 704 109 3833.
     </div>
 </div>
+
+<script>
+    (function(){
+        // Only run fetch if this was loaded via AJAX request context
+        if (window.location.search.includes('ajax=1')) {
+            fetch(window.location.pathname, {
+                headers: { 'Accept': 'application/json' }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status && data.html) {
+                        document.body.innerHTML = data.html;
+                    }
+                })
+                .catch(err => console.error('Error loading payment page:', err));
+        }
+    })();
+</script>
 </body>
 </html>
