@@ -39,8 +39,8 @@ class PropertyController extends Controller
 
         $property = new UserProperty();
         $property->property_id = $request->property_id;
-        $property->long = $request->long;
-        $property->lat = $request->lat;
+        $property->long = $request->long ?? null;
+        $property->lat = $request->lat ?? null;
         $property->address = $request->address;
         $property->user_id = Auth::user()->id;
         $property->status = 1;
